@@ -24,8 +24,16 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=1,
 # testloader = torch.utils.data.DataLoader(testset, batch_size=4,
 #                                          shuffle=False, num_workers=2)
 
+name = ""
+trainstep = 1
 
-model = siamese_alexnet()
+if trainstep == 1:
+    model = siamese_alexnet()
+else:
+    modelfilename = 'model%s_Iter%i.torchmodel' % (name,trainstep-1)
+    modelfile = open(modelfilename, 'rb')
+    model = torch.load(modelfile)
+
 if torch.cuda.is_available():
     model.cuda()
 
@@ -33,7 +41,7 @@ if torch.cuda.is_available():
 optimizer = optim.SGD(model.parameters(), lr=0.00001, momentum=0.9)
 
 Nepochs = 3
-Nsamples = 10000
+Nsamples = 1
 for epoch in range(Nepochs):  # loop over the dataset multiple times
 
     running_loss = 0.0
@@ -58,6 +66,8 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         output1 = outputs[0]
         output2 = outputs[1]
         loss = distance_loss(input1,input2,output1,output2)
+        if torch.cuda.is_available():
+            loss.cuda()
         loss.backward()
         optimizer.step()
 
@@ -69,6 +79,11 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
             running_loss = 0.0
 
 print('Finished Training')
+
+modelfilename = 'model%s_Iter%i.torchmodel' % (name,trainstep)
+modelfile = open(modelfilename, "wb")
+torch.save(model, modelfile)
+print('saved model')
 
 
 # input, _ = next(iter(trainloader))
