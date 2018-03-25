@@ -12,7 +12,7 @@ model_urls = {
 
 class siameseAlexNet(nn.Module):
 
-    def __init__(self, num_classes=1000):
+    def __init__(self):
         super(siameseAlexNet, self).__init__()
         self.features = nn.Sequential(
             nn.Conv2d(3, 8, kernel_size=3, stride=2, padding=2),

@@ -8,7 +8,7 @@ import torch.optim as optim
 
 
 if torch.cuda.is_available():
-    torch.cuda.set_device(0)
+    torch.cuda.set_device(1)
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
@@ -40,7 +40,7 @@ else:
     model = torch.load(modelfile)
 
 if torch.cuda.is_available():
-    model.cuda()
+    model = model.cuda()
 
 
 optimizer = optim.SGD(model.parameters(), lr=0.00001, momentum=0.9)
@@ -55,13 +55,14 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         input1, _ = next(iterTrainLoader)
         input2, _ = next(iterTrainLoader)
 
+        if torch.cuda.is_available():
+            input1.cuda()
+            input2.cuda()
+
         # wrap them in Variable
         input1 = Variable(input1)
         input2 = Variable(input2)
 
-        if torch.cuda.is_available():
-            input1.cuda()
-            input2.cuda()
 
         # zero the parameter gradients
         optimizer.zero_grad()
@@ -73,6 +74,10 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         if torch.cuda.is_available():
             output1 = output1.cuda()
             output2 = output2.cuda()
+
+        # wrap them in Variable
+        output1 = Variable(output1)
+        output2 = Variable(output2)
 
         loss = distance_loss(input1,input2,output1,output2)
         if torch.cuda.is_available():
