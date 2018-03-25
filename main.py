@@ -65,6 +65,10 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         outputs = model.forward(input1,input2)
         output1 = outputs[0]
         output2 = outputs[1]
+        if torch.cuda.is_available():
+            output1 = output1.cuda()
+            output2 = output2.cuda()
+
         loss = distance_loss(input1,input2,output1,output2)
         if torch.cuda.is_available():
             loss.cuda()
