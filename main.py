@@ -14,7 +14,12 @@ transform = transforms.Compose(
     [transforms.ToTensor(),
      transforms.Normalize((0, 0, 0), (1, 1, 1))])
 
-trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
+if torch.cuda.is_available():
+    datafolder = "/var/tmp/ioannis/data"
+else:
+    datafolder = "./data"
+
+trainset = torchvision.datasets.CIFAR10(root=datafolder, train=True,
                                         download=False, transform=transform)
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=1,
                                           shuffle=True, num_workers=0)
