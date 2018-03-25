@@ -9,6 +9,7 @@ import torch.optim as optim
 
 if torch.cuda.is_available():
     torch.cuda.set_device(1)
+    torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
@@ -44,6 +45,7 @@ if torch.cuda.is_available():
 
 
 optimizer = optim.SGD(model.parameters(), lr=0.00001, momentum=0.9)
+criterion = torch.nn.CrossEntropyLoss()
 
 Nepochs = 3
 Nsamples = 1
@@ -79,7 +81,8 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         output1 = Variable(output1)
         output2 = Variable(output2)
 
-        loss = distance_loss(input1,input2,output1,output2)
+        # loss = distance_loss(input1,input2,output1,output2)
+        loss = criterion(input1,output1)
         if torch.cuda.is_available():
             loss.cuda()
         loss.backward()
