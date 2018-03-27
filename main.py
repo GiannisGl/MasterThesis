@@ -50,7 +50,7 @@ if torch.cuda.is_available():
     model = model.cuda()
 
 
-optimizer = optim.SGD(model.parameters(), lr=0.00001, momentum=0.9)
+optimizer = optim.Adam(model.parameters(), lr=0.001, momentum=0.9)
 criterion = distance_loss()
 
 for epoch in range(Nepochs):  # loop over the dataset multiple times

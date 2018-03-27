@@ -1,0 +1,4 @@
+- model only with cnns:
+    out loss was always two small (1e-6 vs 0.12) with cifar10 after 10 epochs, 1000 samples, batchSize 100
+    learning rate = 0.00001 (maybe too small)
+- model with linear part, like alexnet but with fewer channels (cifar10 image size is 32x32)

@@ -9,12 +9,12 @@ class distance_loss(torch.nn.Module):
 
     def forward(self, input1, input2, output1, output2):
         distanceOrig = mse_loss(flatten(input1), flatten(input2))
-        print("loss orig: ", distanceOrig)
+        # print("loss orig: ", distanceOrig)
         # distanceOrig = torch.nn.MSELoss(input1,input2)
         distanceOut = mse_loss(flatten(output1), flatten(output2))
-        print("loss out: ", distanceOut)
+        # print("loss out: ", distanceOut)
         loss = torch.mean(torch.abs(distanceOrig - distanceOut))
-        print("loss: ", loss)
+        # print("loss: ", loss)
 
         return loss
 
