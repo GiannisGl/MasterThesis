@@ -6,6 +6,9 @@ import torchvision
 import torchvision.transforms as transforms
 import torch.optim as optim
 
+batchSize = 10
+Nepochs = 3
+Nsamples = 1
 
 if torch.cuda.is_available():
     torch.cuda.set_device(1)
@@ -22,7 +25,7 @@ else:
 
 trainset = torchvision.datasets.CIFAR10(root=datafolder, train=True,
                                         download=False, transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=1,
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
                                           shuffle=True, num_workers=0)
 
 # testset = torchvision.datasets.CIFAR10(root='./data', train=False,
@@ -45,10 +48,8 @@ if torch.cuda.is_available():
 
 
 optimizer = optim.SGD(model.parameters(), lr=0.00001, momentum=0.9)
-criterion = torch.nn.CrossEntropyLoss()
+# criterion = mse_loss()
 
-Nepochs = 3
-Nsamples = 1
 for epoch in range(Nepochs):  # loop over the dataset multiple times
 
     running_loss = 0.0
@@ -57,13 +58,13 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         input1, _ = next(iterTrainLoader)
         input2, _ = next(iterTrainLoader)
 
-        if torch.cuda.is_available():
-            input1.cuda()
-            input2.cuda()
-
         # wrap them in Variable
-        input1 = Variable(input1)
-        input2 = Variable(input2)
+        if torch.cuda.is_available():
+            input1 = Variable(input1.cuda())
+            input2 = Variable(input2.cuda())
+        else:
+            input1 = Variable(input1)
+            input2 = Variable(input2)
 
 
         # zero the parameter gradients
@@ -73,18 +74,19 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         outputs = model.forward(input1,input2)
         output1 = outputs[0]
         output2 = outputs[1]
+        # wrap them in Variable
         if torch.cuda.is_available():
             output1 = output1.cuda()
             output2 = output2.cuda()
-
-        # wrap them in Variable
-        output1 = Variable(output1)
-        output2 = Variable(output2)
+        else:
+            output1 = output1
+            output2 = output2
 
         # loss = distance_loss(input1,input2,output1,output2)
-        loss = criterion(input1,output1)
-        if torch.cuda.is_available():
-            loss.cuda()
+        # if torch.cuda.is_available():
+            # criterion.cuda()
+
+        loss = distance_loss(input1,input2,output1, output2)
         loss.backward()
         optimizer.step()
 
