@@ -8,7 +8,7 @@ import torch.optim as optim
 
 batchSize = 10
 Nepochs = 3
-Nsamples = 1
+Nsamples = 100
 
 if torch.cuda.is_available():
     torch.cuda.set_device(1)
@@ -48,7 +48,7 @@ if torch.cuda.is_available():
 
 
 optimizer = optim.SGD(model.parameters(), lr=0.00001, momentum=0.9)
-# criterion = mse_loss()
+criterion = distance_loss()
 
 for epoch in range(Nepochs):  # loop over the dataset multiple times
 
@@ -71,9 +71,9 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         optimizer.zero_grad()
 
         # forward + backward + optimize
-        outputs = model.forward(input1,input2)
-        output1 = outputs[0]
-        output2 = outputs[1]
+        output1, output2 = model.forward(input1,input2)
+        # output1 = outputs[0]
+        # output2 = outputs[1]
         # wrap them in Variable
         if torch.cuda.is_available():
             output1 = output1.cuda()
@@ -86,7 +86,8 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         # if torch.cuda.is_available():
             # criterion.cuda()
 
-        loss = distance_loss(input1,input2,output1, output2)
+        loss = criterion(input1,input2,output1, output2)
+        # print(loss.backward())
         loss.backward()
         optimizer.step()
 
