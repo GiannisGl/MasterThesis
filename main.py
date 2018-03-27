@@ -6,9 +6,12 @@ import torchvision
 import torchvision.transforms as transforms
 import torch.optim as optim
 
-batchSize = 10
+name = ""
+trainstep = 1
+
+batchSize = 100
 Nepochs = 3
-Nsamples = 100
+Nsamples = 200
 
 if torch.cuda.is_available():
     torch.cuda.set_device(1)
@@ -33,8 +36,6 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
 # testloader = torch.utils.data.DataLoader(testset, batch_size=4,
 #                                          shuffle=False, num_workers=2)
 
-name = ""
-trainstep = 1
 
 if trainstep == 1:
     model = siamese_alexnet()
@@ -63,8 +64,8 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
             input1 = Variable(input1.cuda())
             input2 = Variable(input2.cuda())
         else:
-            input1 = Variable(input1)
-            input2 = Variable(input2)
+            input1 = Variable(input1,requires_grad=True)
+            input2 = Variable(input2,requires_grad=True)
 
 
         # zero the parameter gradients
@@ -90,10 +91,11 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         # print(loss.backward())
         loss.backward()
         optimizer.step()
+        print(output2.data.size())
 
         # print statistics
         running_loss += loss.data[0]
-        if i % 2000 == 1999:    # print every 2000 mini-batches
+        if i % 100 == 99:    # print every 2000 mini-batches
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 2000))
             running_loss = 0.0
