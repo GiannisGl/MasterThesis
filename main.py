@@ -9,7 +9,7 @@ import torch.optim as optim
 name = ""
 trainstep = 1
 
-modelfolder = "~/models"
+modelfolder = "../models"
 
 batchSize = 100
 Nepochs = 3
@@ -99,7 +99,7 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         running_loss += loss.data[0]
         if i % 100 == 99:    # print every 2000 mini-batches
             print('[%d, %5d] loss: %.3f' %
-                  (epoch + 1, i + 1, running_loss / 2000))
+                  (epoch + 1, i + 1, running_loss / 100))
             running_loss = 0.0
 
 print('Finished Training')

@@ -23,15 +23,28 @@ class siameseAlexNet(nn.Module):
             nn.MaxPool2d(kernel_size=3, stride=2),
             nn.Conv2d(64, 32, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
-            nn.Conv2d(32, 16, kernel_size=3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(16, 4, kernel_size=3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=3, stride=2),
+            # nn.Conv2d(32, 16, kernel_size=3, padding=1),
+            # nn.ReLU(inplace=True),
+            # nn.Conv2d(16, 4, kernel_size=3, padding=1),
+            # nn.ReLU(inplace=True),
+            # nn.MaxPool2d(kernel_size=3, stride=2),
         )
+
+        self.classifier = nn.Sequential(
+            nn.Dropout(),
+            nn.Linear(32 * 3 * 3, 100),
+            nn.ReLU(inplace=True),
+            nn.Dropout(),
+            nn.Linear(100, 25),
+            nn.ReLU(inplace=True),
+            nn.Linear(25, 10),
+        )
+
 
     def forward_once(self, x):
         x = self.features(x)
+        x = x.view(x.size(0), 32 * 3 * 3)
+        x = self.classifier(x)
         return x
 
     def forward(self, input1, input2):
