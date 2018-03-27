@@ -9,6 +9,8 @@ import torch.optim as optim
 name = ""
 trainstep = 1
 
+modelfolder = "~/models"
+
 batchSize = 100
 Nepochs = 3
 Nsamples = 200
@@ -102,7 +104,7 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
 
 print('Finished Training')
 
-modelfilename = 'model%s_Iter%i.torchmodel' % (name,trainstep)
+modelfilename = '%s/model%s_Iter%i.torchmodel' % (modelfolder,name,trainstep)
 modelfile = open(modelfilename, "wb")
 torch.save(model, modelfile)
 print('saved model')
