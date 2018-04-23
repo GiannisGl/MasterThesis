@@ -56,16 +56,16 @@ def cifar10(n_channel, pretrained=None):
         model.load_state_dict(state_dict)
     return model
 
-def cifar100(n_channel, pretrained=None):
-    cfg = [n_channel, n_channel, 'M', 2*n_channel, 2*n_channel, 'M', 4*n_channel, 4*n_channel, 'M', (8*n_channel, 0), 'M']
-    layers = make_layers(cfg, batch_norm=True)
-    model = CIFAR(layers, n_channel=8*n_channel, num_classes=100)
-    if pretrained is not None:
-        m = model_zoo.load_url(model_urls['cifar100'])
-        state_dict = m.state_dict() if isinstance(m, nn.Module) else m
-        assert isinstance(state_dict, (dict, OrderedDict)), type(state_dict)
-        model.load_state_dict(state_dict)
-    return model
+# def cifar100(n_channel, pretrained=None):
+#     cfg = [n_channel, n_channel, 'M', 2*n_channel, 2*n_channel, 'M', 4*n_channel, 4*n_channel, 'M', (8*n_channel, 0), 'M']
+#     layers = make_layers(cfg, batch_norm=True)
+#     model = CIFAR(layers, n_channel=8*n_channel, num_classes=100)
+#     if pretrained is not None:
+#         m = model_zoo.load_url(model_urls['cifar100'])
+#         state_dict = m.state_dict() if isinstance(m, nn.Module) else m
+#         assert isinstance(state_dict, (dict, OrderedDict)), type(state_dict)
+#         model.load_state_dict(state_dict)
+#     return model
 
 # if __name__ == '__main__':
 #     model = cifar10(128, pretrained='log/cifar10/best-135.pth')

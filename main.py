@@ -11,7 +11,6 @@ name = "2channels"
 trainstep = 1
 
 modelfolder = "../models"
-pretrainedModel = cifar10(32, pretrained=True)
 
 batchSize = 1000
 Nepochs = 5
@@ -20,6 +19,7 @@ Nsamples = 1000
 if torch.cuda.is_available():
     torch.cuda.set_device(1)
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
+
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
@@ -41,6 +41,8 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
 #                                          shuffle=False, num_workers=2)
 
 
+pretrainedModel = cifar10(32, pretrained=True)
+
 if trainstep == 1:
     model = siamese_alexnet()
 else:
@@ -50,6 +52,7 @@ else:
 
 if torch.cuda.is_available():
     model = model.cuda()
+    pretrainedModel = pretrainedModel.cuda()
 
 
 optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=0.00001)
@@ -95,10 +98,8 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
             # criterion.cuda()
 
         loss = criterion(input1,input2,output1, output2)
-        # print(loss.backward())
         loss.backward()
         optimizer.step()
-        # print(output2.data.size())
 
         # print statistics
         running_loss += loss.data[0]
