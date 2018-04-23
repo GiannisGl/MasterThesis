@@ -1,4 +1,5 @@
 from model import *
+from pretrainedModel import *
 from loss import *
 from torch.autograd import Variable
 import torch
@@ -6,14 +7,15 @@ import torchvision
 import torchvision.transforms as transforms
 import torch.optim as optim
 
-name = ""
+name = "2channels"
 trainstep = 1
 
 modelfolder = "../models"
+pretrainedModel = cifar10(32, pretrained=True)
 
-batchSize = 100
-Nepochs = 3
-Nsamples = 200
+batchSize = 1000
+Nepochs = 5
+Nsamples = 1000
 
 if torch.cuda.is_available():
     torch.cuda.set_device(1)
@@ -50,7 +52,7 @@ if torch.cuda.is_available():
     model = model.cuda()
 
 
-optimizer = optim.Adam(model.parameters(), lr=0.001, momentum=0.9)
+optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=0.00001)
 criterion = distance_loss()
 
 for epoch in range(Nepochs):  # loop over the dataset multiple times
@@ -69,6 +71,9 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
             input1 = Variable(input1,requires_grad=True)
             input2 = Variable(input2,requires_grad=True)
 
+        # get features for input distance
+        input1 = pretrainedModel.getFeatures(input1)
+        input2 = pretrainedModel.getFeatures(input2)
 
         # zero the parameter gradients
         optimizer.zero_grad()
@@ -93,7 +98,7 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         # print(loss.backward())
         loss.backward()
         optimizer.step()
-        print(output2.data.size())
+        # print(output2.data.size())
 
         # print statistics
         running_loss += loss.data[0]

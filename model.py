@@ -37,7 +37,7 @@ class siameseAlexNet(nn.Module):
             nn.Dropout(),
             nn.Linear(100, 25),
             nn.ReLU(inplace=True),
-            nn.Linear(25, 10),
+            nn.Linear(25, 2),
         )
 
 
