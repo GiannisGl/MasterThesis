@@ -2,16 +2,16 @@ import torch
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
-from loss import *
-from model import *
-from pretrainedModel import *
+from TwoChannelsDirect.loss import *
+from TwoChannelsDirect.model import *
+from TwoChannelsDirect.pretrainedModel import *
 from tensorboardX import SummaryWriter
 from torch.autograd import Variable
 
 name = "2channelsTensorboardMNIST"
 trainstep = 1
 
-modelfolder = "models"
+modelfolder = "trainedModels"
 
 batchSize = 50
 Nepochs = 5
@@ -41,7 +41,7 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
 #                                          shuffle=False, num_workers=2)
 
 
-pretrainedModel = mnist(pretrained=True)
+pretrainedModel = cifar10(pretrained=True)
 
 if trainstep == 1:
     model = siamese_alexnet()

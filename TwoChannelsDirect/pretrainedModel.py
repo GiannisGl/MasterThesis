@@ -8,10 +8,10 @@ from collections import OrderedDict
 # print = misc.logger.info
 
 model_urls = {
-    'cifar10': 'http://ml.cs.tsinghua.edu.cn/~chenxi/pytorch-models/cifar10-d875770b.pth',
-    'cifar100': 'http://ml.cs.tsinghua.edu.cn/~chenxi/pytorch-models/cifar100-3a55a987.pth',
-    'mnist': 'http://ml.cs.tsinghua.edu.cn/~chenxi/pytorch-models/mnist-b07bb66b.pth',
-    'alexnet': 'https://download.pytorch.org/models/alexnet-owt-4df8aa71.pth',
+    'cifar10': 'http://ml.cs.tsinghua.edu.cn/~chenxi/pytorch-trainedModels/cifar10-d875770b.pth',
+    'cifar100': 'http://ml.cs.tsinghua.edu.cn/~chenxi/pytorch-trainedModels/cifar100-3a55a987.pth',
+    'mnist': 'http://ml.cs.tsinghua.edu.cn/~chenxi/pytorch-trainedModels/mnist-b07bb66b.pth',
+    'alexnet': 'https://download.pytorch.org/trainedModels/alexnet-owt-4df8aa71.pth',
 }
 
 class CIFAR(nn.Module):
