@@ -1,23 +1,23 @@
-from model import *
-from pretrainedModel import *
-from loss import *
-from torch.autograd import Variable
 import torch
+import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
-import torch.optim as optim
+from loss import *
+from model import *
+from pretrainedModel import *
+from tensorboardX import SummaryWriter
+from torch.autograd import Variable
 
-name = "2channels"
+name = "2channelsTensorboardMNIST"
 trainstep = 1
 
-modelfolder = "../models"
+modelfolder = "models"
 
-batchSize = 1000
+batchSize = 50
 Nepochs = 5
-Nsamples = 1000
+Nsamples = 100
 
 if torch.cuda.is_available():
-    torch.cuda.set_device(1)
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
 
@@ -28,25 +28,25 @@ transform = transforms.Compose(
 if torch.cuda.is_available():
     datafolder = "/var/tmp/ioannis/data"
 else:
-    datafolder = "./data"
+    datafolder = "../data"
 
-trainset = torchvision.datasets.CIFAR10(root=datafolder, train=True,
-                                        download=False, transform=transform)
+trainset = torchvision.datasets.MNIST(root=datafolder, train=True,
+                                        download=True, transform=transform)
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
                                           shuffle=True, num_workers=0)
 
-# testset = torchvision.datasets.CIFAR10(root='./data', train=False,
+# testset = torchvision.datasets.MNIST(root='./data', train=False,
 #                                        download=False, transform=transform)
 # testloader = torch.utils.data.DataLoader(testset, batch_size=4,
 #                                          shuffle=False, num_workers=2)
 
 
-pretrainedModel = cifar10(32, pretrained=True)
+pretrainedModel = mnist(pretrained=True)
 
 if trainstep == 1:
     model = siamese_alexnet()
 else:
-    modelfilename = 'model%s_Iter%i.torchmodel' % (name,trainstep-1)
+    modelfilename = '%s/model%s_Iter%i.torchmodel'     % (modelfolder,name,trainstep-1)
     modelfile = open(modelfilename, 'rb')
     model = torch.load(modelfile)
 
@@ -58,13 +58,20 @@ if torch.cuda.is_available():
 optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=0.00001)
 criterion = distance_loss()
 
+
+embedding_log = 5
+writer = SummaryWriter(comment='cifar10_embedding_training')
+
+# Train
 for epoch in range(Nepochs):  # loop over the dataset multiple times
 
     running_loss = 0.0
     for i in range(Nsamples):
+        n_iter = (epoch*len(trainloader))+i
+
         iterTrainLoader = iter(trainloader)
-        input1, _ = next(iterTrainLoader)
-        input2, _ = next(iterTrainLoader)
+        input1, label1 = next(iterTrainLoader)
+        input2, label2 = next(iterTrainLoader)
 
         # wrap them in Variable
         if torch.cuda.is_available():
@@ -74,9 +81,12 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
             input1 = Variable(input1,requires_grad=True)
             input2 = Variable(input2,requires_grad=True)
 
+        label1 = Variable(label1, requires_grad=False)
+        label2 = Variable(label2, requires_grad=False)
+
         # get features for input distance
-        input1 = pretrainedModel.getFeatures(input1)
-        input2 = pretrainedModel.getFeatures(input2)
+        input1feats = pretrainedModel.features(input1)
+        input2feats = pretrainedModel.features(input2)
 
         # zero the parameter gradients
         optimizer.zero_grad()
@@ -89,26 +99,31 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         if torch.cuda.is_available():
             output1 = output1.cuda()
             output2 = output2.cuda()
-        else:
-            output1 = output1
-            output2 = output2
 
         # loss = distance_loss(input1,input2,output1,output2)
         # if torch.cuda.is_available():
             # criterion.cuda()
 
-        loss = criterion(input1,input2,output1, output2)
+        loss = criterion(input1feats,input2feats,output1, output2)
         loss.backward()
         optimizer.step()
 
+        #LOGGING
+        writer.add_scalar('loss', loss.data[0], n_iter)
+
         # print statistics
         running_loss += loss.data[0]
-        if i % 100 == 99:    # print every 2000 mini-batches
+        if i % embedding_log == 0:    # print every embedding_log mini-batches
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 100))
             running_loss = 0.0
+            writer.add_embedding(output1.data, metadata=label1.data, label_img=input1.data, global_step=2*n_iter)
+            writer.add_embedding(output2.data, metadata=label2.data, label_img=input2.data, global_step=2*n_iter+1)
 
 print('Finished Training')
+
+writer.close()
+
 
 modelfilename = '%s/model%s_Iter%i.torchmodel' % (modelfolder,name,trainstep)
 modelfile = open(modelfilename, "wb")

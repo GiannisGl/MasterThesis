@@ -4,4 +4,5 @@
 - model with linear part, like alexnet but with fewer channels (cifar10 image size is 32x32)
     -out loss reduced to 0.027 but stayed there for ever. 5 epochs, 1000 samples, batchSize 100,
         learning rate 0.001 and then 0.0001 with weight decay did not change anything
+- pretrained model (alexnet) for features (cifar10). Loss around 0.6
 
