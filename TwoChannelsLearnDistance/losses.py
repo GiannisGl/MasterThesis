@@ -10,7 +10,7 @@ class distance_loss(torch.nn.Module):
     def forward(self, input1, input2, input3, featsModel, distanceModel):
 
         loss = 0
-
+        torch.set_default_tensor_type('torch.cuda.FloatTensor')
         # get features of inputs
         input1feats = featsModel.forward(input1)
         input2feats = featsModel.forward(input2)

@@ -1,26 +1,30 @@
-# import torch
+import torch
 from math import floor
 import torch.optim as optim
 import torchvision
-from torch.utils.data.dataset import random_split
+#from torch.utils.data.dataset import random_split
 import torchvision.transforms as transforms
-from TwoChannelsLearnDistance.losses import *
-from TwoChannelsLearnDistance.featuresModel import featuresModel
-from TwoChannelsLearnDistance.distanceModel import distanceModel
-from tensorboardX import SummaryWriter
+#from TwoChannelsLearnDistance.losses import *
+from losses import *
+#from TwoChannelsLearnDistance.featuresModel import featuresModel
+from featuresModel import featuresModel
+#from TwoChannelsLearnDistance.distanceModel import distanceModel
+from distanceModel import distanceModel
+#from tensorboardX import SummaryWriter
 from torch.autograd import Variable
 
 name = "TwoChannelsLearnDistance"
 model_folder = "trainedModels"
 
 trainstep = 1
-batch_size = 100
+batch_size = 1000
 Nepochs = 5
-Nsamples = 100
+Nsamples = 1000
 
 
 if torch.cuda.is_available():
-    torch.set_default_tensor_type('torch.cuda.FloatTensor')
+    torch.cuda.set_device(1)
+    #torch.set_default_tensor_type('torch.cuda.FloatTensor')
     data_folder = "/var/tmp/ioannis/data"
 else:
     data_folder = "../data"
@@ -32,11 +36,12 @@ transform = transforms.Compose(
 
 train_val_set = torchvision.datasets.MNIST(root=data_folder, train=True,
                                        download=False, transform=transform)
-train_val_length = len(train_val_set)
-train_percentage = 0.8
-train_length = floor(train_val_length*0.8)
-val_length = train_val_length-train_length
-train_set, val_set = random_split(train_val_set, [train_length, val_length])
+#train_val_length = len(train_val_set)
+#train_percentage = 0.8
+#train_length = floor(train_val_length*0.8)
+#val_length = train_val_length-train_length
+#train_set, val_set = random_split(train_val_set, [train_length, val_length])
+train_set = train_val_set
 
 
 train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size,
@@ -58,23 +63,26 @@ else:
 
 if torch.cuda.is_available():
     featsModel = featsModel.cuda()
-    distModel = distModel.cuda()
+    distModel = distModel.cuda()  
+    torch.set_default_tensor_type('torch.cuda.FloatTensor')
+
 
 
 featsOptimizer = optim.Adam(featsModel.parameters(), lr=0.001, weight_decay=0.00001)
 distOptimizer = optim.Adam(distModel.parameters(), lr=0.001, weight_decay=0.00001)
 criterion = distance_loss()
 log_iter = 100
-writer = SummaryWriter(comment='LearnDistanceEmbedding')
+#writer = SummaryWriter(comment='LearnDistanceEmbedding')
 
 # Train
 for epoch in range(Nepochs):  # loop over the dataset multiple times
 
+    torch.set_default_tensor_type('torch.FloatTensor')
+    iterTrainLoader = iter(train_loader)
     running_loss = 0.0
     for i in range(Nsamples):
-        n_iter = (epoch * len(train_loader)) + i
-
-        iterTrainLoader = iter(train_loader)
+        #n_iter = (epoch * len(train_loader)) + i
+      
         input1, label1 = next(iterTrainLoader)
         input2, label2 = next(iterTrainLoader)
         input3, label3 = next(iterTrainLoader)
@@ -85,13 +93,14 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
 
         # wrap them in Variable
         if torch.cuda.is_available():
+            torch.set_default_tensor_type('torch.cuda.FloatTensor')
             input1 = Variable(input1.cuda())
             input2 = Variable(input2.cuda())
-            input2 = Variable(input3.cuda())
+            input3 = Variable(input3.cuda())
         else:
             input1 = Variable(input1,requires_grad=True)
             input2 = Variable(input2,requires_grad=True)
-            input2 = Variable(input3,requires_grad=True)
+            input3 = Variable(input3,requires_grad=True)
 
         # zero the parameter gradients
         featsOptimizer.zero_grad()
@@ -107,8 +116,8 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         #     output2 = output2.cuda()
 
         # loss = distance_loss(input1,input2,output1,output2)
-        # if torch.cuda.is_available():
-            # criterion.cuda()
+        if torch.cuda.is_available():
+            criterion.cuda()
 
         loss = criterion(input1, input2, input3, featsModel, distModel)
         loss.backward()
@@ -121,14 +130,14 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 100))
             running_loss = 0.0
-            writer.add_embedding(output1.data, metadata=label1.data, label_img=input1.data, global_step=2*n_iter)
-            writer.add_embedding(output2.data, metadata=label2.data, label_img=input2.data, global_step=2*n_iter+1)
+#            writer.add_embedding(output1.data, metadata=label1.data, label_img=input1.data, global_step=2*n_iter)
+#            writer.add_embedding(output2.data, metadata=label2.data, label_img=input2.data, global_step=2*n_iter+1)
 
 
 print('Finished Training')
 
 
-writer.close()
+#writer.close()
 
 
 modelfilename = '%s/model%s_Iter%i.torchmodel' % (model_folder, name, trainstep)

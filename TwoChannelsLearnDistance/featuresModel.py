@@ -3,7 +3,7 @@ import torch.utils.model_zoo as model_zoo
 from torch import cat
 
 
-__all__ = ['siameseAlexNet', 'siamese_alexnet']
+__all__ = ['FeatsAlexNet']
 
 
 model_urls = {

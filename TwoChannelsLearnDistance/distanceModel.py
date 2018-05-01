@@ -3,7 +3,7 @@ import torch.utils.model_zoo as model_zoo
 from torch import cat
 
 
-__all__ = ['siameseAlexNet', 'siamese_alexnet']
+__all__ = ['DistanceAlexNet']
 
 
 model_urls = {
@@ -33,7 +33,7 @@ class DistanceAlexNet(nn.Module):
 
         self.classifier = nn.Sequential(
             nn.Dropout(),
-            nn.Linear(4 * 3 * 3, 100),
+            nn.Linear(4 * 1 * 1, 100),
             nn.ReLU(inplace=True),
             nn.Dropout(),
             nn.Linear(100, 25),
@@ -44,7 +44,7 @@ class DistanceAlexNet(nn.Module):
 
     def forward_once(self, x):
         x = self.features(x)
-        x = x.view(x.size(0), 4 * 4 * 4)
+        x = x.view(x.size(0), 4 * 1 * 1)
         x = self.classifier(x)
         return x
 
