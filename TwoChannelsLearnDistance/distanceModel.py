@@ -16,7 +16,7 @@ class DistanceAlexNet(nn.Module):
     def __init__(self):
         super(DistanceAlexNet, self).__init__()
         self.features = nn.Sequential(
-            nn.Conv2d(1, 32, kernel_size=5, stride=2, padding=2),
+            nn.Conv2d(2, 32, kernel_size=5, stride=2, padding=2),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2),
             nn.Conv2d(32, 64, kernel_size=5, padding=2),
@@ -49,7 +49,7 @@ class DistanceAlexNet(nn.Module):
         return x
 
     def forward(self, input1, input2):
-        input = cat((input1,input2),0)
+        input = cat((input1,input2),1)
         output = self.forward_once(input)
         return output
 

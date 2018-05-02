@@ -1,5 +1,6 @@
 from torch.nn import MSELoss
 import torch
+#from math import max
 
 class distance_loss(torch.nn.Module):
 
@@ -42,12 +43,13 @@ class distance_loss(torch.nn.Module):
 
 
         # terms that enforce triangular inequality
-        loss += math.max(learnedDist13-learnedDist12-learnedDist23,0)
-        loss += math.max(learnedDist31-learnedDist32-learnedDist21,0)
-        loss += math.max(learnedDist23-learnedDist21-learnedDist13,0)
-        loss += math.max(learnedDist32-learnedDist31-learnedDist12,0)
-        loss += math.max(learnedDist12-learnedDist13-learnedDist32,0)
-        loss += math.max(learnedDist21-learnedDist23-learnedDist31,0)
+        zeros = torch.zeros(learnedDist13.data.shape)
+        loss += max(learnedDist13-learnedDist12-learnedDist23,zeros)
+        loss += max(learnedDist31-learnedDist32-learnedDist21,zeros)
+        loss += max(learnedDist23-learnedDist21-learnedDist13,zeros)
+        loss += max(learnedDist32-learnedDist31-learnedDist12,zeros)
+        loss += max(learnedDist12-learnedDist13-learnedDist32,zeros)
+        loss += max(learnedDist21-learnedDist23-learnedDist31,zeros)
 
         return loss
 
