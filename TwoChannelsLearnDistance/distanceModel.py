@@ -32,10 +32,10 @@ class DistanceAlexNet(nn.Module):
         )
 
         self.classifier = nn.Sequential(
-            nn.Dropout(),
+            # nn.Dropout(),
             nn.Linear(4 * 1 * 1, 100),
             nn.ReLU(inplace=True),
-            nn.Dropout(),
+            # nn.Dropout(),
             nn.Linear(100, 25),
             nn.ReLU(inplace=True),
             nn.Linear(25, 1),
