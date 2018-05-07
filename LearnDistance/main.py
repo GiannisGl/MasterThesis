@@ -1,25 +1,20 @@
 import torch
-from math import floor
 import torch.optim as optim
 import torchvision
 #from torch.utils.data.dataset import random_split
 import torchvision.transforms as transforms
-#from TwoChannelsLearnDistance.losses import *
 from losses import *
-#from TwoChannelsLearnDistance.featuresModel import featuresModel
 from featuresModel import featuresModel
-#from TwoChannelsLearnDistance.distanceModel import distanceModel
 from distanceModel import distanceModel
-#from tensorboardX import SummaryWriter
 from torch.autograd import Variable
 
-name = "TwoChannelsLearnDistance"
+name = "LearnDistance"
 model_folder = "trainedModels"
 
 trainstep = 1
 batch_size = 100
 Nepochs = 5
-Nsamples = 1000
+Nsamples = 1
 
 
 if torch.cuda.is_available():
@@ -78,10 +73,9 @@ log_iter = 100
 for epoch in range(Nepochs):  # loop over the dataset multiple times
 
     torch.set_default_tensor_type('torch.FloatTensor')
-    iterTrainLoader = iter(train_loader)
     running_loss = 0.0
     for i in range(Nsamples):
-        #n_iter = (epoch * len(train_loader)) + i
+        iterTrainLoader = iter(train_loader)
       
         input1, _ = next(iterTrainLoader)
         input2, _ = next(iterTrainLoader)
@@ -128,11 +122,8 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         running_loss += loss.item()
         if i % log_iter == 0:    # print every embedding_log mini-batches
             print('[%d, %5d] loss: %.3f' %
-                  (epoch + 1, i + 1, running_loss / 100))
+                  (epoch + 1, i, running_loss / 100))
             running_loss = 0.0
-#            writer.add_embedding(output1.data, metadata=label1.data, label_img=input1.data, global_step=2*n_iter)
-#            writer.add_embedding(output2.data, metadata=label2.data, label_img=input2.data, global_step=2*n_iter+1)
-
 
 print('Finished Training')
 

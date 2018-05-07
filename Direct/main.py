@@ -1,10 +1,9 @@
-import torch
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
-from TwoChannelsDirect.loss import *
-from TwoChannelsDirect.model import *
-from TwoChannelsDirect.pretrainedModel import *
+from Direct.loss import *
+from Direct.model import *
+from Direct.pretrainedModel import *
 from tensorboardX import SummaryWriter
 from torch.autograd import Variable
 
@@ -58,9 +57,7 @@ if torch.cuda.is_available():
 optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=0.00001)
 criterion = distance_loss()
 
-
-embedding_log = 5
-writer = SummaryWriter(comment='cifar10_embedding_training')
+log_iter = 100
 
 # Train
 for epoch in range(Nepochs):  # loop over the dataset multiple times
@@ -108,17 +105,12 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         loss.backward()
         optimizer.step()
 
-        #LOGGING
-        writer.add_scalar('loss', loss.data[0], n_iter)
-
         # print statistics
         running_loss += loss.data[0]
-        if i % embedding_log == 0:    # print every embedding_log mini-batches
+        if i % log_iter == 0:    # print every embedding_log mini-batches
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 100))
             running_loss = 0.0
-            writer.add_embedding(output1.data, metadata=label1.data, label_img=input1.data, global_step=2*n_iter)
-            writer.add_embedding(output2.data, metadata=label2.data, label_img=input2.data, global_step=2*n_iter+1)
 
 print('Finished Training')
 
