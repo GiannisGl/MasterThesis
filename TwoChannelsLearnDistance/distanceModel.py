@@ -39,6 +39,7 @@ class DistanceAlexNet(nn.Module):
             nn.Linear(100, 25),
             nn.ReLU(inplace=True),
             nn.Linear(25, 1),
+            nn.ReLU(inplace=True)
         )
 
 

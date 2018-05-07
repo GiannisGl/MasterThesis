@@ -17,7 +17,7 @@ name = "TwoChannelsLearnDistance"
 model_folder = "trainedModels"
 
 trainstep = 1
-batch_size = 1000
+batch_size = 100
 Nepochs = 5
 Nsamples = 1000
 
@@ -83,13 +83,13 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
     for i in range(Nsamples):
         #n_iter = (epoch * len(train_loader)) + i
       
-        input1, label1 = next(iterTrainLoader)
-        input2, label2 = next(iterTrainLoader)
-        input3, label3 = next(iterTrainLoader)
+        input1, _ = next(iterTrainLoader)
+        input2, _ = next(iterTrainLoader)
+        input3, _ = next(iterTrainLoader)
 
-        label1 = Variable(label1, requires_grad=False)
-        label2 = Variable(label2, requires_grad=False)
-        label3 = Variable(label3, requires_grad=False)
+        #label1 = Variable(label1, requires_grad=False)
+        #label2 = Variable(label2, requires_grad=False)
+        #label3 = Variable(label3, requires_grad=False)
 
         # wrap them in Variable
         if torch.cuda.is_available():
@@ -125,7 +125,7 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         distOptimizer.step()
 
         # print statistics
-        running_loss += loss.data[0]
+        running_loss += loss.item()
         if i % log_iter == 0:    # print every embedding_log mini-batches
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 100))
