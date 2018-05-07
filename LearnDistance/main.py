@@ -52,9 +52,12 @@ if trainstep == 1:
     featsModel = featuresModel()
     distModel = distanceModel()
 else:
-    modelfilename = '%s/model%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
-    modelfile = open(modelfilename, 'rb')
-    model = torch.load(modelfile)
+    featsModelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
+    distModelfilename = '%s/distModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
+    featsModelfile = open(featsModelfilename, 'rb')
+    distModelfile = open(distModelfilename, 'rb')
+    featsModel = torch.load(featsModelfile)
+    distModel = torch.load(distModelfile)
 
 if torch.cuda.is_available():
     featsModel = featsModel.cuda()
@@ -100,16 +103,6 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         featsOptimizer.zero_grad()
         distOptimizer.zero_grad()
 
-        # forward + backward + optimize
-        # output1, output2 = model.forward(input1,input2)
-        # output1 = outputs[0]
-        # output2 = outputs[1]
-        # wrap them in Variable
-        # if torch.cuda.is_available():
-        #     output1 = output1.cuda()
-        #     output2 = output2.cuda()
-
-        # loss = distance_loss(input1,input2,output1,output2)
         if torch.cuda.is_available():
             criterion.cuda()
 
@@ -120,18 +113,19 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
 
         # print statistics
         running_loss += loss.item()
-        if i % log_iter == 0:    # print every embedding_log mini-batches
+        if i % log_iter == 0:
             print('[%d, %5d] loss: %.3f' %
-                  (epoch + 1, i, running_loss / 100))
+                  (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0
 
 print('Finished Training')
 
 
-#writer.close()
 
-
-modelfilename = '%s/model%s_Iter%i.torchmodel' % (model_folder, name, trainstep)
-modelfile = open(modelfilename, "wb")
-torch.save(model, modelfile)
-print('saved model')
+featsModelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep)
+distModelfilename = '%s/distModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep)
+featsModelfile = open(featsModelfilename, "wb")
+distModelfile = open(distModelfilename, "wb")
+torch.save(featsModel, featsModelfile)
+torch.save(distModel, distModelfile)
+print('saved models')
