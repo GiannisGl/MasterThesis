@@ -9,12 +9,11 @@ trainstep = 6
 
 modelfolder = "models"
 
-batchSize = 50
-Nepochs = 5
-Nsamples = 100
+batchSize = 1000
+Nsamples = 1
 
-if torch.cuda.is_available():
-    torch.set_default_tensor_type('torch.cuda.FloatTensor')
+# if torch.cuda.is_available():
+#     torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
 
 transform = transforms.Compose(
@@ -26,7 +25,7 @@ if torch.cuda.is_available():
 else:
     datafolder = "../data"
 
-trainset = torchvision.datasets.MNIST(root=datafolder, train=True,
+trainset = torchvision.datasets.CIFAR10(root=datafolder, train=True,
                                         download=True, transform=transform)
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
                                           shuffle=True, num_workers=0)
@@ -42,10 +41,10 @@ if trainstep == 1:
 else:
     modelfilename = '%s/model%s_Iter%i.torchmodel'     % (modelfolder,name,trainstep-1)
     modelfile = open(modelfilename, 'rb')
-    model = torch.load(modelfile)
+    model = torch.load(modelfile, map_location=lambda storage, loc: storage)
 
-if torch.cuda.is_available():
-    model = model.cuda()
+# if torch.cuda.is_available():
+#     model = model.cuda()
 
 writer = SummaryWriter(comment='cifar10_embedding_training')
 
@@ -55,21 +54,10 @@ for i in range(Nsamples):
 
     input, label = next(iterTrainLoader)
 
-    # wrap them in Variable
-    if torch.cuda.is_available():
-        input = Variable(input.cuda())
-    else:
-        input = Variable(input,requires_grad=True)
-
-    label = Variable(label, requires_grad=False)
-
-    # forward + backward + optimize
+    # forward
     output = model.forward_once(input)
-    # wrap them in Variable
-    if torch.cuda.is_available():
-        output = output.cuda()
 
     # save embedding
-    writer.add_embedding(output.data, metadata=label.data, label_img=input.data, global_step=i)
+    writer.add_embedding(output.data, metadata=label.data, global_step=i)
 
 writer.close()
