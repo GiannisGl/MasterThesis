@@ -1,16 +1,16 @@
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
-from Direct.loss import *
-from Direct.model import *
-from Direct.pretrainedModel import *
+from loss import *
+from model import *
+from pretrainedModel import *
 from tensorboardX import SummaryWriter
 from torch.autograd import Variable
 
-name = "2channelsTensorboardMNIST"
+name = "2channels"
 trainstep = 1
 
-modelfolder = "trainedModels"
+modelfolder = "models"
 
 batchSize = 50
 Nepochs = 5
@@ -29,7 +29,7 @@ if torch.cuda.is_available():
 else:
     datafolder = "../data"
 
-trainset = torchvision.datasets.MNIST(root=datafolder, train=True,
+trainset = torchvision.datasets.CIFAR10(root=datafolder, train=True,
                                         download=True, transform=transform)
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
                                           shuffle=True, num_workers=0)
@@ -40,7 +40,7 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
 #                                          shuffle=False, num_workers=2)
 
 
-pretrainedModel = cifar10(pretrained=True)
+pretrainedModel = cifar10(128, pretrained=True)
 
 if trainstep == 1:
     model = siamese_alexnet()
@@ -109,7 +109,7 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         running_loss += loss.data[0]
         if i % log_iter == 0:    # print every embedding_log mini-batches
             print('[%d, %5d] loss: %.3f' %
-                  (epoch + 1, i + 1, running_loss / 100))
+                  (epoch + 1, i + 1, running_loss / log_iter))
             running_loss = 0.0
 
 print('Finished Training')

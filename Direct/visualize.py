@@ -26,8 +26,8 @@ if torch.cuda.is_available():
 else:
     datafolder = "../data"
 
-trainset = torchvision.datasets.MNIST(root=datafolder, train=True,
-                                        download=True, transform=transform)
+trainset = torchvision.datasets.CIFAR10(root=datafolder, train=True,
+                                        download=False, transform=transform)
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
                                           shuffle=True, num_workers=0)
 
@@ -55,7 +55,7 @@ for i in range(Nsamples):
 
     input, label = next(iterTrainLoader)
 
-    # wrap them in Variable
+    # w;dföösdfsdfggrap them in Variable
     if torch.cuda.is_available():
         input = Variable(input.cuda())
     else:
@@ -66,10 +66,12 @@ for i in range(Nsamples):
     # forward + backward + optimize
     output = model.forward_once(input)
     # wrap them in Variable
-    if torch.cuda.is_available():
-        output = output.cuda()
+    #if torch.cuda.is_available():
+    #    output = output.cuda()
 
+    output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
+    input = input.to(torch.device("cpu"))
     # save embedding
-    writer.add_embedding(output.data, metadata=label.data, label_img=input.data, global_step=i)
+    writer.add_embedding(output, metadata=label.data, label_img=input.data, global_step=i)
 
 writer.close()
