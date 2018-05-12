@@ -16,24 +16,24 @@ class FeatsAlexNet(nn.Module):
     def __init__(self):
         super(FeatsAlexNet, self).__init__()
         self.features = nn.Sequential(
-            nn.Conv2d(1, 32, kernel_size=5, stride=2, padding=2),
+            nn.Conv2d(1, 64, kernel_size=5, stride=2, padding=2),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2),
-            nn.Conv2d(32, 64, kernel_size=5, padding=2),
+            nn.Conv2d(64, 192, kernel_size=5, padding=2),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=1),
-            nn.Conv2d(64, 32, kernel_size=3, padding=1),
+            nn.Conv2d(192, 384, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
-            nn.Conv2d(32, 16, kernel_size=3, padding=1),
+            nn.Conv2d(384, 256, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
-            nn.Conv2d(16, 4, kernel_size=3, padding=1),
+            nn.Conv2d(256, 256, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2),
         )
 
         self.classifier = nn.Sequential(
             nn.Dropout(),
-            nn.Linear(4 * 1 * 1, 100),
+            nn.Linear(256 * 1 * 1, 100),
             nn.ReLU(inplace=True),
             nn.Dropout(),
             nn.Linear(100, 25),
@@ -43,7 +43,7 @@ class FeatsAlexNet(nn.Module):
 
     def forward(self, x):
         x = self.features(x)
-        x = x.view(x.size(0), 4 * 1 * 1)
+        x = x.view(x.size(0), 256 * 1 * 1)
         x = self.classifier(x)
         return x
 
