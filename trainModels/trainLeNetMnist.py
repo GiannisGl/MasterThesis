@@ -13,9 +13,9 @@ from torch.utils.data import DataLoader
 name = "lenet5"
 model_folder = "models"
 
-trainstep = 1
-batch_size = 100
-Nepochs = 1
+trainstep = 4
+batch_size = 1024
+Nepochs = 1000
 
 if torch.cuda.is_available():
     data_folder = "/var/tmp/ioannis/data"
@@ -40,7 +40,7 @@ data_test_loader = DataLoader(data_test, batch_size=1024, num_workers=8)
 if trainstep == 1:
     model = LeNet5()
 else:
-    modelfilename = '%s/lenetModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
+    modelfilename = '%s/model%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
     modelfile = open(modelfilename, 'rb')
     model = torch.load(modelfile)
 
@@ -50,9 +50,9 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=2e-3)
 
 if torch.cuda.is_available():
-    model.cuda()
+    model = model.cuda()
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
-    criterion.cuda()
+    criterion = criterion.cuda()
 
 
 # cur_batch_win = None
@@ -75,11 +75,16 @@ def train(epoch):
         # images, labels = Variable(images), Variable(labels)
 
         if torch.cuda.is_available():
-            images.cuda()
+            torch.set_default_tensor_type('torch.cuda.FloatTensor')
+            images = images.cuda()
+            labels = labels.cuda()
 
         optimizer.zero_grad()
 
         output = model(images)
+
+        if torch.cuda.is_available():
+            output = output.cuda()
 
         loss = criterion(output, labels)
 
@@ -99,7 +104,7 @@ def train(epoch):
         # print statistics
         running_loss += loss.item()
         if i % log_iter == 0:
-            print('[%d, %5d] loss: %.3f' %
+            print('[%d, %5d] loss: %f' %
                   (epoch+1, i, running_loss / log_iter))
             running_loss = 0.0
 
@@ -111,7 +116,9 @@ def test():
     for i, (images, labels) in enumerate(data_test_loader):
         # images, labels = Variable(images), Variable(labels)
         if torch.cuda.is_available():
-            images.cuda()
+            torch.set_default_tensor_type('torch.cuda.FloatTensor')
+            images = images.cuda()
+            labels = labels.cuda()
         output = model(images)
         avg_loss += criterion(output, labels).sum()
         pred = output.data.max(1)[1]
@@ -123,9 +130,9 @@ def test():
 
 def train_and_test(epoch):
     train(epoch)
-    print('Finished Training')
+    print('Finished Epoch')
     test()
-    modelfilename = '%s/lenetModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep)
+    modelfilename = '%s/model%s_Iter%i.torchmodel' % (model_folder, name, trainstep)
     modelfile = open(modelfilename, "wb")
     torch.save(model, modelfile)
     print('saved models')
