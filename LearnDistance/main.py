@@ -18,7 +18,6 @@ Nsamples = 1
 
 
 if torch.cuda.is_available():
-    torch.cuda.set_device(1)
     #torch.set_default_tensor_type('torch.cuda.FloatTensor')
     data_folder = "/var/tmp/ioannis/data"
 else:
@@ -50,7 +49,7 @@ train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size,
 
 if trainstep == 1:
     featsModel = featuresModel(pretrained=True)
-    distModel = distanceModel(pretrained=True)i
+    distModel = distanceModel(pretrained=True)
 else:
     featsModelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
     distModelfilename = '%s/distModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)

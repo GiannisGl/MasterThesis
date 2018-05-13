@@ -1,6 +1,12 @@
+from collections import OrderedDict
+
+import torch
 import torch.nn as nn
-import torch.utils.model_zoo as model_zoo
-from torch import cat
+
+import sys
+sys.path.insert(0, 'trainModels')
+
+import lenet
 
 
 __all__ = ['FeatsAlexNet']
@@ -53,13 +59,56 @@ class FeatsAlexNet(nn.Module):
     #     return output
 
 
-def featuresModel(pretrained=False, **kwargs):
-    r"""AlexNet model architecture from the
-    `"One weird trick..." <https://arxiv.org/abs/1404.5997>`_ paper.
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
+class FeatsLeNet5(nn.Module):
     """
-    model = FeatsAlexNet(**kwargs)
+    Input - 1x28x28
+    C1 - 6@24x24 (5x5 kernel)
+    tanh
+    S2 - 6@12x12 (2x2 kernel, stride 2) Subsampling
+    C3 - 16@8x8 (5x5 kernel, complicated shit)
+    tanh
+    S4 - 16@4x4 (2x2 kernel, stride 2) Subsampling
+    C5 - 120@1x1 (5x5 kernel)
+    F6 - 84
+    tanh
+    F7 - 10 (Output)
+    """
+    def __init__(self):
+        super(FeatsLeNet5, self).__init__()
+
+        self.convnet = nn.Sequential(OrderedDict([
+            ('c1', nn.Conv2d(1, 6, kernel_size=(5, 5))),
+            ('relu1', nn.ReLU()),
+            ('s2', nn.MaxPool2d(kernel_size=(2, 2), stride=2)),
+            ('c3', nn.Conv2d(6, 16, kernel_size=(5, 5))),
+            ('relu3', nn.ReLU()),
+            ('s4', nn.MaxPool2d(kernel_size=(2, 2), stride=2)),
+            ('c5', nn.Conv2d(16, 120, kernel_size=(4, 4))),
+            ('relu5', nn.ReLU())
+        ]))
+
+        self.fc = nn.Sequential(OrderedDict([
+            ('f6', nn.Linear(120, 84)),
+            ('relu6', nn.ReLU()),
+            ('f7', nn.Linear(84, 3)),
+            ('sig7', nn.LogSoftmax(0))
+        ]))
+
+    def forward(self, img):
+        output = self.convnet(img)
+        output = output.view(-1, 120)
+        output = self.fc(output)
+        return output
+
+def featuresModel(pretrained=False, **kwargs):
+    model = FeatsLeNet5(**kwargs)
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['alexnet']))
+        # model.load_state_dict(model_zoo.load_url(model_urls['alexnet']))
+        modelFilename = 'trainModels/models/modellenet5_Iter4.torchmodel'
+        pretrained_lenet = torch.load(modelFilename)
+        pretrained_lenet_dict = pretrained_lenet.state_dict()
+
+        # Modification to the dictionary will go here?
+        model = FeatsLeNet5()
+        model.load_state_dict(pretrained_lenet_dict, strict=False)
     return model
