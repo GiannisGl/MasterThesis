@@ -4,17 +4,16 @@ import torchvision.transforms as transforms
 from tensorboardX import SummaryWriter
 from torch.autograd import Variable
 
-name = "2channels"
-trainstep = 6
+name = "LearnDistance"
+trainstep = 1
 
-modelfolder = "models"
+modelfolder = "trainedModels"
 
-batchSize = 50
-Nepochs = 5
-Nsamples = 100
+batchSize = 100
+Nsamples = 1
 
-if torch.cuda.is_available():
-    torch.set_default_tensor_type('torch.cuda.FloatTensor')
+# if torch.cuda.is_available():
+#     torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
 
 transform = transforms.Compose(
@@ -37,17 +36,14 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
 #                                          shuffle=False, num_workers=2)
 
 
-if trainstep == 1:
-    model = siamese_alexnet()
-else:
-    modelfilename = '%s/model%s_Iter%i.torchmodel'     % (modelfolder,name,trainstep-1)
-    modelfile = open(modelfilename, 'rb')
-    model = torch.load(modelfile)
+modelfilename = '%s/featsModel%s_Iter%i.torchmodel'     % (modelfolder,name,trainstep)
+modelfile = open(modelfilename, 'rb')
+model = torch.load(modelfile, map_location=lambda storage, loc: storage)
 
-if torch.cuda.is_available():
-    model = model.cuda()
+# if torch.cuda.is_available():
+#     model = model.cuda()
 
-writer = SummaryWriter(comment='cifar10_embedding_training')
+writer = SummaryWriter(comment='mnist_embedding_training')
 
 iterTrainLoader = iter(trainloader)
 
@@ -55,21 +51,12 @@ for i in range(Nsamples):
 
     input, label = next(iterTrainLoader)
 
-    # wrap them in Variable
-    if torch.cuda.is_available():
-        input = Variable(input.cuda())
-    else:
-        input = Variable(input,requires_grad=True)
+    # forward
+    output = model.forward(input)
 
-    label = Variable(label, requires_grad=False)
-
-    # forward + backward + optimize
-    output = model.forward_once(input)
-    # wrap them in Variable
-    if torch.cuda.is_available():
-        output = output.cuda()
-
+    output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
+    input = input.to(torch.device("cpu"))
     # save embedding
-    writer.add_embedding(output.data, metadata=label.data, label_img=input.data, global_step=i)
+    writer.add_embedding(output, metadata=label.data, label_img=input.data, global_step=i)
 
 writer.close()

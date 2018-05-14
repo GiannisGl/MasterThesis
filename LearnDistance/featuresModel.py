@@ -90,8 +90,8 @@ class FeatsLeNet5(nn.Module):
         self.fc = nn.Sequential(OrderedDict([
             ('f6', nn.Linear(120, 84)),
             ('relu6', nn.ReLU()),
-            ('f7', nn.Linear(84, 3)),
-            ('sig7', nn.LogSoftmax(0))
+            ('f7b', nn.Linear(84, 3)),
+            ('sig7b', nn.LogSoftmax(0))
         ]))
 
     def forward(self, img):
@@ -110,5 +110,5 @@ def featuresModel(pretrained=False, **kwargs):
         model_dict = model.state_dict()
         pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
         model_dict.update(pretrained_dict)
-        model.load_state_dict(pretrained_dict)
+        model.load_state_dict(model_dict)
     return model

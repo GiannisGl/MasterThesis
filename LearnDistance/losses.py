@@ -10,8 +10,8 @@ class distance_loss(torch.nn.Module):
 
     def forward(self, input1, input2, input3, featsModel, distanceModel):
         delta = 1
-        loss = torch.zeros(1)
-        torch.set_default_tensor_type('torch.cuda.FloatTensor')
+        if torch.cuda.is_available():
+            torch.set_default_tensor_type('torch.cuda.FloatTensor')
         
         # get features of inputs
         input1feats = featsModel.forward(input1)
@@ -33,30 +33,30 @@ class distance_loss(torch.nn.Module):
 
         # terms that preserve distance
 #        print(learnedDist12)
-        loss = mseLoss(dist12, learnedDist12)
-        loss += mseLoss(dist13, learnedDist13)
-#        loss += mse_loss(dist23, learnedDist23)
+        loss = mse_loss(dist12, learnedDist12)
+        loss += mse_loss(dist13, learnedDist13)
+        loss += mse_loss(dist23, learnedDist23)
 
         # terms that enforce symmetry
-#       loss += mse_loss(learnedDist12, learnedDist21)
-#        loss += mse_loss(learnedDist13, learnedDist31)
-#        loss += mse_loss(learnedDist23, learnedDist32)
+        loss += mse_loss(learnedDist12, learnedDist21)
+        loss += mse_loss(learnedDist13, learnedDist31)
+        loss += mse_loss(learnedDist23, learnedDist32)
 
         # terms that enforce equality
-#        loss += mse_relu(delta - learnedDist12)
-#        loss += mse_relu(delta - learnedDist13)
-#        loss += mse_relu(delta - learnedDist23)
-#        loss += mse_relu(delta - learnedDist21)
-#        loss += mse_relu(delta - learnedDist32)
-#        loss += mse_relu(delta - learnedDist31)
+        loss += mse_relu(delta - learnedDist12)
+        loss += mse_relu(delta - learnedDist13)
+        loss += mse_relu(delta - learnedDist23)
+        loss += mse_relu(delta - learnedDist21)
+        loss += mse_relu(delta - learnedDist32)
+        loss += mse_relu(delta - learnedDist31)
 
         # terms that enforce triangular inequality
-#        loss += mse_relu(learnedDist13 - learnedDist12 - learnedDist23)
-#        loss += mse_relu(learnedDist31 - learnedDist32 - learnedDist21)
-#        loss += mse_relu(learnedDist23 - learnedDist21 - learnedDist13)
-#        loss += mse_relu(learnedDist32 - learnedDist31 - learnedDist12)
-#        loss += mse_relu(learnedDist12 - learnedDist13 - learnedDist32)
-#        loss += mse_relu(learnedDist21 - learnedDist23 - learnedDist31)
+        loss += mse_relu(learnedDist13 - learnedDist12 - learnedDist23)
+        loss += mse_relu(learnedDist31 - learnedDist32 - learnedDist21)
+        loss += mse_relu(learnedDist23 - learnedDist21 - learnedDist13)
+        loss += mse_relu(learnedDist32 - learnedDist31 - learnedDist12)
+        loss += mse_relu(learnedDist12 - learnedDist13 - learnedDist32)
+        loss += mse_relu(learnedDist21 - learnedDist23 - learnedDist31)
 
         return loss
 

@@ -1,0 +1,9 @@
+data
+.idea
+__pycache__
+setup
+**.torchmodel
+*/models
+*/trainedModels
+**.pyc
+*/runs
