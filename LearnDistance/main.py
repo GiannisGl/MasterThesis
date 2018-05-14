@@ -12,9 +12,9 @@ name = "LearnDistance"
 model_folder = "trainedModels"
 
 trainstep = 1
-batch_size = 100
+batch_size = 1024
 Nepochs = 5
-Nsamples = 1
+Nsamples = 1000
 
 
 if torch.cuda.is_available():
@@ -49,7 +49,7 @@ train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size,
 
 if trainstep == 1:
     featsModel = featuresModel(pretrained=True)
-    distModel = distanceModel(pretrained=True)
+    distModel = distanceModel(pretrained=False)
 else:
     featsModelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
     distModelfilename = '%s/distModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
