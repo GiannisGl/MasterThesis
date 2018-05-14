@@ -1,4 +1,3 @@
-from torch.nn import MSELoss
 import torch
 #from math import max
 
@@ -33,7 +32,6 @@ class distance_loss(torch.nn.Module):
         learnedDist32 = distanceModel(input3, input2)
 
         # terms that preserve distance
-#        print(learnedDist12)
         loss = mseLoss(dist12, learnedDist12)
         loss += mseLoss(dist13, learnedDist13)
         loss += mseLoss(dist23, learnedDist23)
@@ -43,7 +41,7 @@ class distance_loss(torch.nn.Module):
         loss += mseLoss(learnedDist13, learnedDist31)
         loss += mseLoss(learnedDist23, learnedDist32)
 
-        # terms that enforce equality
+        # terms that enforce distance greater than delta
         loss += mseLoss(relu(delta - learnedDist12), zero)
         loss += mseLoss(relu(delta - learnedDist13), zero)
         loss += mseLoss(relu(delta - learnedDist23), zero)

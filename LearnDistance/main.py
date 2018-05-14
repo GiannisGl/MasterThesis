@@ -113,7 +113,7 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         # print statistics
         running_loss += loss.item()
         if i % log_iter == 0:
-            print('[%d, %5d] loss: %.3f' %
+            print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0
 

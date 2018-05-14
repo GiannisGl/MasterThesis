@@ -5,7 +5,6 @@ import torch.nn as nn
 
 import sys
 sys.path.insert(0, '../trainModels')
-
 import lenet
 
 
@@ -88,10 +87,8 @@ class FeatsLeNet5(nn.Module):
         ]))
 
         self.fc = nn.Sequential(OrderedDict([
-            ('f6', nn.Linear(120, 84)),
-            ('relu6', nn.ReLU()),
-            ('f7b', nn.Linear(84, 3)),
-            ('sig7b', nn.LogSoftmax(0))
+            ('f6b', nn.Linear(120, 3)),
+            ('sig6b', nn.LogSoftmax(0))
         ]))
 
     def forward(self, img):

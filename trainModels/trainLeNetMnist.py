@@ -31,7 +31,7 @@ data_train = MNIST(root=data_folder, train=True,
                                        download=False, transform=transform)
 
 data_test = MNIST(root=data_folder, train=False,
-                                       download=True, transform=transform)
+                                       download=False, transform=transform)
 
 data_train_loader = DataLoader(data_train, batch_size=batch_size, shuffle=True, num_workers=8)
 data_test_loader = DataLoader(data_test, batch_size=1024, num_workers=8)
