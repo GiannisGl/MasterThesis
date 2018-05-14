@@ -9,8 +9,8 @@ class distance_loss(torch.nn.Module):
         self.margin = margin
 
     def forward(self, input1, input2, input3, featsModel, distanceModel):
-        delta = 1
-        zero = torch.zeros(1)
+        delta = torch.ones(input1.size()[0])*10
+        zero = torch.zeros(input1.size()[0])
         if torch.cuda.is_available():
             torch.set_default_tensor_type('torch.cuda.FloatTensor')
         

@@ -8,12 +8,12 @@ from featuresModel import featuresModel
 from distanceModel import distanceModel
 from torch.autograd import Variable
 
-name = "LearnDistance"
+name = "LearnDistanceNorm01Delta10"
 model_folder = "trainedModels"
 
-trainstep = 1
+trainstep = 1 
 batch_size = 1024
-Nepochs = 5
+Nepochs = 1
 Nsamples = 1000
 
 
@@ -26,7 +26,7 @@ else:
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
-     transforms.Normalize((-1, -1, -1), (1, 1, 1))])
+     transforms.Normalize((0, 0, 0), (1, 1, 1))])
 
 train_val_set = torchvision.datasets.MNIST(root=data_folder, train=True,
                                        download=False, transform=transform)
@@ -113,7 +113,7 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         # print statistics
         running_loss += loss.item()
         if i % log_iter == 0:
-            print('[%d, %5d] loss: %.3f' %
+            print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0
 
