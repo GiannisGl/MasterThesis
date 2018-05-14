@@ -4,21 +4,24 @@ import torchvision.transforms as transforms
 from tensorboardX import SummaryWriter
 from torch.autograd import Variable
 
-name = "LearnDistance"
+# modelName = "LearnDistanceNorm01Delta10"
+modelName = "LearnDistance"
 trainstep = 1
 
 modelfolder = "trainedModels"
 
+modelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (modelfolder, modelName, trainstep)
+modelfile = open(modelfilename, 'rb')
+model = torch.load(modelfile, map_location=lambda storage, loc: storage)
+
 batchSize = 100
 Nsamples = 1
 
-# if torch.cuda.is_available():
-#     torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
-     transforms.Normalize((0, 0, 0), (1, 1, 1))])
+     transforms.Normalize((-1, -1, -1), (1, 1, 1))])
 
 if torch.cuda.is_available():
     datafolder = "/var/tmp/ioannis/data"
@@ -26,7 +29,7 @@ else:
     datafolder = "../data"
 
 trainset = torchvision.datasets.MNIST(root=datafolder, train=True,
-                                        download=True, transform=transform)
+                                        download=False, transform=transform)
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
                                           shuffle=True, num_workers=0)
 
@@ -34,14 +37,6 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
 #                                        download=False, transform=transform)
 # testloader = torch.utils.data.DataLoader(testset, batch_size=4,
 #                                          shuffle=False, num_workers=2)
-
-
-modelfilename = '%s/featsModel%s_Iter%i.torchmodel'     % (modelfolder,name,trainstep)
-modelfile = open(modelfilename, 'rb')
-model = torch.load(modelfile, map_location=lambda storage, loc: storage)
-
-# if torch.cuda.is_available():
-#     model = model.cuda()
 
 writer = SummaryWriter(comment='mnist_embedding_training')
 
