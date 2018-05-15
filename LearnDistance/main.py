@@ -8,10 +8,10 @@ from featuresModel import featuresModel
 from distanceModel import distanceModel
 from torch.autograd import Variable
 
-name = "LearnDistance"
+name = "LearnDistanceNoPretrain"
 model_folder = "trainedModels"
 
-trainstep = 3 
+trainstep = 1
 batch_size = 1024
 Nepochs = 2
 Nsamples = 1000
@@ -51,7 +51,7 @@ train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size,
 
 
 if trainstep == 1:
-    featsModel = featuresModel(pretrained=True)
+    featsModel = featuresModel(pretrained=False)
     distModel = distanceModel(pretrained=False)
 else:
     featsModelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
