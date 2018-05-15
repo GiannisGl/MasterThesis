@@ -8,13 +8,14 @@ from featuresModel import featuresModel
 from distanceModel import distanceModel
 from torch.autograd import Variable
 
-name = "LearnDistanceNorm01Delta10"
+name = "LearnDistance"
 model_folder = "trainedModels"
 
-trainstep = 1 
+trainstep = 3 
 batch_size = 1024
-Nepochs = 1
+Nepochs = 2
 Nsamples = 1000
+learningRate = 1e-4
 
 
 if torch.cuda.is_available():
@@ -65,8 +66,8 @@ if torch.cuda.is_available():
 
 
 
-featsOptimizer = optim.Adam(featsModel.parameters(), lr=0.001, weight_decay=0.00001)
-distOptimizer = optim.Adam(distModel.parameters(), lr=0.001, weight_decay=0.00001)
+featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate, weight_decay=0.00001)
+distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate, weight_decay=0.00001)
 criterion = distance_loss()
 log_iter = 100
 #writer = SummaryWriter(comment='LearnDistanceEmbedding')

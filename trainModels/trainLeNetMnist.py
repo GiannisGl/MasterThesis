@@ -13,9 +13,9 @@ from torch.utils.data import DataLoader
 name = "lenet5"
 model_folder = "models"
 
-trainstep = 4
-batch_size = 1024
-Nepochs = 1000
+trainstep = 2 
+batch_size = 60000
+Nepochs = 100
 
 if torch.cuda.is_available():
     data_folder = "/var/tmp/ioannis/data"
@@ -25,7 +25,7 @@ else:
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
-     transforms.Normalize((-1, -1, -1), (1, 1, 1))])
+     transforms.Normalize((0, 0, 0), (1, 1, 1))])
 
 data_train = MNIST(root=data_folder, train=True,
                                        download=False, transform=transform)
@@ -47,7 +47,7 @@ else:
 
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=2e-3)
+optimizer = optim.Adam(model.parameters(), lr=2e-4)
 
 if torch.cuda.is_available():
     model = model.cuda()
@@ -125,7 +125,7 @@ def test():
         total_correct += pred.eq(labels.data.view_as(pred)).sum()
 
     avg_loss /= len(data_test)
-    print('Test Avg. Loss: %f, Accuracy: %f' % (avg_loss.data[0], float(total_correct) / len(data_test)))
+    print('Test Avg. Loss: %f, Accuracy: %f' % (avg_loss.item(), float(total_correct) / len(data_test)))
 
 
 def train_and_test(epoch):
@@ -135,7 +135,7 @@ def train_and_test(epoch):
     modelfilename = '%s/model%s_Iter%i.torchmodel' % (model_folder, name, trainstep)
     modelfile = open(modelfilename, "wb")
     torch.save(model, modelfile)
-    print('saved models')
+    print('saved model')
 
 
 def main():
