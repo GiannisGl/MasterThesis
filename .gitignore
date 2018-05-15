@@ -6,4 +6,4 @@ setup
 */models
 */trainedModels
 **.pyc
-*/runs
+**/runs

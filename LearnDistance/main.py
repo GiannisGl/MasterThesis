@@ -16,6 +16,7 @@ batch_size = 1024
 Nepochs = 2
 Nsamples = 1000
 learningRate = 1e-4
+delta = 100
 
 
 if torch.cuda.is_available():
@@ -29,14 +30,15 @@ transform = transforms.Compose(
     [transforms.ToTensor(),
      transforms.Normalize((0, 0, 0), (1, 1, 1))])
 
-train_val_set = torchvision.datasets.MNIST(root=data_folder, train=True,
+train_set = torchvision.datasets.MNIST(root=data_folder, train=True,
                                        download=False, transform=transform)
+
 #train_val_length = len(train_val_set)
 #train_percentage = 0.8
 #train_length = floor(train_val_length*0.8)
 #val_length = train_val_length-train_length
 #train_set, val_set = random_split(train_val_set, [train_length, val_length])
-train_set = train_val_set
+# train_set = train_val_set
 
 
 train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size,
@@ -106,7 +108,7 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         if torch.cuda.is_available():
             criterion.cuda()
 
-        loss = criterion(input1, input2, input3, featsModel, distModel)
+        loss = criterion(delta, input1, input2, input3, featsModel, distModel)
         loss.backward()
         featsOptimizer.step()
         distOptimizer.step()
@@ -122,8 +124,8 @@ print('Finished Training')
 
 
 
-featsModelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep)
-distModelfilename = '%s/distModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep)
+featsModelfilename = '%s/featsModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep)
+distModelfilename = '%s/distModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep)
 featsModelfile = open(featsModelfilename, "wb")
 distModelfile = open(distModelfilename, "wb")
 torch.save(featsModel, featsModelfile)
