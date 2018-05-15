@@ -4,24 +4,30 @@ import torchvision.transforms as transforms
 from tensorboardX import SummaryWriter
 from torch.autograd import Variable
 
+import sys
+sys.path.insert(0, '../trainModels')
+import lenet
+
 # modelName = "LearnDistanceNorm01Delta10"
 modelName = "LearnDistance"
 trainstep = 1
+delta = 10
 
 modelfolder = "trainedModels"
 
 modelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (modelfolder, modelName, trainstep)
+# modelfilename = '../trainModels/models/modellenet5_Iter1.torchmodel'
 modelfile = open(modelfilename, 'rb')
 model = torch.load(modelfile, map_location=lambda storage, loc: storage)
 
 batchSize = 100
-Nsamples = 1
+Nsamples = 2
 
 
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
-     transforms.Normalize((-1, -1, -1), (1, 1, 1))])
+     transforms.Normalize((0, 0, 0), (1, 1, 1))])
 
 if torch.cuda.is_available():
     datafolder = "/var/tmp/ioannis/data"
@@ -38,7 +44,7 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
 # testloader = torch.utils.data.DataLoader(testset, batch_size=4,
 #                                          shuffle=False, num_workers=2)
 
-writer = SummaryWriter(comment='mnist_embedding_training')
+writer = SummaryWriter(comment='mnist_embedding_delta%i__Iter%i' % (delta, trainstep))
 
 iterTrainLoader = iter(trainloader)
 
@@ -48,10 +54,13 @@ for i in range(Nsamples):
 
     # forward
     output = model.forward(input)
-
-    output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
+    # output = model.convnet(input)
+    output = torch.squeeze(output)
+    print(output.size())
+    # output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
     input = input.to(torch.device("cpu"))
     # save embedding
     writer.add_embedding(output, metadata=label.data, label_img=input.data, global_step=i)
 
 writer.close()
+

@@ -7,8 +7,8 @@ class distance_loss(torch.nn.Module):
         super(distance_loss, self).__init__()
         self.margin = margin
 
-    def forward(self, input1, input2, input3, featsModel, distanceModel):
-        delta = torch.ones(input1.size()[0])*10
+    def forward(self, delta, input1, input2, input3, featsModel, distanceModel):
+        delta = torch.ones(input1.size()[0])*delta
         zero = torch.zeros(input1.size()[0])
         if torch.cuda.is_available():
             torch.set_default_tensor_type('torch.cuda.FloatTensor')

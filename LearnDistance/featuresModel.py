@@ -101,7 +101,7 @@ def featuresModel(pretrained=False, **kwargs):
     model = FeatsLeNet5(**kwargs)
     if pretrained:
         # model.load_state_dict(model_zoo.load_url(model_urls['alexnet']))
-        modelFilename = '../trainModels/models/modellenet5_Iter4.torchmodel'
+        modelFilename = '../trainModels/models/modellenet5_Iter1.torchmodel'
         pretrained = torch.load(modelFilename)
         pretrained_dict = pretrained.state_dict()
         model_dict = model.state_dict()
