@@ -9,13 +9,13 @@ sys.path.insert(0, '../trainModels')
 import lenet
 
 # modelName = "LearnDistanceNorm01Delta10"
-modelName = "LearnDistance"
+modelName = "LearnDistanceNoPretrain"
 trainstep = 1
-delta = 10
+delta = 100
 
 modelfolder = "trainedModels"
 
-modelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (modelfolder, modelName, trainstep)
+modelfilename = '%s/featsModel%sDelta%i_Iter%i.torchmodel' % (modelfolder, modelName, delta, trainstep)
 # modelfilename = '../trainModels/models/modellenet5_Iter1.torchmodel'
 modelfile = open(modelfilename, 'rb')
 model = torch.load(modelfile, map_location=lambda storage, loc: storage)

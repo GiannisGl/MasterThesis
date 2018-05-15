@@ -54,8 +54,8 @@ if trainstep == 1:
     featsModel = featuresModel(pretrained=False)
     distModel = distanceModel(pretrained=False)
 else:
-    featsModelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
-    distModelfilename = '%s/distModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
+    featsModelfilename = '%s/featsModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep - 1)
+    distModelfilename = '%s/distModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep - 1)
     featsModelfile = open(featsModelfilename, 'rb')
     distModelfile = open(distModelfilename, 'rb')
     featsModel = torch.load(featsModelfile)
