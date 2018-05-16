@@ -7,6 +7,7 @@ from losses import *
 from featuresModel import featuresModel
 from distanceModel import distanceModel
 from torch.autograd import Variable
+from helperFunctions import *
 
 name = "LearnDistanceNoPretrain"
 model_folder = "trainedModels"
@@ -17,7 +18,7 @@ Nepochs = 2
 Nsamples = 1000
 learningRate = 1e-4
 delta = 100
-
+pretrained = False
 
 if torch.cuda.is_available():
     #torch.set_default_tensor_type('torch.cuda.FloatTensor')
@@ -51,8 +52,11 @@ train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size,
 
 
 if trainstep == 1:
-    featsModel = featuresModel(pretrained=False)
-    distModel = distanceModel(pretrained=False)
+    featsModel = featuresModel(pretrained=pretrained)
+    distModel = distanceModel(pretrained=pretrained)
+    if not pretrained:
+        model_weights_init(featsModel)
+        model_weights_init(distModel)
 else:
     featsModelfilename = '%s/featsModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep - 1)
     distModelfilename = '%s/distModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep - 1)

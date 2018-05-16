@@ -9,3 +9,4 @@ def weights_init(module):
 def model_weights_init(model):
     for module in model.modules():
         weights_init(module)
+
