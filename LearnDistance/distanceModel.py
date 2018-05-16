@@ -1,6 +1,7 @@
 import torch.nn as nn
 import torch.utils.model_zoo as model_zoo
 from torch import cat
+from collections import OrderedDict
 
 
 __all__ = ['DistanceAlexNet']
