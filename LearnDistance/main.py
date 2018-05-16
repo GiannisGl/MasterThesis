@@ -9,7 +9,7 @@ from distanceModel import distanceModel
 from torch.autograd import Variable
 from helperFunctions import *
 
-name = "LearnDistanceNoPretrain"
+name = "LearnDistanceNoPretrainDistLenet"
 model_folder = "trainedModels"
 
 trainstep = 1

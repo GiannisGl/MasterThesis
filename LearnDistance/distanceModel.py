@@ -70,9 +70,9 @@ class DistanceLeNet5(nn.Module):
     F7 - 10 (Output)
     """
     def __init__(self):
-        super(FeatsLeNet5, self).__init__()
+        super(DistanceLeNet5, self).__init__()
 
-        self.convnet = nn.Sequential(OrderedDict([
+        self.features = nn.Sequential(OrderedDict([
             ('c1', nn.Conv2d(1, 6, kernel_size=(5, 5))),
             ('relu1', nn.ReLU()),
             ('s2', nn.MaxPool2d(kernel_size=(2, 2), stride=2)),
@@ -83,7 +83,7 @@ class DistanceLeNet5(nn.Module):
             ('relu5', nn.ReLU())
         ]))
 
-        self.fc = nn.Sequential(OrderedDict([
+        self.classifier = nn.Sequential(OrderedDict([
             ('f6', nn.Linear(120, 1)),
             ('sig6', nn.LogSoftmax(0))
         ]))
