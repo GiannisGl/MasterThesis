@@ -11,7 +11,7 @@ import lenet
 # modelName = "LearnDistanceNorm01Delta10"
 modelName = "LearnDistanceNoPretrain"
 trainstep = 1
-delta = 100
+delta = 1000
 
 modelfolder = "trainedModels"
 
