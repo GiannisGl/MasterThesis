@@ -16,7 +16,7 @@ trainstep = 1
 batch_size = 1024
 Nepochs = 2
 Nsamples = 1000
-learningRate = 1e-4
+learningRate = 1e-3
 delta = 100
 pretrained = False
 
