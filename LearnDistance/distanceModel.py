@@ -102,12 +102,13 @@ class DistanceLeNet5(nn.Module):
         return output
 
 def distanceModel(pretrained=False, **kwargs):
-    r"""AlexNet model architecture from the
-    `"One weird trick..." <https://arxiv.org/abs/1404.5997>`_ paper.
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
-    """
     model = DistanceLeNet5(**kwargs)
-    # if pretrained:
-    #     model.load_state_dict(model_zoo.load_url(model_urls['alexnet']))
+    if pretrained:
+        modelFilename = '../trainModels/models/modellenet5_Iter1.torchmodel'
+        pretrained = torch.load(modelFilename)
+        pretrained_dict = pretrained.state_dict()
+        model_dict = model.state_dict()
+        pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
+        model_dict.update(pretrained_dict)
+        model.load_state_dict(model_dict)
     return model
