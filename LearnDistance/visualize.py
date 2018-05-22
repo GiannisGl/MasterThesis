@@ -11,7 +11,7 @@ import lenet
 # modelName = "LearnDistanceNorm01Delta10"
 modelName = "LearnDistanceNoPretrain"
 trainstep = 1
-delta = 1000
+delta = 100
 
 modelfolder = "trainedModels"
 
@@ -20,8 +20,8 @@ modelfilename = '%s/featsModel%sDelta%i_Iter%i.torchmodel' % (modelfolder, model
 modelfile = open(modelfilename, 'rb')
 model = torch.load(modelfile, map_location=lambda storage, loc: storage)
 
-batchSize = 100
-Nsamples = 2
+batchSize = 1000
+Nsamples = 1
 
 
 

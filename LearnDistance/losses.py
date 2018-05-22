@@ -31,14 +31,22 @@ class distance_loss(torch.nn.Module):
         learnedDist31 = distanceModel(input3, input1)
         learnedDist23 = distanceModel(input2, input3)
         learnedDist32 = distanceModel(input3, input2)
+        learnedDist11 = distanceModel(input1, input1)
+        learnedDist22 = distanceModel(input2, input2)
+        learnedDist33 = distanceModel(input3, input3)
 
         # terms that preserve distance
         featsLoss = mseLoss(dist12, learnedDist12)
         featsLoss += mseLoss(dist13, learnedDist13)
         featsLoss += mseLoss(dist23, learnedDist23)
 
+        # terms that enforce 0 distance for same inputs
+        distLoss = mseLoss(learnedDist11, zero)
+        distLoss += mseLoss(learnedDist22, zero)
+        distLoss += mseLoss(learnedDist33, zero)
+
         # terms that enforce symmetry
-        distLoss = mseLoss(learnedDist12, learnedDist21)
+        distLoss += mseLoss(learnedDist12, learnedDist21)
         distLoss += mseLoss(learnedDist13, learnedDist31)
         distLoss += mseLoss(learnedDist23, learnedDist32)
 
