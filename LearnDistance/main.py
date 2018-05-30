@@ -8,14 +8,15 @@ from featuresModel import featuresModel
 from distanceModel import distanceModel
 from torch.autograd import Variable
 from helperFunctions import *
+from tensorboardX import SummaryWriter
 
-name = "LearnDistanceNoPretrainDistLenet"
+name = "LearnDistanceNoPretrainDistLenetTrial"
 model_folder = "trainedModels"
 
 trainstep = 1
-batch_size = 1024
-Nepochs = 2
-Nsamples = 1000
+batch_size = 10
+Nepochs = 1
+Nsamples = 100
 learningRate = 1e-3
 delta = 100
 pretrained = False
@@ -75,8 +76,9 @@ if torch.cuda.is_available():
 featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate, weight_decay=0.00001)
 distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate, weight_decay=0.00001)
 criterion = distance_loss()
-log_iter = 100
-#writer = SummaryWriter(comment='LearnDistanceEmbedding')
+log_iter = 1
+
+writer = SummaryWriter(comment='%s_loss_log' % (name))
 
 # Train
 for epoch in range(Nepochs):  # loop over the dataset multiple times
@@ -112,7 +114,9 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         if torch.cuda.is_available():
             criterion.cuda()
 
-        loss = criterion(delta, input1, input2, input3, featsModel, distModel)
+        [featsLoss, distLoss] = criterion(delta, input1, input2, input3, featsModel, distModel)
+        lamda = 1
+        loss = featsLoss+lamda*distLoss
         loss.backward()
         featsOptimizer.step()
         distOptimizer.step()
@@ -123,6 +127,8 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
             print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0
+            writer.add_scalar(tag='featsLoss', scalar_value=featsLoss, global_step=i)
+            writer.add_scalar(tag='distLoss', scalar_value=distLoss, global_step=i)
 
 print('Finished Training')
 

@@ -10,7 +10,6 @@ class distance_loss(torch.nn.Module):
     def forward(self, delta, input1, input2, input3, featsModel, distanceModel):
         delta = torch.ones(input1.size()[0])*delta
         zero = torch.zeros(input1.size()[0])
-        lamda = 1
         if torch.cuda.is_available():
             torch.set_default_tensor_type('torch.cuda.FloatTensor')
         
@@ -66,7 +65,7 @@ class distance_loss(torch.nn.Module):
         distLoss += mseLoss(relu(learnedDist12 - learnedDist13 - learnedDist32), zero)
         distLoss += mseLoss(relu(learnedDist21 - learnedDist23 - learnedDist31), zero)
 
-        loss = featsLoss+lamda*distLoss
+        loss = [featsLoss, distLoss]
 
         return loss
 

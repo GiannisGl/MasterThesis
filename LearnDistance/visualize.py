@@ -8,16 +8,15 @@ import sys
 sys.path.insert(0, '../trainModels')
 import lenet
 
-# modelName = "LearnDistanceNorm01Delta10"
 modelName = "LearnDistanceNoPretrain"
 trainstep = 1
 delta = 100
 
 modelfolder = "trainedModels"
 
-modelfilename = '%s/featsModel%sDelta%i_Iter%i.torchmodel' % (modelfolder, modelName, delta, trainstep)
+modelfilename = '%s/featsModel%sDelta%i_Iter%i' % (modelfolder, modelName, delta, trainstep)
 # modelfilename = '../trainModels/models/modellenet5_Iter1.torchmodel'
-modelfile = open(modelfilename, 'rb')
+modelfile = open(modelfilename+".torchmodel", 'rb')
 model = torch.load(modelfile, map_location=lambda storage, loc: storage)
 
 batchSize = 1000
@@ -44,7 +43,7 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
 # testloader = torch.utils.data.DataLoader(testset, batch_size=4,
 #                                          shuffle=False, num_workers=2)
 
-writer = SummaryWriter(comment='mnist_embedding_delta%i__Iter%i' % (delta, trainstep))
+writer = SummaryWriter(comment='%s_mnist_embedding' % (modelfilename))
 
 iterTrainLoader = iter(trainloader)
 
