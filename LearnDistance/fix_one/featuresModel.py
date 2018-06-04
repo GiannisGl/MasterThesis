@@ -4,8 +4,8 @@ import torch
 import torch.nn as nn
 
 import sys
-sys.path.insert(0, '../trainModels')
-import lenet
+sys.path.insert(0, '../../trainModels')
+import trainModels.lenet
 
 
 # __all__ = ['FeatsAlexNet']

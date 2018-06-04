@@ -10,7 +10,7 @@ from torch.autograd import Variable
 from helperFunctions import *
 from tensorboardX import SummaryWriter
 
-name = "LearnDistanceNoPretrainDistLenetTrial"
+name = "LearnDistanceNoPretrainDistAlexNetAugmentation"
 model_folder = "trainedModels"
 
 trainstep = 1

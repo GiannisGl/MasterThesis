@@ -90,7 +90,6 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         iterTrainLoader = iter(train_loader)
       
         input1, _ = next(iterTrainLoader)
-        input1Aug = random_augmentation(input1)
         input2, _ = next(iterTrainLoader)
         input3, _ = next(iterTrainLoader)
 

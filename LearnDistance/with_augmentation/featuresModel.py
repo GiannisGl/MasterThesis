@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 
 import sys
-sys.path.insert(0, '../trainModels')
+sys.path.insert(0, '../../trainModels')
 import lenet
 
 
