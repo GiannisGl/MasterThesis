@@ -5,7 +5,7 @@ import torch.nn as nn
 
 import sys
 sys.path.insert(0, '../../trainModels')
-import trainModels.lenet
+import lenet
 
 
 # __all__ = ['FeatsAlexNet']
@@ -100,7 +100,7 @@ class FeatsLeNet5(nn.Module):
 def featuresModel(pretrained=False, **kwargs):
     model = FeatsLeNet5(**kwargs)
     if pretrained:
-        modelFilename = '../trainModels/models/modellenet5_Iter1.torchmodel'
+        modelFilename = '../../trainModels/models/modellenet5_Iter1.torchmodel'
         pretrained = torch.load(modelFilename)
         pretrained_dict = pretrained.state_dict()
         model_dict = model.state_dict()

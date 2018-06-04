@@ -14,11 +14,11 @@ name = "LearnDistanceNoPretrainDistAlexNetFixFeatsFullLoss"
 newName = "LearnDistanceNoPretrainDistAlexNetFixDist"
 model_folder = "trainedModels"
 
-trainstep = 2
+trainstep = 1
 batch_size = 2000
 Nepochs = 2
 Nsamples = 1000
-learningRate = 1e-5
+learningRate = 1e-2
 delta = 10
 pretrained = True
 
