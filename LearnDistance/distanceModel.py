@@ -102,7 +102,7 @@ class DistanceLeNet5(nn.Module):
         return output
 
 def distanceModel(pretrained=False, **kwargs):
-    model = DistanceLeNet5(**kwargs)
+    model = DistanceAlexNet(**kwargs)
     if pretrained:
         modelFilename = '../trainModels/models/modellenet5_Iter1.torchmodel'
         pretrained = torch.load(modelFilename)

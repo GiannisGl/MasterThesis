@@ -14,9 +14,9 @@ class distance_loss(torch.nn.Module):
             torch.set_default_tensor_type('torch.cuda.FloatTensor')
         
         # get features of inputs
-        input1feats = featsModel.forward(input1)
-        input2feats = featsModel.forward(input2)
-        input3feats = featsModel.forward(input3)
+        input1feats = featsModel.convnet(input1)
+        input2feats = featsModel.convnet(input2)
+        input3feats = featsModel.convnet(input3)
 
         # get L2 distance of the 3 pairs of features
         dist12 = mse_loss(input1feats, input2feats)

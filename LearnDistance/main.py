@@ -10,16 +10,17 @@ from torch.autograd import Variable
 from helperFunctions import *
 from tensorboardX import SummaryWriter
 
-name = "LearnDistanceNoPretrainDistLenetTrial"
+name = "LearnDistanceNoPretrainDistAlexNetFixFeatsFullLoss"
+newName = "LearnDistanceNoPretrainDistAlexNetFixDist"
 model_folder = "trainedModels"
 
-trainstep = 1
-batch_size = 10
-Nepochs = 1
-Nsamples = 100
-learningRate = 1e-3
-delta = 100
-pretrained = False
+trainstep = 2
+batch_size = 2000
+Nepochs = 2
+Nsamples = 1000
+learningRate = 1e-5
+delta = 10
+pretrained = True
 
 if torch.cuda.is_available():
     #torch.set_default_tensor_type('torch.cuda.FloatTensor')
@@ -54,7 +55,7 @@ train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size,
 
 if trainstep == 1:
     featsModel = featuresModel(pretrained=pretrained)
-    distModel = distanceModel(pretrained=pretrained)
+    distModel = distanceModel(pretrained=False)
     if not pretrained:
         model_weights_init(featsModel)
         model_weights_init(distModel)
@@ -76,7 +77,7 @@ if torch.cuda.is_available():
 featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate, weight_decay=0.00001)
 distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate, weight_decay=0.00001)
 criterion = distance_loss()
-log_iter = 1
+log_iter = 100
 
 writer = SummaryWriter(comment='%s_loss_log' % (name))
 
@@ -108,7 +109,7 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
             input3 = Variable(input3,requires_grad=True)
 
         # zero the parameter gradients
-        featsOptimizer.zero_grad()
+        #featsOptimizer.zero_grad()
         distOptimizer.zero_grad()
 
         if torch.cuda.is_available():
@@ -116,19 +117,21 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
 
         [featsLoss, distLoss] = criterion(delta, input1, input2, input3, featsModel, distModel)
         lamda = 1
-        loss = featsLoss+lamda*distLoss
+        loss = featsLoss +lamda*distLoss
         loss.backward()
-        featsOptimizer.step()
+        #featsOptimizer.step()
         distOptimizer.step()
+
 
         # print statistics
         running_loss += loss.item()
-        if i % log_iter == 0:
+        if i % log_iter == log_iter-1:
             print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0
-            writer.add_scalar(tag='featsLoss', scalar_value=featsLoss, global_step=i)
-            writer.add_scalar(tag='distLoss', scalar_value=distLoss, global_step=i)
+            global_step=(epoch-1)*Nsamples+i
+            writer.add_scalar(tag='featsLoss', scalar_value=featsLoss, global_step=global_step)
+            writer.add_scalar(tag='distLoss', scalar_value=distLoss, global_step=global_step)
 
 print('Finished Training')
 
