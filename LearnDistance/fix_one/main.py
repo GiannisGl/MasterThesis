@@ -76,7 +76,7 @@ if torch.cuda.is_available():
 featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate, weight_decay=0.00001)
 distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate, weight_decay=0.00001)
 criterion = distance_loss()
-log_iter = 1
+log_iter = 100
 
 writer = SummaryWriter(comment='%s_loss_log' % (name))
 
@@ -89,6 +89,7 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
         iterTrainLoader = iter(train_loader)
       
         input1, _ = next(iterTrainLoader)
+        input1Aug = random_augmentation(input1)
         input2, _ = next(iterTrainLoader)
         input3, _ = next(iterTrainLoader)
 
