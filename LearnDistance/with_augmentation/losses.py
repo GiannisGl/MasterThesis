@@ -1,5 +1,5 @@
 import torch
-#from math import max
+from helperFunctions import *
 
 class distance_loss(torch.nn.Module):
 
@@ -15,8 +15,14 @@ class distance_loss(torch.nn.Module):
         
         # get features of inputs
         input1feats = featsModel.forward(input1)
+        input1augm = random_augmentation(input1)
+        input1augmfeats = featsModel.forward(input1augm)
         input2feats = featsModel.forward(input2)
+        input2augm = random_augmentation(input2)
+        input2augmfeats = featsModel.forward(input2augm)
         input3feats = featsModel.forward(input3)
+        input3augm = random_augmentation(input3)
+        input3augmfeats = featsModel.forward(input3augm)
 
         # get L2 distance of the 3 pairs of features
         dist12 = mse_loss(input1feats, input2feats)
@@ -38,6 +44,10 @@ class distance_loss(torch.nn.Module):
         featsLoss = mseLoss(dist12, learnedDist12)
         featsLoss += mseLoss(dist13, learnedDist13)
         featsLoss += mseLoss(dist23, learnedDist23)
+        # terms that enforce clustering
+        featsLoss += mse_loss(input1feats, input1augmfeats)
+        featsLoss += mse_loss(input2feats, input2augmfeats)
+        featsLoss += mse_loss(input3feats, input3augmfeats)
 
         # terms that enforce 0 distance for same inputs
         distLoss = mseLoss(learnedDist11, zero)
