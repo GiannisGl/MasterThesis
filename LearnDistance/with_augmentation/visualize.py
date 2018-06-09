@@ -5,12 +5,13 @@ from tensorboardX import SummaryWriter
 from torch.autograd import Variable
 
 import sys
-sys.path.insert(0, '../trainModels')
+sys.path.insert(0, '../../trainModels')
 import lenet
 
-modelName = "LearnDistanceNoPretrain"
 trainstep = 1
 delta = 100
+lamda = 0.1
+modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%i" % (delta, lamda)
 
 modelfolder = "trainedModels"
 

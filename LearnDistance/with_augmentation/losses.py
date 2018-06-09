@@ -1,5 +1,5 @@
 import torch
-from helperFunctions import *
+from augmentation import *
 
 class distance_loss(torch.nn.Module):
 

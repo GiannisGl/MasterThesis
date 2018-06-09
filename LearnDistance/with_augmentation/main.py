@@ -8,16 +8,17 @@ from featuresModel import featuresModel
 from distanceModel import distanceModel
 from torch.autograd import Variable
 from helperFunctions import *
+from augmentation import *
 from tensorboardX import SummaryWriter
 
 
 trainstep = 1
-batch_size = 100
+batch_size = 2000
 Nepochs = 1
-Nsamples = 100
+Nsamples = 1000
 learningRate = 1e-3
 delta = 100
-lamda = 1
+lamda = 0.1
 pretrained = False
 
 name = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%i" % (delta, lamda)
@@ -123,7 +124,7 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
 
         # print statistics
         running_loss += loss.item()
-        if i % log_iter == 0:
+        if i % log_iter == log_iter-1:
             print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0
@@ -132,10 +133,10 @@ print('Finished Training')
 
 
 
-# featsModelfilename = '%s/featsModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep)
-# distModelfilename = '%s/distModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep)
-# featsModelfile = open(featsModelfilename, "wb")
-# distModelfile = open(distModelfilename, "wb")
-# torch.save(featsModel, featsModelfile)
-# torch.save(distModel, distModelfile)
-# print('saved models')
+featsModelfilename = '%s/featsModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep)
+distModelfilename = '%s/distModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep)
+featsModelfile = open(featsModelfilename, "wb")
+distModelfile = open(distModelfilename, "wb")
+torch.save(featsModel, featsModelfile)
+torch.save(distModel, distModelfile)
+print('saved models')

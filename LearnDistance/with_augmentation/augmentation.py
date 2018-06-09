@@ -4,13 +4,14 @@ from scipy.ndimage import rotate
 
 
 def random_augmentation(imageBatch):
-    # if(rand()>=0.5):
-    #     imageBatch = random_rotate(imageBatch)
-    # if(rand()>=0.3):
-    #     imageBatch = random_shift(imageBatch)
-    # if(rand()>=0.3):
-    #     imageBatch = gaussian_noise(imageBatch)
-    imageBatch = invert_colors(imageBatch)
+    if(rand()>=0.5):
+        imageBatch = random_rotate(imageBatch)
+    if(rand()>=0.3):
+        imageBatch = random_shift(imageBatch)
+    if(rand()>=0.3):
+        imageBatch = gaussian_noise(imageBatch)
+    if(rand()>=0.5):
+        imageBatch = invert_colors(imageBatch)
     return imageBatch
 
 
@@ -43,7 +44,7 @@ def random_rotate(imageBatch):
     angleRange = 15
     angle = randint(-angleRange,angleRange)
     # print(angle)
-    imageBatch_rotated = crop_center(rotate(imageBatch.detach().numpy(), angle, axes=(2,3)), imageBatch.shape)
+    imageBatch_rotated = crop_center(rotate(imageBatch, angle, axes=(2,3)), imageBatch.shape)
     return torch.Tensor(imageBatch_rotated)
 
 
