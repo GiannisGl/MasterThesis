@@ -1,7 +1,7 @@
 import torch
 import torchvision
 import torchvision.transforms as transforms
-from helperFunctions import *
+from augmentation import *
 import matplotlib.pyplot as plt
 
 data_folder = "../data"
@@ -21,6 +21,8 @@ train_loader = torch.utils.data.DataLoader(train_set, batch_size=1,
 iterTrainLoader = iter(train_loader)
 input1, _ = next(iterTrainLoader)
 input1Aug = random_augmentation(input1)
+print(input1.shape)
+print(input1Aug.shape)
 
 f, imgplot = plt.subplots(1,2)
 imgplot[0].imshow(torch.squeeze(input1), cmap='gray')
