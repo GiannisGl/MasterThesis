@@ -11,17 +11,18 @@ import lenet
 trainstep = 2
 delta = 100
 lamda = 1
-modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%i" % (delta, lamda)
+batch_size = 500
+learningRate = 1e-3
+modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iBatch%iLR%f" % (delta, lamda, batch_size, learningRate)
 
 modelfolder = "trainedModels"
 
 modelfilename = '%s/featsModel%s_Iter%i' % (modelfolder, modelName, trainstep)
-# modelfilename = '../trainModels/models/modellenet5_Iter1.torchmodel'
-modelfile = open(modelfilename+".torchmodel", 'rb')
-model = torch.load(modelfile, map_location=lambda storage, loc: storage)
+modelfile = torch.load(modelfilename+".state")
+model = torch.load_state_dict(modelfile)
 
-batchSize = 1000
-Nsamples = 1
+Nsamples = 1000
+Niter = 1
 
 
 
@@ -36,7 +37,7 @@ else:
 
 trainset = torchvision.datasets.MNIST(root=datafolder, train=True,
                                         download=False, transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=Nsamples,
                                           shuffle=True, num_workers=0)
 
 # testset = torchvision.datasets.MNIST(root='./data', train=False,
@@ -48,7 +49,7 @@ writer = SummaryWriter(comment='%s_Iter%i_mnist_embedding' % (modelName, trainst
 
 iterTrainLoader = iter(trainloader)
 
-for i in range(Nsamples):
+for i in range(Niter):
 
     input, label = next(iterTrainLoader)
 
