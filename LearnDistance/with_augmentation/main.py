@@ -22,7 +22,7 @@ lamda = 1
 log_iter = 100
 pretrained = False
 
-name = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iTrial" % (delta, lamda)
+name = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iBatch%iLR%f" % (delta, lamda, batch_size, learningRate)
 model_folder = "trainedModels"
 
 if torch.cuda.is_available():

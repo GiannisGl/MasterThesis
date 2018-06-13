@@ -4,14 +4,14 @@ from scipy.ndimage import rotate
 
 
 def random_augmentation(imageBatch):
-    if(rand()>=0.5):
+    if(rand()>=0.0):
         imageBatch = random_rotate(imageBatch)
-    if(rand()>=0.3):
+    if(rand()>=0.0):
         imageBatch = random_shift(imageBatch)
-    if(rand()>=0.3):
+    if(rand()>=0.0):
         imageBatch = gaussian_noise(imageBatch)
-    if(rand()>=0.5):
-        imageBatch = invert_colors(imageBatch)
+    # if(rand()>=0.5):
+    #     imageBatch = invert_colors(imageBatch)
     return imageBatch
 
 
@@ -26,7 +26,7 @@ def blur(imageBatch):
 
 
 def random_shift(imageBatch):
-    shiftRange = 4
+    shiftRange = 7
     _, _, x, y = imageBatch.shape
     xShift = randint(-shiftRange,shiftRange)
     yShift = randint(-shiftRange,shiftRange)
@@ -41,7 +41,7 @@ def random_shift(imageBatch):
 
 
 def random_rotate(imageBatch):
-    angleRange = 15
+    angleRange = 20
     angle = randint(-angleRange,angleRange)
     # print(angle)
     if torch.cuda.is_available():
