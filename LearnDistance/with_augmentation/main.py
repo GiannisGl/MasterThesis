@@ -12,13 +12,13 @@ from augmentation import *
 from tensorboardX import SummaryWriter
 
 
-trainstep = 2
-batch_size = 100
-Nepochs = 0
+trainstep = 1
+batch_size = 1000
+Nepochs = 1
 Nsamples = 1000
 learningRate = 1e-3
 delta = 20
-lamda = 1
+lamda = 10
 log_iter = 100
 pretrained = False
 
@@ -84,7 +84,7 @@ criterion = distance_loss(writer, lamda)
 
 
 print('Start Training')
-print(name+"_Iter"+trainstep)
+print("%s_Iter%i"% (name, trainstep))
 # Train
 for epoch in range(Nepochs):  # loop over the dataset multiple times
 
