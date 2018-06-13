@@ -1,24 +1,28 @@
 import torch
 import torchvision
 import torchvision.transforms as transforms
-from tensorboardX import SummaryWriter
-from torch.autograd import Variable
+from distanceModel import distanceModel
 
 import sys
 sys.path.insert(0, '../../trainModels')
 import lenet
 
 trainstep = 1
-delta = 100
+delta = 50
 lamda = 1
-modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%i" % (delta, lamda)
+batch_size = 500
+learningRate = 1e-3
+modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iBatch%iLR%f" % (delta, lamda, batch_size, learningRate)
 
 modelfolder = "trainedModels"
 
-modelfilename = '%s/distModel%sDelta%i_Iter%i' % (modelfolder, modelName, delta, trainstep)
-# modelfilename = '../trainModels/models/modellenet5_Iter1.torchmodel'
-modelfile = open(modelfilename+".torchmodel", 'rb')
-model = torch.load(modelfile, map_location=lambda storage, loc: storage)
+modelfilename = '%s/distModel%s_Iter%i' % (modelfolder, modelName, trainstep)
+if torch.cuda.is_available():
+    modelfile = torch.load(modelfilename+".state")
+else:
+    modelfile = torch.load(modelfilename+".state", map_location=lambda storage, loc: storage)
+model = distanceModel()
+model.load_state_dict(modelfile)
 
 batchSize = 100
 Nsamples = 2

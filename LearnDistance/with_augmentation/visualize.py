@@ -8,7 +8,7 @@ import sys
 sys.path.insert(0, '../../trainModels')
 import lenet
 
-trainstep = 2
+trainstep = 1
 delta = 100
 lamda = 1
 batch_size = 500
@@ -19,7 +19,7 @@ modelfolder = "trainedModels"
 
 modelfilename = '%s/featsModel%s_Iter%i' % (modelfolder, modelName, trainstep)
 modelfile = torch.load(modelfilename+".state")
-model = featuresModel(pretrained=pretrained)
+model = featuresModel()
 model.load_state_dict(modelfile)
 
 Nsamples = 1000
