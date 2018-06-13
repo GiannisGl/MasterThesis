@@ -12,9 +12,9 @@ from augmentation import *
 from tensorboardX import SummaryWriter
 
 
-trainstep = 1
+trainstep = 2
 batch_size = 100
-Nepochs = 1
+Nepochs = 0
 Nsamples = 1000
 learningRate = 1e-3
 delta = 20
@@ -22,7 +22,7 @@ lamda = 1
 log_iter = 100
 pretrained = False
 
-name = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%i" % (delta, lamda)
+name = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iTrial" % (delta, lamda)
 model_folder = "trainedModels"
 
 if torch.cuda.is_available():
@@ -56,19 +56,19 @@ train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size,
 #                                          shuffle=False, num_workers=2)
 
 
-if trainstep == 1:
-    featsModel = featuresModel(pretrained=pretrained)
-    distModel = distanceModel(pretrained=pretrained)
+featsModel = featuresModel(pretrained=pretrained)
+distModel = distanceModel(pretrained=pretrained)
+if trainstep <= 1:
     if not pretrained:
         model_weights_init(featsModel)
         model_weights_init(distModel)
 else:
-    featsModelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
-    distModelfilename = '%s/distModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
-    featsModelfile = open(featsModelfilename, 'rb')
-    distModelfile = open(distModelfilename, 'rb')
-    featsModel = torch.load(featsModelfile)
-    distModel = torch.load(distModelfile)
+    featsModelfilename = '%s/featsModel%s_Iter%i.state' % (model_folder, name, trainstep - 1)
+    distModelfilename = '%s/distModel%s_Iter%i.state' % (model_folder, name, trainstep - 1)
+    featsModelfile = torch.load(featsModelfilename)
+    distModelfile = torch.load(distModelfilename)
+    featsModel.load_state_dict(featsModelfile)
+    distModel.load_state_dict(distModelfile)
 
 if torch.cuda.is_available():
     featsModel = featsModel.cuda()
@@ -136,10 +136,10 @@ writer.close()
 
 
 
-featsModelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep)
-distModelfilename = '%s/distModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep)
+featsModelfilename = '%s/featsModel%s_Iter%i.state' % (model_folder, name, trainstep)
+distModelfilename = '%s/distModel%s_Iter%i.state' % (model_folder, name, trainstep)
 featsModelfile = open(featsModelfilename, "wb")
 distModelfile = open(distModelfilename, "wb")
-torch.save(featsModel, featsModelfile)
-torch.save(distModel, distModelfile)
+torch.save(featsModel.state_dict(), featsModelfile)
+torch.save(distModel.state_dict(), distModelfile)
 print('saved models')
