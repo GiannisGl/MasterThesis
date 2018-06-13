@@ -87,8 +87,9 @@ class FeatsLeNet5(nn.Module):
         ]))
 
         self.fc = nn.Sequential(OrderedDict([
-            ('f6b', nn.Linear(120, 3)),
-            ('sig6b', nn.LogSoftmax(0))
+            ('f6b', nn.Linear(120, 84)),
+            ('relu6b', nn.ReLU()),
+            ('f7b', nn.Linear(84, 3)),
         ]))
 
     def forward(self, img):

@@ -44,7 +44,10 @@ def random_rotate(imageBatch):
     angleRange = 15
     angle = randint(-angleRange,angleRange)
     # print(angle)
-    imageBatch_rotated = crop_center(rotate(imageBatch, angle, axes=(2,3)), imageBatch.shape)
+    if torch.cuda.is_available():
+        imageBatch_rotated = crop_center(rotate(imageBatch, angle, axes=(2,3)), imageBatch.shape)
+    else:
+        imageBatch_rotated = crop_center(rotate(imageBatch.detach().numpy(), angle, axes=(2,3)), imageBatch.shape)
     return torch.Tensor(imageBatch_rotated)
 
 

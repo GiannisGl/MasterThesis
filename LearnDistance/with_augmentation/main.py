@@ -13,12 +13,13 @@ from tensorboardX import SummaryWriter
 
 
 trainstep = 1
-batch_size = 2000
+batch_size = 100
 Nepochs = 1
 Nsamples = 1000
 learningRate = 1e-3
-delta = 100
-lamda = 0.1
+delta = 20
+lamda = 1
+log_iter = 100
 pretrained = False
 
 name = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%i" % (delta, lamda)
@@ -33,7 +34,7 @@ else:
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
-     transforms.Normalize((0, 0, 0), (1, 1, 1))])
+     transforms.Normalize((0.1307,), (0.3081,))])
 
 train_set = torchvision.datasets.MNIST(root=data_folder, train=True,
                                        download=False, transform=transform)
@@ -58,9 +59,9 @@ train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size,
 if trainstep == 1:
     featsModel = featuresModel(pretrained=pretrained)
     distModel = distanceModel(pretrained=pretrained)
-    # if not pretrained:
-    #     model_weights_init(featsModel)
-    #     model_weights_init(distModel)
+    if not pretrained:
+        model_weights_init(featsModel)
+        model_weights_init(distModel)
 else:
     featsModelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
     distModelfilename = '%s/distModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
@@ -78,9 +79,8 @@ if torch.cuda.is_available():
 
 featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate, weight_decay=0.00001)
 distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate, weight_decay=0.00001)
-writer = SummaryWriter(comment='%s_loss_log' % (name))
+writer = SummaryWriter(comment='%s_Iter%i_loss_log' % (name, trainstep))
 criterion = distance_loss(writer, lamda)
-log_iter = 100
 
 
 # Train
@@ -119,8 +119,8 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
 
         loss = criterion(delta, input1, input2, input3, featsModel, distModel)
         loss.backward()
-        featsOptimizer.step()
         distOptimizer.step()
+        featsOptimizer.step()
 
         # print statistics
         running_loss += loss.item()
@@ -132,9 +132,12 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
 print('Finished Training')
 
 
+writer.close()
 
-featsModelfilename = '%s/featsModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep)
-distModelfilename = '%s/distModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep)
+
+
+featsModelfilename = '%s/featsModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep)
+distModelfilename = '%s/distModel%s_Iter%i.torchmodel' % (model_folder, name, trainstep)
 featsModelfile = open(featsModelfilename, "wb")
 distModelfile = open(distModelfilename, "wb")
 torch.save(featsModel, featsModelfile)

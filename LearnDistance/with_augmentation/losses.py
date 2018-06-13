@@ -116,7 +116,7 @@ def flatten(input):
     return input.view(input.size()[0],-1)
 
 def relu(input):
-    return torch.clamp(input, max=0)
+    return torch.clamp(input, min=0)
 
 def mse_relu(input):
     return mse(relu(input))

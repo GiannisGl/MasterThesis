@@ -8,26 +8,26 @@ import sys
 sys.path.insert(0, '../../trainModels')
 import lenet
 
-trainstep = 2
+trainstep = 1
 delta = 100
 lamda = 1
 modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%i" % (delta, lamda)
 
 modelfolder = "trainedModels"
 
-modelfilename = '%s/featsModel%s_Iter%i' % (modelfolder, modelName, trainstep)
+modelfilename = '%s/distModel%sDelta%i_Iter%i' % (modelfolder, modelName, delta, trainstep)
 # modelfilename = '../trainModels/models/modellenet5_Iter1.torchmodel'
 modelfile = open(modelfilename+".torchmodel", 'rb')
 model = torch.load(modelfile, map_location=lambda storage, loc: storage)
 
-batchSize = 1000
-Nsamples = 1
+batchSize = 100
+Nsamples = 2
 
 
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
-     transforms.Normalize((0.1307,), (0.3081,))])
+     transforms.Normalize((0, 0, 0), (1, 1, 1))])
 
 if torch.cuda.is_available():
     datafolder = "/var/tmp/ioannis/data"
@@ -44,23 +44,24 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
 # testloader = torch.utils.data.DataLoader(testset, batch_size=4,
 #                                          shuffle=False, num_workers=2)
 
-writer = SummaryWriter(comment='%s_Iter%i_mnist_embedding' % (modelName, trainstep))
+# writer = SummaryWriter(comment='%s_mnist_embedding' % (modelfilename))
 
 iterTrainLoader = iter(trainloader)
 
 for i in range(Nsamples):
 
-    input, label = next(iterTrainLoader)
+    input1, label1 = next(iterTrainLoader)
+    input2, label2 = next(iterTrainLoader)
 
     # forward
-    output = model.forward(input)
+    output = model.forward(input1, input2)
     # output = model.convnet(input)
     output = torch.squeeze(output)
-    print(output.size())
+    print(output)
     # output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
-    input = input.to(torch.device("cpu"))
+    # input = input.to(torch.device("cpu"))
     # save embedding
-    writer.add_embedding(output, metadata=label.data, label_img=input.data, global_step=i)
+    # writer.add_embedding(output, metadata=label.data, label_img=input.data, global_step=i)
 
-writer.close()
+# writer.close()
 

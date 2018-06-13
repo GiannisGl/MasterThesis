@@ -25,7 +25,7 @@ else:
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
-     transforms.Normalize((0, 0, 0), (1, 1, 1))])
+     transforms.Normalize((0.1307,), (0.3081,))])
 
 data_train = MNIST(root=data_folder, train=True,
                                        download=False, transform=transform)
