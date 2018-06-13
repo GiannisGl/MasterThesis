@@ -83,6 +83,8 @@ writer = SummaryWriter(comment='%s_Iter%i_loss_log' % (name, trainstep))
 criterion = distance_loss(writer, lamda)
 
 
+print('Start Training')
+print(name+"_Iter"+trainstep)
 # Train
 for epoch in range(Nepochs):  # loop over the dataset multiple times
 

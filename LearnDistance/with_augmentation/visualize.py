@@ -2,7 +2,7 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 from tensorboardX import SummaryWriter
-from torch.autograd import Variable
+from featuresModel import featuresModel
 
 import sys
 sys.path.insert(0, '../../trainModels')
@@ -19,7 +19,8 @@ modelfolder = "trainedModels"
 
 modelfilename = '%s/featsModel%s_Iter%i' % (modelfolder, modelName, trainstep)
 modelfile = torch.load(modelfilename+".state")
-model = torch.load_state_dict(modelfile)
+model = featuresModel(pretrained=pretrained)
+model.load_state_dict(modelfile)
 
 Nsamples = 1000
 Niter = 1
