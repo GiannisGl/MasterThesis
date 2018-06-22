@@ -3,6 +3,7 @@ import torchvision
 import torchvision.transforms as transforms
 from tensorboardX import SummaryWriter
 from featuresModel import featuresModel
+from helperFunctions import *
 
 import sys
 sys.path.insert(0, '../../trainModels')
@@ -11,19 +12,16 @@ import lenet
 trainstep = 1
 delta = 100
 lamda = 1
-batch_size = 500
-learningRate = 1e-3
-modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iBatch%iLR%f" % (delta, lamda, batch_size, learningRate)
+Nsamples = 1000
 
+name = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%i_Iter%i" % (delta, lamda, trainstep)
 modelfolder = "trainedModels"
-
-modelfilename = '%s/featsModel%s_Iter%i' % (modelfolder, modelName, trainstep)
+modelfilename = '%s/featsModel%s' % (modelfolder, name)
 modelfile = torch.load(modelfilename+".state")
 model = featuresModel()
 model.load_state_dict(modelfile)
+model = load_model(featuresModelFull, trainstep, model_folder, modelname)
 
-Nsamples = 1000
-Niter = 1
 
 
 
@@ -41,28 +39,39 @@ trainset = torchvision.datasets.MNIST(root=datafolder, train=True,
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=Nsamples,
                                           shuffle=True, num_workers=0)
 
-# testset = torchvision.datasets.MNIST(root='./data', train=False,
-#                                        download=False, transform=transform)
-# testloader = torch.utils.data.DataLoader(testset, batch_size=4,
-#                                          shuffle=False, num_workers=2)
+testset = torchvision.datasets.MNIST(root='./data', train=False,
+                                       download=False, transform=transform)
+testloader = torch.utils.data.DataLoader(testset, batch_size=4,
+                                         shuffle=False, num_workers=2)
 
-writer = SummaryWriter(comment='%s_Iter%i_mnist_embedding' % (modelName, trainstep))
 
-iterTrainLoader = iter(trainloader)
+# Train Visualization
+print('visualizing..')
+writerEmb = SummaryWriter(comment='%s_Iter%i_mnist_embedding_train' % (name, trainstep))
 
-for i in range(Niter):
+iterTrainLoader = iter(train_loader)
+input, label = next(iterTrainLoader)
+output = featsModel.forward(input)
+output = torch.squeeze(output)
+print(output.size())
+output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
+# input = input.to(torch.device("cpu"))
+# save embedding
+writerEmb.add_embedding(output, metadata=label.data, label_img=input.data)
+writerEmb.close()
 
-    input, label = next(iterTrainLoader)
 
-    # forward
-    output = model.forward(input)
-    # output = model.convnet(input)
-    output = torch.squeeze(output)
-    print(output.size())
-    # output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
-    input = input.to(torch.device("cpu"))
-    # save embedding
-    writer.add_embedding(output, metadata=label.data, label_img=input.data, global_step=i)
+# Test Visualization
+print('visualizing..')
+writerEmb = SummaryWriter(comment='%s_Iter%i_mnist_embedding_test' % (log_name, trainstep))
 
-writer.close()
-
+iterTestLoader = iter(test_loader)
+input, label = next(iterTestLoader)
+output = featsModel.forward(input)
+output = torch.squeeze(output)
+print(output.size())
+output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
+# input = input.to(torch.device("cpu"))
+# save embedding
+writerEmb.add_embedding(output, metadata=label.data, label_img=input.data)
+writerEmb.close()
