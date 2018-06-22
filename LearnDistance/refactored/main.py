@@ -17,7 +17,7 @@ trainstep = 1
 # Per Epoch one iteration over the dataset
 train_batch_size = 100
 test_batch_size = 1000
-Nsamples = 60000 / train_batch_size
+Nsamples = int(60000 / train_batch_size)
 Nepochs = 1
 learningRate = 1e-3
 delta = 100
@@ -55,9 +55,9 @@ test_loader = torch.utils.data.DataLoader(test_set, batch_size=test_batch_size,
                                           shuffle=False, num_workers=0)
 
 featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsModel, pretrained, trainstep-1, model_folder, featsModelname)
+featsModel = load_model(featuresModel, featsPretrained, trainstep-1, model_folder, featsModelname)
 distModelname = "distModel%s" % modelname
-distModel = load_model(distModel, pretrained, trainstep-1, model_folder, distModelname)
+distModel = load_model(distanceModel, distPretrained, trainstep-1, model_folder, distModelname)
 
 #
 # featsModel = featuresModel(pretrained=featsPretrained)
@@ -86,7 +86,7 @@ if torch.cuda.is_available():
 
 featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate, weight_decay=0.00001)
 distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate, weight_decay=0.00001)
-writer = SummaryWriter(comment='%s_loss_log' % (log_name, trainstep))
+writer = SummaryWriter(comment='%s_Iter%i_loss_log' % (log_name, trainstep))
 criterion = distance_loss(writer, delta, lamda)
 
 

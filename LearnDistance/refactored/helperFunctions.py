@@ -24,10 +24,11 @@ def load_model_weights(model, modelfilename):
 def load_model(modelFunction, pretrained, trainstep, model_folder, modelname):
     model = modelFunction(pretrained)
     if trainstep<=1 & (not pretrained):
-        weights_init(model)
+        model_weights_random_gaussian(model)
     elif trainstep>1:
         modelfilename = '%s/%s_Iter%i.state' % (model_folder, modelname, trainstep)
         load_model_weights(model,modelfilename)
+    return model
 
 
 def save_model_weights(model, model_folder, modelname, trainstep):
