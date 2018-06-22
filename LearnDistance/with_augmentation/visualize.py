@@ -11,7 +11,7 @@ import lenet
 trainstep = 1
 delta = 100
 lamda = 1
-batch_size = 500
+batch_size = 1000
 learningRate = 1e-3
 modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iBatch%iLR%f" % (delta, lamda, batch_size, learningRate)
 

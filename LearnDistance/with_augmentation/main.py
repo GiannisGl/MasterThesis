@@ -11,7 +11,7 @@ from helperFunctions import *
 from augmentation import *
 from tensorboardX import SummaryWriter
 
-
+case = "Augmentation"
 trainstep = 1
 batch_size = 1000
 Nepochs = 1
@@ -22,7 +22,7 @@ lamda = 10
 log_iter = 100
 pretrained = False
 
-name = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iBatch%iLR%f" % (delta, lamda, batch_size, learningRate)
+name = "LearnDistanceNoPretrainDistAlexNet%sDelta%iLamda%iBatch%iLR%f" % (case, delta, lamda, batch_size, learningRate)
 model_folder = "trainedModels"
 
 if torch.cuda.is_available():
@@ -38,14 +38,6 @@ transform = transforms.Compose(
 
 train_set = torchvision.datasets.MNIST(root=data_folder, train=True,
                                        download=False, transform=transform)
-
-#train_val_length = len(train_val_set)
-#train_percentage = 0.8
-#train_length = floor(train_val_length*0.8)
-#val_length = train_val_length-train_length
-#train_set, val_set = random_split(train_val_set, [train_length, val_length])
-# train_set = train_val_set
-
 
 train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size,
                                            shuffle=True, num_workers=0)

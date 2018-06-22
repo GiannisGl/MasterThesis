@@ -1,15 +1,14 @@
 import torch
 import torchvision
 import torchvision.transforms as transforms
-from tensorboardX import SummaryWriter
-from featuresModel import featuresModel
+from distanceModel import distanceModel
 
 import sys
 sys.path.insert(0, '../../trainModels')
 import lenet
 
 trainstep = 1
-delta = 100
+delta = 50
 lamda = 1
 batch_size = 500
 learningRate = 1e-3
@@ -17,19 +16,22 @@ modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iBatch%i
 
 modelfolder = "trainedModels"
 
-modelfilename = '%s/featsModel%s_Iter%i' % (modelfolder, modelName, trainstep)
-modelfile = torch.load(modelfilename+".state")
-model = featuresModel()
+modelfilename = '%s/distModel%s_Iter%i' % (modelfolder, modelName, trainstep)
+if torch.cuda.is_available():
+    modelfile = torch.load(modelfilename+".state")
+else:
+    modelfile = torch.load(modelfilename+".state", map_location=lambda storage, loc: storage)
+model = distanceModel()
 model.load_state_dict(modelfile)
 
-Nsamples = 1000
-Niter = 1
+batchSize = 100
+Nsamples = 2
 
 
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
-     transforms.Normalize((0.1307,), (0.3081,))])
+     transforms.Normalize((0, 0, 0), (1, 1, 1))])
 
 if torch.cuda.is_available():
     datafolder = "/var/tmp/ioannis/data"
@@ -38,7 +40,7 @@ else:
 
 trainset = torchvision.datasets.MNIST(root=datafolder, train=True,
                                         download=False, transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=Nsamples,
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchSize,
                                           shuffle=True, num_workers=0)
 
 # testset = torchvision.datasets.MNIST(root='./data', train=False,
@@ -46,23 +48,24 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=Nsamples,
 # testloader = torch.utils.data.DataLoader(testset, batch_size=4,
 #                                          shuffle=False, num_workers=2)
 
-writer = SummaryWriter(comment='%s_Iter%i_mnist_embedding' % (modelName, trainstep))
+# writer = SummaryWriter(comment='%s_mnist_embedding' % (modelfilename))
 
 iterTrainLoader = iter(trainloader)
 
-for i in range(Niter):
+for i in range(Nsamples):
 
-    input, label = next(iterTrainLoader)
+    input1, label1 = next(iterTrainLoader)
+    input2, label2 = next(iterTrainLoader)
 
     # forward
-    output = model.forward(input)
+    output = model.forward(input1, input2)
     # output = model.convnet(input)
     output = torch.squeeze(output)
-    print(output.size())
+    print(output)
     # output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
-    input = input.to(torch.device("cpu"))
+    # input = input.to(torch.device("cpu"))
     # save embedding
-    writer.add_embedding(output, metadata=label.data, label_img=input.data, global_step=i)
+    # writer.add_embedding(output, metadata=label.data, label_img=input.data, global_step=i)
 
-writer.close()
+# writer.close()
 

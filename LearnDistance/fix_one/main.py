@@ -8,41 +8,37 @@ from featuresModel import featuresModel
 from distanceModel import distanceModel
 from torch.autograd import Variable
 from helperFunctions import *
+from augmentation import *
 from tensorboardX import SummaryWriter
 
-name = "LearnDistanceNoPretrainDistAlexNetFixFeatsFullLoss"
-newName = "LearnDistanceNoPretrainDistAlexNetFixDist"
-model_folder = "trainedModels"
 
 trainstep = 1
-batch_size = 2000
-Nepochs = 2
+batch_size = 1000
+Nepochs = 1
 Nsamples = 1000
-learningRate = 1e-2
-delta = 10
-pretrained = True
+learningRate = 1e-3
+delta = 20
+lamda = 10
+log_iter = 100
+pretrained = False
+
+case = "FixOne"
+name = "LearnDistanceNoPretrainDistAlexNet%sDelta%iLamda%iBatch%iLR%f" % (case, delta, lamda, batch_size, learningRate)
+model_folder = "trainedModels"
 
 if torch.cuda.is_available():
     #torch.set_default_tensor_type('torch.cuda.FloatTensor')
     data_folder = "/var/tmp/ioannis/data"
 else:
-    data_folder = "../data"
+    data_folder = "../../data"
 
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
-     transforms.Normalize((0, 0, 0), (1, 1, 1))])
+     transforms.Normalize((0.1307,), (0.3081,))])
 
 train_set = torchvision.datasets.MNIST(root=data_folder, train=True,
                                        download=False, transform=transform)
-
-#train_val_length = len(train_val_set)
-#train_percentage = 0.8
-#train_length = floor(train_val_length*0.8)
-#val_length = train_val_length-train_length
-#train_set, val_set = random_split(train_val_set, [train_length, val_length])
-# train_set = train_val_set
-
 
 train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size,
                                            shuffle=True, num_workers=0)
@@ -53,19 +49,19 @@ train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size,
 #                                          shuffle=False, num_workers=2)
 
 
-if trainstep == 1:
-    featsModel = featuresModel(pretrained=pretrained)
-    distModel = distanceModel(pretrained=False)
+featsModel = featuresModel(pretrained=True)
+distModel = distanceModel(pretrained=False)
+if trainstep <= 1:
     if not pretrained:
         model_weights_init(featsModel)
         model_weights_init(distModel)
 else:
-    featsModelfilename = '%s/featsModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep - 1)
-    distModelfilename = '%s/distModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep - 1)
-    featsModelfile = open(featsModelfilename, 'rb')
-    distModelfile = open(distModelfilename, 'rb')
-    featsModel = torch.load(featsModelfile)
-    distModel = torch.load(distModelfile)
+    featsModelfilename = '%s/featsModel%s_Iter%i.state' % (model_folder, name, trainstep - 1)
+    distModelfilename = '%s/distModel%s_Iter%i.state' % (model_folder, name, trainstep - 1)
+    featsModelfile = torch.load(featsModelfilename)
+    distModelfile = torch.load(distModelfilename)
+    featsModel.load_state_dict(featsModelfile)
+    distModel.load_state_dict(distModelfile)
 
 if torch.cuda.is_available():
     featsModel = featsModel.cuda()
@@ -76,11 +72,12 @@ if torch.cuda.is_available():
 
 featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate, weight_decay=0.00001)
 distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate, weight_decay=0.00001)
-criterion = distance_loss()
-log_iter = 100
+writer = SummaryWriter(comment='%s_Iter%i_loss_log' % (name, trainstep))
+criterion = distance_loss(writer, lamda)
 
-writer = SummaryWriter(comment='%s_loss_log' % (name))
 
+print('Start Training')
+print("%s_Iter%i"% (name, trainstep))
 # Train
 for epoch in range(Nepochs):  # loop over the dataset multiple times
 
@@ -109,19 +106,16 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
             input3 = Variable(input3,requires_grad=True)
 
         # zero the parameter gradients
-        #featsOptimizer.zero_grad()
+        # featsOptimizer.zero_grad()
         distOptimizer.zero_grad()
 
         if torch.cuda.is_available():
             criterion.cuda()
 
-        [featsLoss, distLoss] = criterion(delta, input1, input2, input3, featsModel, distModel)
-        lamda = 1
-        loss = featsLoss +lamda*distLoss
+        loss = criterion(delta, input1, input2, input3, featsModel, distModel)
         loss.backward()
-        #featsOptimizer.step()
         distOptimizer.step()
-
+        featsOptimizer.step()
 
         # print statistics
         running_loss += loss.item()
@@ -129,18 +123,18 @@ for epoch in range(Nepochs):  # loop over the dataset multiple times
             print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0
-            global_step=(epoch-1)*Nsamples+i
-            writer.add_scalar(tag='featsLoss', scalar_value=featsLoss, global_step=global_step)
-            writer.add_scalar(tag='distLoss', scalar_value=distLoss, global_step=global_step)
 
 print('Finished Training')
 
 
+writer.close()
 
-featsModelfilename = '%s/featsModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep)
-distModelfilename = '%s/distModel%sDelta%i_Iter%i.torchmodel' % (model_folder, name, delta, trainstep)
+
+
+featsModelfilename = '%s/featsModel%s_Iter%i.state' % (model_folder, name, trainstep)
+distModelfilename = '%s/distModel%s_Iter%i.state' % (model_folder, name, trainstep)
 featsModelfile = open(featsModelfilename, "wb")
 distModelfile = open(distModelfilename, "wb")
-torch.save(featsModel, featsModelfile)
-torch.save(distModel, distModelfile)
+torch.save(featsModel.state_dict(), featsModelfile)
+torch.save(distModel.state_dict(), distModelfile)
 print('saved models')
