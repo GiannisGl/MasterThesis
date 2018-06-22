@@ -26,7 +26,7 @@ def blur(imageBatch):
 
 
 def random_shift(imageBatch):
-    shiftRange = 7
+    shiftRange = 6
     _, _, x, y = imageBatch.shape
     xShift = randint(-shiftRange,shiftRange)
     yShift = randint(-shiftRange,shiftRange)

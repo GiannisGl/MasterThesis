@@ -7,7 +7,7 @@ def weights_init(module):
         module.weight.data.normal_(0.0, 0.1)
     elif classname.find('Linear') != -1:
         module.weight.data.normal_(0.0, 0.1)
-        module.bias.data.fill_(0)
+        module.bias.data.fill_(0.0)
 
 
 def model_weights_init(model):

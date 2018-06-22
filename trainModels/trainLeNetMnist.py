@@ -10,10 +10,10 @@ from torch.utils.data import DataLoader
 
 # viz = visdom.Visdom()
 
-name = "lenet5"
+name = "lenet5mnist"
 model_folder = "models"
 
-trainstep = 2 
+trainstep = 6
 batch_size = 60000
 Nepochs = 100
 
@@ -47,7 +47,7 @@ else:
 
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=2e-4)
+optimizer = optim.Adam(model.parameters(), lr=2e-5)
 
 if torch.cuda.is_available():
     model = model.cuda()

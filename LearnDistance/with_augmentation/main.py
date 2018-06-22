@@ -12,17 +12,18 @@ from augmentation import *
 from tensorboardX import SummaryWriter
 
 
-trainstep = 1
+trainstep = 6
 batch_size = 1000
-Nepochs = 1
+Nepochs = 5
 Nsamples = 1000
 learningRate = 1e-3
-delta = 20
-lamda = 10
+delta = 50
+lamda = 1
 log_iter = 100
 pretrained = False
 
-name = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iBatch%iLR%f" % (delta, lamda, batch_size, learningRate)
+name = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iWeights01" % (delta, lamda)
+log_name = "%sBatchSize%iLR%f" % (name, batch_size, learningRate)
 model_folder = "trainedModels"
 
 if torch.cuda.is_available():
@@ -77,14 +78,14 @@ if torch.cuda.is_available():
 
 
 
-featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate, weight_decay=0.00001)
-distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate, weight_decay=0.00001)
-writer = SummaryWriter(comment='%s_Iter%i_loss_log' % (name, trainstep))
+featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate)
+distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate)
+writer = SummaryWriter(comment='%s_Iter%i_loss_log' % (log_name, trainstep))
 criterion = distance_loss(writer, lamda)
 
 
 print('Start Training')
-print("%s_Iter%i"% (name, trainstep))
+print("%s_Iter%i"% (log_name, trainstep))
 # Train
 for epoch in range(Nepochs):  # loop over the dataset multiple times
 

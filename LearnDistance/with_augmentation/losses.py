@@ -108,7 +108,7 @@ def mseLoss(input, target):
     return torch.mean(torch.pow(flatten(input)-flatten(target),2))
 
 def mse_loss(input, target):
-    return mse(flatten(input) - flatten(target))
+    return mse(flatten(input)-flatten(target))
 
 def flatten(input):
     #if(input.size().len()<=0):

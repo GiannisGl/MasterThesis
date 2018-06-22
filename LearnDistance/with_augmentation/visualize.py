@@ -6,14 +6,15 @@ from featuresModel import featuresModel
 
 import sys
 sys.path.insert(0, '../../trainModels')
-import lenet
+#import lenet
 
-trainstep = 1
-delta = 100
-lamda = 1
-batch_size = 500
+trainstep = 4
+delta = 50
+lamda = 1 
+batch_size = 1000
 learningRate = 1e-3
-modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iBatch%iLR%f" % (delta, lamda, batch_size, learningRate)
+#modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iBatch%iLR%f" % (delta, lamda, batch_size, learningRate)
+modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iWeights01" % (delta, lamda)
 
 modelfolder = "trainedModels"
 
@@ -21,6 +22,8 @@ modelfilename = '%s/featsModel%s_Iter%i' % (modelfolder, modelName, trainstep)
 modelfile = torch.load(modelfilename+".state")
 model = featuresModel()
 model.load_state_dict(modelfile)
+#modelfile = open(modelfilename+".torchmodel", 'rb')
+#model = torch.load(modelfile, map_location=lambda storage, loc: storage)
 
 Nsamples = 1000
 Niter = 1
@@ -59,8 +62,8 @@ for i in range(Niter):
     # output = model.convnet(input)
     output = torch.squeeze(output)
     print(output.size())
-    # output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
-    input = input.to(torch.device("cpu"))
+    output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
+    #input = input.to(torch.device("cpu"))
     # save embedding
     writer.add_embedding(output, metadata=label.data, label_img=input.data, global_step=i)
 
