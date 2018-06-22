@@ -15,14 +15,14 @@ import datetime
 case = "Augmentation"
 trainstep = 1
 # Per Epoch one iteration over the dataset
-train_batch_size = 100
+train_batch_size = 1000
 test_batch_size = 1000
-Nsamples = int(60000 / train_batch_size)
+Nsamples = int(60000 / 3*train_batch_size)
 Nepochs = 1
 learningRate = 1e-3
-delta = 100
+delta = 50
 lamda = 1
-log_iter = 100
+log_iter = 10
 featsPretrained = False
 distPretrained = False
 
@@ -91,7 +91,7 @@ criterion = distance_loss(writer, delta, lamda)
 
 
 print('Start Training')
-print("%s_Iter%i" % (log_name, trainstep))
+print(log_name)
 # Train
 for epoch in range(Nepochs):  # loop over the dataset multiple times
 

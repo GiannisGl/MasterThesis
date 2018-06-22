@@ -99,17 +99,17 @@ class FeatsLeNet5(nn.Module):
 
 class FeatsLeNet5Full(nn.Module):
 
-# Input - 1x28x28
-# C1 - 6@24x24 (5x5 kernel)
-# tanh
-# S2 - 6@12x12 (2x2 kernel, stride 2) Subsampling
-# C3 - 16@8x8 (5x5 kernel, complicated shit)
-# tanh
-# S4 - 16@4x4 (2x2 kernel, stride 2) Subsampling
-# C5 - 120@1x1 (5x5 kernel)
-# F6 - 84
-# tanh
-# F7 - 10 (Output)
+    # Input - 1x28x28
+    # C1 - 6@24x24 (5x5 kernel)
+    # tanh
+    # S2 - 6@12x12 (2x2 kernel, stride 2) Subsampling
+    # C3 - 16@8x8 (5x5 kernel, complicated shit)
+    # tanh
+    # S4 - 16@4x4 (2x2 kernel, stride 2) Subsampling
+    # C5 - 120@1x1 (5x5 kernel)
+    # F6 - 84
+    # tanh
+    # F7 - 10 (Output)
 
     def __init__(self):
         super(FeatsLeNet5, self).__init__()
