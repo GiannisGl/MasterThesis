@@ -19,6 +19,12 @@ def gaussian_noise(imageBatch):
     return imageBatch+torch.Tensor(gaussian)
 
 
+# def warp(imageBatch):
+#     tform = tf.SimilarityTransform(scale=1, rotation=math.pi / 4, translation=(text.shape[0] / 2, -100))
+#     imageBatch_warped = tf.warp(imageBatch, tform)
+#     return imageBatch_warped
+
+
 def blur(imageBatch):
     return imageBatch
 

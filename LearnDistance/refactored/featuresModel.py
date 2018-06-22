@@ -138,7 +138,46 @@ class FeatsLeNet5Full(nn.Module):
         return output
 
 
-def featuresModel(pretrained=False, **kwargs):
+class autoencoder(nn.Module):
+    def __init__(self):
+        super(autoencoder, self).__init__()
+        self.encoder = nn.Sequential(
+            nn.Conv2d(1, 16, 3, stride=3, padding=1),  # b, 16, 10, 10
+            nn.ReLU(True),
+            nn.MaxPool2d(2, stride=2),  # b, 16, 5, 5
+            nn.Conv2d(16, 8, 3, stride=2, padding=1),  # b, 8, 3, 3
+            nn.ReLU(True),
+            nn.MaxPool2d(2, stride=1)  # b, 8, 2, 2
+        )
+        self.decoder = nn.Sequential(
+            nn.ConvTranspose2d(8, 16, 3, stride=2),  # b, 16, 5, 5
+            nn.ReLU(True),
+            nn.ConvTranspose2d(16, 8, 5, stride=3, padding=1),  # b, 8, 15, 15
+            nn.ReLU(True),
+            nn.ConvTranspose2d(8, 1, 2, stride=2, padding=1),  # b, 1, 28, 28
+            nn.Tanh()
+        )
+
+    def forward(self, x):
+        x = self.encoder(x)
+        x = self.decoder(x)
+        return x
+
+
+def featsAE(pretrained=False, **kwargs):
+    model = autoencoder(**kwargs)
+    if pretrained:
+        modelFilename = '../../trainModels/models/modellenet5_Iter1.torchmodel'
+        pretrained = torch.load(modelFilename)
+        pretrained_dict = pretrained.state_dict()
+        model_dict = model.state_dict()
+        pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
+        model_dict.update(pretrained_dict)
+        model.load_state_dict(model_dict)
+    return model
+
+
+def featsLenet(pretrained=False, **kwargs):
     model = FeatsLeNet5(**kwargs)
     if pretrained:
         modelFilename = '../../trainModels/models/modellenet5_Iter1.torchmodel'
@@ -151,7 +190,7 @@ def featuresModel(pretrained=False, **kwargs):
     return model
 
 
-def featuresModelFull(pretrained=False, **kwargs):
+def featsLenetFull(pretrained=False, **kwargs):
     model = FeatsLeNet5Full(**kwargs)
     if pretrained:
         modelFilename = '../../trainModels/models/modellenet5_Iter1.torchmodel'
