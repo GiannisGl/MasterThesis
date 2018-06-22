@@ -16,7 +16,7 @@ case = "Augmentation"
 trainstep = 1
 # Per Epoch one iteration over the dataset
 train_batch_size = 10
-Nsamples = int(60000 / 3*train_batch_size)
+Nsamples = int(60000 / (3*train_batch_size))
 Nepochs = 1
 learningRate = 1e-3
 delta = 50
