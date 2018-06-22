@@ -3,15 +3,16 @@ from augmentation import *
 
 class distance_loss(torch.nn.Module):
 
-    def __init__(self, writer, lamda):
+    def __init__(self, writer, delta, lamda):
         super(distance_loss, self).__init__()
         self.writer = writer
         self.step = 0
+        self.delta = delta
         self.lamda = lamda
 
-    def forward(self, delta, input1, input2, input3, featsModel, distanceModel):
+    def forward(self, input1, input2, input3, featsModel, distanceModel):
         self.step += 1
-        delta = torch.ones(input1.size()[0])*delta
+        delta = torch.ones(input1.size()[0])*self.delta
         zero = torch.zeros(input1.size()[0])
         if torch.cuda.is_available():
             torch.set_default_tensor_type('torch.cuda.FloatTensor')
@@ -28,9 +29,9 @@ class distance_loss(torch.nn.Module):
         input3augmfeats = featsModel.forward(input3augm)
 
         # get L2 distance of the 3 pairs of features
-        dist12 = mse_loss(input1feats, input2feats)
-        dist13 = mse_loss(input1feats, input3feats)
-        dist23 = mse_loss(input2feats, input3feats)
+        dist12 = mse_batch_loss(input1feats, input2feats)
+        dist13 = mse_batch_loss(input1feats, input3feats)
+        dist23 = mse_batch_loss(input2feats, input3feats)
 
         # get learned distance of the 3 pairs both ways
         learnedDist12 = distanceModel(input1, input2)
@@ -43,6 +44,7 @@ class distance_loss(torch.nn.Module):
         learnedDist22 = distanceModel(input2, input2)
         learnedDist33 = distanceModel(input3, input3)
 
+        # Features model terms
         featsLoss = 0
         # terms that preserve distance
         featsLossDist = mseLoss(dist12, learnedDist12)
@@ -59,6 +61,7 @@ class distance_loss(torch.nn.Module):
 
         self.writer.add_scalar(tag='featsLoss', scalar_value=featsLoss, global_step=self.step)
 
+        # Distance model terms
         distLoss = 0
         # terms that enforce 0 distance for same inputs
         distLossId = mseLoss(learnedDist11, zero)
@@ -101,22 +104,17 @@ class distance_loss(torch.nn.Module):
 
         return loss
 
-def mse(input):
+def mse_batch(input):
     return torch.mean(torch.pow(flatten(input),2),1)
 
 def mseLoss(input, target):
     return torch.mean(torch.pow(flatten(input)-flatten(target),2))
 
-def mse_loss(input, target):
-    return mse(flatten(input) - flatten(target))
+def mse_batch_loss(input, target):
+    return mse_batch(flatten(input) - flatten(target))
 
 def flatten(input):
-    #if(input.size().len()<=0):
-     #   return input
     return input.view(input.size()[0],-1)
 
 def relu(input):
     return torch.clamp(input, min=0)
-
-def mse_relu(input):
-    return mse(relu(input))
