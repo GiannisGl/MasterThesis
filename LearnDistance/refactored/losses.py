@@ -120,28 +120,41 @@ class distance_AE_loss(torch.nn.Module):
         if torch.cuda.is_available():
             torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
-        # get features of inputs
+        ### forwards of inputs and augmentations
+
+        # features of inputs
         input1feats = featsModel.encoder(input1)
-        input1augm = random_augmentation(input1)
-        input1augmfeats = featsModel.encoder(input1augm)
         input2feats = featsModel.encoder(input2)
-        input2augm = random_augmentation(input2)
-        input2augmfeats = featsModel.encoder(input2augm)
         input3feats = featsModel.encoder(input3)
+
+        # augmented inputs
+        input1augm = random_augmentation(input1)
+        input2augm = random_augmentation(input2)
         input3augm = random_augmentation(input3)
+
+        # features of augmented inputs
+        input1augmfeats = featsModel.encoder(input1augm)
+        input2augmfeats = featsModel.encoder(input2augm)
         input3augmfeats = featsModel.encoder(input3augm)
 
-        # get reconstruction of inputs
+        # reconstruction of inputs
         input1rec = featsModel.forward(input1)
         input2rec = featsModel.forward(input2)
         input3rec = featsModel.forward(input3)
 
-        # get L2 distance of the 3 pairs of features
+        # reconstruction of augmented inputs
+        input1augmrec = featsModel.forward(input1augm)
+        input2augmrec = featsModel.forward(input2augm)
+        input3augmrec = featsModel.forward(input3augm)
+
+        ### distances
+
+        # L2 distance of the 3 pairs of features
         dist12 = mse_batch_loss(input1feats, input2feats)
         dist13 = mse_batch_loss(input1feats, input3feats)
         dist23 = mse_batch_loss(input2feats, input3feats)
 
-        # get learned distance of the 3 pairs both ways
+        # learned distance of the 3 pairs both ways
         learnedDist12 = distanceModel(input1, input2)
         learnedDist21 = distanceModel(input2, input1)
         learnedDist13 = distanceModel(input1, input3)
@@ -152,7 +165,9 @@ class distance_AE_loss(torch.nn.Module):
         learnedDist22 = distanceModel(input2, input2)
         learnedDist33 = distanceModel(input3, input3)
 
-        # Features model terms
+        ### Loss Terms
+
+        ## Features model terms
         featsLoss = 0
         # terms that preserve distance
         featsLossDist = mseLoss(dist12, learnedDist12)
@@ -168,14 +183,17 @@ class distance_AE_loss(torch.nn.Module):
         featsLoss += featsLossClust
         # terms that enforce reconstruction
         featsLossRec = mseLoss(input1, input1rec)
+        featsLossRec += mseLoss(input1, input1augmrec)
         featsLossRec += mseLoss(input2, input2rec)
+        featsLossRec += mseLoss(input2, input2augmrec)
         featsLossRec += mseLoss(input3, input3rec)
+        featsLossRec += mseLoss(input3, input3augmrec)
         self.writer.add_scalar(tag='featsLossRec', scalar_value=featsLossRec, global_step=self.step)
         featsLoss += featsLossRec
 
         self.writer.add_scalar(tag='featsLoss', scalar_value=featsLoss, global_step=self.step)
 
-        # Distance model terms
+        ## Distance model terms
         distLoss = 0
         # terms that enforce 0 distance for same inputs
         distLossId = mseLoss(learnedDist11, zero)
