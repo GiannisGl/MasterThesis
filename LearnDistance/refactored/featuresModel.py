@@ -193,7 +193,7 @@ def featsLenet(pretrained=False, **kwargs):
 def featsLenetFull(pretrained=False, **kwargs):
     model = FeatsLeNet5Full(**kwargs)
     if pretrained:
-        modelFilename = '../../trainModels/models/modellenet5_Iter1.torchmodel'
+        modelFilename = '../../trainModels/models/modellenet5mnist_Iter6.torchmodel'
         pretrained = torch.load(modelFilename)
         pretrained_dict = pretrained.state_dict()
         model_dict = model.state_dict()

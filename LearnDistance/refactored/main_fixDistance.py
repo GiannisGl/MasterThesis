@@ -12,7 +12,7 @@ from tensorboardX import SummaryWriter
 
 
 # parameters and names
-case = "Augmentation"
+case = "fixFeats"
 trainstep = 1
 # Per Epoch one iteration over the dataset
 train_batch_size = 10
