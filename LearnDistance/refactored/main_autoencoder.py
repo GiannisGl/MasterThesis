@@ -15,18 +15,18 @@ from tensorboardX import SummaryWriter
 case = "Autoencoder"
 trainstep = 1
 # Per Epoch one iteration over the dataset
-train_batch_size = 10
+train_batch_size = 1000
 Nsamples = int(60000 / (3*train_batch_size))
-Nepochs = 1
-learningRate = 1e-3
-delta = 50
+Nepochs = 200
+learningRate = 1e-2
+delta = 500
 lamda = 1
 log_iter = int(Nsamples/2)
 featsPretrained = False
 distPretrained = False
 curDatetime = datetime.datetime.now().isoformat();
-modelname = "%sLearnDistanceNoPretrainDistAlexNet%sDelta%iLamda%i" % (curDatetime, case, delta, lamda)
-log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
+modelname = "LearnDistanceNoPretrainDistAlexNet%sDelta%iLamda%i" % (case, delta, lamda)
+log_name = "%s%sBatch%iLR%f_Iter%i" % (curDatetime, modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 # dataset loading
