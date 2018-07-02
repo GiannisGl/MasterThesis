@@ -4,7 +4,7 @@ import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
 from augmentation import *
-from featuresModel import featuresModel, featuresModelFull
+from featuresModel import featsLenet, featsLenetFull
 from distanceModel import distanceModel
 from helperFunctions import *
 from losses import *
@@ -38,7 +38,7 @@ train_loader = load_mnist(data_folder, train_batch_size, train=True, download=Fa
 
 # model loading
 featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featuresModelFull, model_folder, featsModelname, trainstep-1, featsPretrained)
+featsModel = load_model(featsLenetFull, model_folder, featsModelname, trainstep-1, featsPretrained)
 distModelname = "distModel%s" % modelname
 distModel = load_model(distanceModel, model_folder, distModelname, trainstep-1, distPretrained)
 
@@ -70,7 +70,6 @@ for epoch in range(Nepochs):
             criterion.cuda()
 
         # zero the parameter gradients
-        featsOptimizer.zero_grad()
         distOptimizer.zero_grad()
 
         # optimize
