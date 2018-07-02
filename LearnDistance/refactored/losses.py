@@ -168,7 +168,7 @@ class distance_AE_loss(torch.nn.Module):
         ### Loss Terms
 
         ## Features model terms
-        featsLoss = 0
+        featsLoss = 0.0
         # terms that preserve distance
         featsLossDist = mseLoss(dist12, learnedDist12)
         featsLossDist += mseLoss(dist13, learnedDist13)
@@ -194,7 +194,7 @@ class distance_AE_loss(torch.nn.Module):
         self.writer.add_scalar(tag='featsLoss', scalar_value=featsLoss, global_step=self.step)
 
         ## Distance model terms
-        distLoss = 0
+        distLoss = 0.0
         # terms that enforce 0 distance for same inputs
         distLossId = mseLoss(learnedDist11, zero)
         distLossId += mseLoss(learnedDist22, zero)
