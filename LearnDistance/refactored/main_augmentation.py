@@ -15,9 +15,13 @@ from tensorboardX import SummaryWriter
 case = "Augmentation"
 trainstep = 1
 # Per Epoch one iteration over the dataset
-train_batch_size = 1000
+if torch.cuda.is_available():
+    train_batch_size = 1000
+    Nepochs = 50
+elif:
+    train_batch_size = 10
+    Nepochs = 1
 Nsamples = int(60000 / (3*train_batch_size))
-Nepochs = 300
 learningRate = 1e-3
 delta = 50
 lamda = 1
