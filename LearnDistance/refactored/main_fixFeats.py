@@ -18,7 +18,7 @@ trainstep = 1
 if torch.cuda.is_available():
     train_batch_size = 1000
     Nepochs = 50
-elif:
+else:
     train_batch_size = 10
     Nepochs = 1
 Nsamples = int(60000 / (3*train_batch_size))
