@@ -107,7 +107,7 @@ class distance_loss(torch.nn.Module):
 
 class distance_loss_fixFeats(torch.nn.Module):
     def __init__(self, writer, delta, lamda):
-        super(distance_loss, self).__init__()
+        super(distance_loss_fixFeats, self).__init__()
         self.writer = writer
         self.step = 0
         self.delta = delta
@@ -210,7 +210,7 @@ class distance_loss_fixFeats(torch.nn.Module):
 
 class distance_loss_fixFeatsConv(torch.nn.Module):
     def __init__(self, writer, delta, lamda):
-        super(distance_loss, self).__init__()
+        super(distance_loss_fixFeatsConv, self).__init__()
         self.writer = writer
         self.step = 0
         self.delta = delta

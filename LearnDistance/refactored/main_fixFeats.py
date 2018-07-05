@@ -47,7 +47,7 @@ distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate, weight_decay
 
 # writer and criterion
 writer = SummaryWriter(comment='%s_Iter%i_loss_log' % (log_name, trainstep))
-criterion = distance_loss(writer, delta, lamda)
+criterion = distance_loss_fixFeatsConv(writer, delta, lamda)
 
 # Training
 print('Start Training')
