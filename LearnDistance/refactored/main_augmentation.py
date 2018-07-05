@@ -25,8 +25,8 @@ log_iter = int(Nsamples/2)
 featsPretrained = False
 distPretrained = False
 curDatetime = datetime.datetime.now().isoformat();
-modelname = "%sLearnDistanceNoPretrainDistAlexNet%sDelta%iLamda%i" % (curDatetime, case, delta, lamda)
-log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
+modelname = "LearnDistanceNoPretrainDistAlexNet%sDelta%iLamda%i" % (case, delta, lamda)
+log_name = "%s%sBatch%iLR%f_Iter%i" % (curDatetime, modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 # dataset loading
