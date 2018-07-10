@@ -12,7 +12,7 @@ from tensorboardX import SummaryWriter
 
 
 # parameters and names
-case = "Augmentation"
+case = "FeatsPretrained"
 trainstep = 1
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -26,10 +26,10 @@ learningRate = 1e-3
 delta = 50
 lamda = 1
 log_iter = int(Nsamples/2)
-featsPretrained = False
+featsPretrained = True
 distPretrained = False
 curDatetime = datetime.datetime.now().isoformat();
-modelname = "LearnDistanceNoPretrainDistAlexNet%sDelta%iLamda%i" % (case, delta, lamda)
+modelname = "LearnDistanceDistAlexNet%sDelta%iLamda%i" % (case, delta, lamda)
 log_name = "%s%sBatch%iLR%f_Iter%i" % (curDatetime, modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 

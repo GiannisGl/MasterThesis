@@ -23,8 +23,6 @@ featsModel.load_state_dict(modelfile)
 #model = load_model(model, modelname, model_folder, trainstep)
 
 
-
-
 transform = transforms.Compose(
     [transforms.ToTensor(),
      transforms.Normalize((0.1307,), (0.3081,))])
