@@ -51,7 +51,7 @@ featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate, weight_dec
 distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate, weight_decay=0.00001)
 
 # writer and criterion
-writer = SummaryWriter(comment='%s_Iter%i_loss_log' % (log_name, trainstep))
+writer = SummaryWriter(comment='%s_loss_log' % (log_name))
 criterion = distance_AE_loss(writer, delta, lamda)
 
 # Training

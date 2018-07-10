@@ -37,7 +37,6 @@ def load_model(modelFunction, model_folder, modelname, trainstep, pretrained=Fal
     if trainstep<1 & (not pretrained):
         model_weights_random_gaussian(model)
     elif trainstep>=1:
-        print("load")
         modelfilename = '%s/%s_Iter%i.state' % (model_folder, modelname, trainstep)
         load_model_weights(model,modelfilename)
     if torch.cuda.is_available():
