@@ -44,6 +44,11 @@ class distance_loss(torch.nn.Module):
         learnedDist22 = distanceModel(input2, input2)
         learnedDist33 = distanceModel(input3, input3)
 
+        # get learned distance of input and its augmentation (should be zero)
+        learnedDist11aug = distanceModel(input1, input1augm)
+        learnedDist22aug = distanceModel(input2, input2augm)
+        learnedDist33aug = distanceModel(input3, input3augm)
+
         # Features model terms
         featsLoss = 0
         # terms that preserve distance
@@ -76,6 +81,13 @@ class distance_loss(torch.nn.Module):
         distLossSymm += mseLoss(learnedDist23, learnedDist32)
         self.writer.add_scalar(tag='distLossSymm', scalar_value=distLossSymm, global_step=self.step)
         distLoss += distLossSymm
+
+        # terms that enforce neighbourhood
+        distLossNeigh = mseLoss(learnedDist11aug, zero)
+        distLossNeigh += mseLoss(learnedDist22aug, zero)
+        distLossNeigh += mseLoss(learnedDist33aug, zero)
+        self.writer.add_scalar(tag='distLossNeigh', scalar_value=distLossNeigh, global_step=self.step)
+        distLoss += distLossNeigh
 
         # terms that enforce distance greater than delta
         distLossDelta = mseLoss(relu(delta - learnedDist12), zero)
