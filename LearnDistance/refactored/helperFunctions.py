@@ -3,6 +3,17 @@ import torchvision
 import torchvision.transforms as transforms
 
 
+def freeze_first_conv_layers(model):
+    i = 0
+    for module in model.modules():
+        print(module)
+        classname = module.__class__.__name__
+        if classname.find('Conv') != -1:
+            print("conv")
+            for param in module.parameters():
+                param.requires_grad = False
+
+
 def weights_init(module):
     classname = module.__class__.__name__
     if classname.find('Conv') != -1:
