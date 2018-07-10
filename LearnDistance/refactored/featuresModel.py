@@ -126,8 +126,8 @@ class FeatsLeNet5Full(nn.Module):
         ]))
 
         self.fc = nn.Sequential(OrderedDict([
-            ('f6b', nn.Linear(120, 84)),
-            ('relu6b', nn.ReLU()),
+            ('f6', nn.Linear(120, 84)),
+            ('relu6', nn.ReLU()),
             ('f7b', nn.Linear(84, 3)),
         ]))
 
