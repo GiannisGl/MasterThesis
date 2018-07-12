@@ -1,4 +1,5 @@
 import torch
+import torch.nn.init as init
 import torchvision
 import torchvision.transforms as transforms
 
@@ -15,15 +16,15 @@ def freeze_first_conv_layers(model):
 def weights_init(module):
     classname = module.__class__.__name__
     if classname.find('Conv') != -1:
-        module.weight.data.normal_(0.0, 0.1)
+        init.xavier_normal_(module.weight)
     elif classname.find('Linear') != -1:
-        module.weight.data.normal_(0.0, 0.1)
-        module.bias.data.fill_(0)
+        init.xavier_normal_(module.weight)
+        init.constant_(module.bias, 0.1)
 
 # torch.nn.init.xavier.normal
 
 
-def model_weights_random_gaussian(model):
+def model_weights_random_xavier(model):
     for module in model.modules():
         weights_init(module)
 
@@ -37,7 +38,7 @@ def load_model_weights(model, modelfilename):
 def load_model(modelFunction, model_folder, modelname, trainstep, pretrained=False):
     model = modelFunction(pretrained)
     if trainstep<1 & (not pretrained):
-        model_weights_random_gaussian(model)
+        model_weights_random_xavier(model)
     elif trainstep>=1:
         modelfilename = '%s/%s_Iter%i.state' % (model_folder, modelname, trainstep)
         load_model_weights(model,modelfilename)
@@ -54,7 +55,7 @@ def save_model_weights(model, model_folder, modelname, trainstep):
 
 def load_mnist(data_folder, batch_size, train=True, download=False):
     # dont normalize
-    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
+    transform = transforms.Compose([transforms.ToTensor()])
     set = torchvision.datasets.MNIST(root=data_folder, train=train, download=download, transform=transform)
     loader = torch.utils.data.DataLoader(set, batch_size=batch_size, shuffle=True, num_workers=0)
     return loader

@@ -24,8 +24,7 @@ featsModel.load_state_dict(modelfile)
 
 
 transform = transforms.Compose(
-    [transforms.ToTensor(),
-     transforms.Normalize((0.1307,), (0.3081,))])
+    [transforms.ToTensor()])
 
 if torch.cuda.is_available():
     datafolder = "/var/tmp/ioannis/data"

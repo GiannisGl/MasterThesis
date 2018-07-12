@@ -1,4 +1,5 @@
 import torch.nn as nn
+import torch
 from collections import OrderedDict
 
 
@@ -42,3 +43,17 @@ class LeNet5(nn.Module):
         output = output.view(-1, 120)
         output = self.fc(output)
         return output
+
+
+
+def lenet5(pretrained=False, **kwargs):
+    model = LeNet5(**kwargs)
+    if pretrained:
+        modelFilename = '../../trainModels/models/modellenet5mnist_Iter6.torchmodel'
+        pretrained = torch.load(modelFilename)
+        pretrained_dict = pretrained.state_dict()
+        model_dict = model.state_dict()
+        pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
+        model_dict.update(pretrained_dict)
+        model.load_state_dict(model_dict)
+    return model

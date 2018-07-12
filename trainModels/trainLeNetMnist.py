@@ -1,21 +1,23 @@
-from lenet import LeNet5
+from trainModels.lenet import lenet5
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.autograd import Variable
 from torchvision.datasets.mnist import MNIST
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
-# import visdom
+from LearnDistance.refactored.helperFunctions import *
+from tensorboardX import SummaryWriter
 
-# viz = visdom.Visdom()
-
-name = "lenet5mnist"
+case = "lenet5mnistNoNormAugmented"
 model_folder = "models"
 
-trainstep = 6
-batch_size = 60000
+trainstep = 1
+if torch.cuda.is_available():
+    batch_size = 60000
+else:
+    batch_size = 100
 Nepochs = 100
+learningRate = 1e-3
 
 if torch.cuda.is_available():
     data_folder = "/var/tmp/ioannis/data"
@@ -24,7 +26,8 @@ else:
 
 # no normalization
 transform = transforms.Compose(
-    [transforms.ToTensor()])
+    [transforms.RandomAffine(degrees=10, translate=[0.2,0.2], shear=5),
+        transforms.ToTensor()])
 
 data_train = MNIST(root=data_folder, train=True,
                                        download=False, transform=transform)
@@ -32,51 +35,30 @@ data_train = MNIST(root=data_folder, train=True,
 data_test = MNIST(root=data_folder, train=False,
                                        download=False, transform=transform)
 
-data_train_loader = DataLoader(data_train, batch_size=batch_size, shuffle=True, num_workers=8)
-data_test_loader = DataLoader(data_test, batch_size=1024, num_workers=8)
+data_train_loader = DataLoader(data_train, batch_size=batch_size, shuffle=True, num_workers=0)
+data_test_loader = DataLoader(data_test, batch_size=batch_size, num_workers=0)
 
 
-if trainstep == 1:
-    model = LeNet5()
-else:
-    modelfilename = '%s/model%s_Iter%i.torchmodel' % (model_folder, name, trainstep - 1)
-    modelfile = open(modelfilename, 'rb')
-    model = torch.load(modelfile)
+modelname = "%s" % (case)
+model = load_model(lenet5, model_folder, modelname, trainstep-1)
+log_name = "%sBatch%iLR%f_Iter%i" % (modelname, batch_size, learningRate, trainstep)
 
-
+writer = SummaryWriter(comment='%s_loss_log' % (log_name))
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=1e-3)
-
-if torch.cuda.is_available():
-    model = model.cuda()
-    torch.set_default_tensor_type('torch.cuda.FloatTensor')
-    criterion = criterion.cuda()
-
-
-# cur_batch_win = None
-# cur_batch_win_opts = {
-#     'title': 'Epoch Loss Trace',
-#     'xlabel': 'Batch Number',
-#     'ylabel': 'Loss',
-#     'width': 1200,
-#     'height': 600,
-# }
-
+optimizer = optim.Adam(model.parameters(), lr=learningRate)
 
 def train(epoch):
-    # global cur_batch_win
     model.train()
-    loss_list, batch_list = [], []
     running_loss = 0.0
+    total_correct = 0
     log_iter = 100
-    for i, (images, labels) in enumerate(data_train_loader):
-        # images, labels = Variable(images), Variable(labels)
-
+    for i, (images, labels) in enumerate(data_train_loader, 0):
         if torch.cuda.is_available():
             torch.set_default_tensor_type('torch.cuda.FloatTensor')
             images = images.cuda()
             labels = labels.cuda()
+            criterion.cuda()
 
         optimizer.zero_grad()
 
@@ -87,25 +69,20 @@ def train(epoch):
 
         loss = criterion(output, labels)
 
-        # loss_list.append(loss.item())
-        # batch_list.append(i+1)
-
-        # # Update Visualization
-        # if viz.check_connection():
-        #     cur_batch_win = viz.line(torch.FloatTensor(loss_list), torch.FloatTensor(batch_list),
-        #                              win=cur_batch_win, name='current_batch_loss',
-        #                              update=(None if cur_batch_win is None else 'replace'),
-        #                              opts=cur_batch_win_opts)
-
         loss.backward()
         optimizer.step()
 
         # print statistics
         running_loss += loss.item()
+        pred = output.data.max(1)[1]
+        total_correct += pred.eq(labels.data.view_as(pred)).sum()
         if i % log_iter == 0:
-            print('[%d, %5d] loss: %f' %
-                  (epoch+1, i, running_loss / log_iter))
+            writer.add_image(tag='image', img_tensor=images[1], global_step=Nepochs*60000+i)
+            writer.add_scalar(tag='loss', scalar_value=loss, global_step=Nepochs*60000+i)
+            print('[%d, %5d] loss: %f, Accuracy: %f' %
+                  (epoch+1, i, running_loss/log_iter, float(total_correct)/log_iter))
             running_loss = 0.0
+            total_correct = 0
 
 
 def test():
@@ -113,7 +90,6 @@ def test():
     total_correct = 0
     avg_loss = 0.0
     for i, (images, labels) in enumerate(data_test_loader):
-        # images, labels = Variable(images), Variable(labels)
         if torch.cuda.is_available():
             torch.set_default_tensor_type('torch.cuda.FloatTensor')
             images = images.cuda()
@@ -131,17 +107,12 @@ def train_and_test(epoch):
     train(epoch)
     print('Finished Epoch')
     test()
-    modelfilename = '%s/model%s_Iter%i.torchmodel' % (model_folder, name, trainstep)
-    modelfile = open(modelfilename, "wb")
-    torch.save(model, modelfile)
+    save_model_weights(model, model_folder, modelname, trainstep)
     print('saved model')
 
 
 def main():
     for e in range(0, Nepochs):
         train_and_test(e)
-
-
-# if __name__ == '__main__':
 
 main()

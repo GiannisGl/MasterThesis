@@ -28,9 +28,8 @@ lamda = 1
 log_iter = int(Nsamples/2)
 featsPretrained = True
 distPretrained = False
-curDatetime = datetime.datetime.now().isoformat();
-modelname = "LearnDistanceDistAlexNet%sDelta%iLamda%i" % (case, delta, lamda)
-log_name = "%s%sBatch%iLR%f_Iter%i" % (curDatetime, modelname, train_batch_size, learningRate, trainstep)
+modelname = "LearnDistanceDistLeNetNoNorm%sDelta%iLamda%i" % (case, delta, lamda)
+log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 # dataset loading
@@ -94,7 +93,6 @@ print('Finished Training')
 writer.close()
 
 # save weights
-save_model_weights(featsModel, model_folder, featsModelname, trainstep)
 save_model_weights(distModel, model_folder, distModelname, trainstep)
 print('saved models')
 

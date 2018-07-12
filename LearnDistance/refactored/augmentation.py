@@ -6,6 +6,7 @@ from scipy.ndimage import rotate
 # use transform
 
 def random_augmentation(imageBatch):
+    imageBatch = imageBatch.clone()
     if(rand()>=0.1):
         imageBatch = random_rotate(imageBatch)
     if(rand()>=0.1):
