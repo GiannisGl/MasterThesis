@@ -85,8 +85,9 @@ class DistanceLeNet5(nn.Module):
         ]))
 
         self.classifier = nn.Sequential(OrderedDict([
-            ('f6', nn.Linear(120, 1)),
-            ('relu6', nn.ReLU())
+            ('f6', nn.Linear(120, 84)),
+            ('relu6', nn.ReLU()),
+            ('f7b', nn.Linear(84, 1)),
         ]))
 
 
@@ -102,9 +103,9 @@ class DistanceLeNet5(nn.Module):
         return output
 
 def distanceModel(pretrained=False, **kwargs):
-    model = DistanceAlexNet(**kwargs)
+    model = DistanceLeNet5(**kwargs)
     if pretrained:
-        modelFilename = '../trainModels/models/modellenet5_Iter1.torchmodel'
+        modelFilename = '../../trainModels/models/modellenet5mnist_Iter6.torchmodel'
         pretrained = torch.load(modelFilename)
         pretrained_dict = pretrained.state_dict()
         model_dict = model.state_dict()

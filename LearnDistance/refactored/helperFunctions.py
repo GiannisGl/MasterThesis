@@ -20,6 +20,8 @@ def weights_init(module):
         module.weight.data.normal_(0.0, 0.1)
         module.bias.data.fill_(0)
 
+# torch.nn.init.xavier.normal
+
 
 def model_weights_random_gaussian(model):
     for module in model.modules():
@@ -51,6 +53,7 @@ def save_model_weights(model, model_folder, modelname, trainstep):
 
 
 def load_mnist(data_folder, batch_size, train=True, download=False):
+    # dont normalize
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
     set = torchvision.datasets.MNIST(root=data_folder, train=train, download=download, transform=transform)
     loader = torch.utils.data.DataLoader(set, batch_size=batch_size, shuffle=True, num_workers=0)

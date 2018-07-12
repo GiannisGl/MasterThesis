@@ -18,6 +18,7 @@ class distance_loss(torch.nn.Module):
             torch.set_default_tensor_type('torch.cuda.FloatTensor')
         
         # get features of inputs
+        ## copy inputs
         input1feats = featsModel.forward(input1)
         input1augm = random_augmentation(input1)
         input1augmfeats = featsModel.forward(input1augm)

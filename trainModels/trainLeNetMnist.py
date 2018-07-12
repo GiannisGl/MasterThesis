@@ -22,10 +22,9 @@ if torch.cuda.is_available():
 else:
     data_folder = "../data"
 
-
+# no normalization
 transform = transforms.Compose(
-    [transforms.ToTensor(),
-     transforms.Normalize((0.1307,), (0.3081,))])
+    [transforms.ToTensor()])
 
 data_train = MNIST(root=data_folder, train=True,
                                        download=False, transform=transform)
@@ -47,7 +46,7 @@ else:
 
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=2e-5)
+optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
 if torch.cuda.is_available():
     model = model.cuda()

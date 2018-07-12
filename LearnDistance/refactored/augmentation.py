@@ -2,6 +2,8 @@ import torch
 from numpy.random.mtrand import rand, randn, randint
 from scipy.ndimage import rotate
 
+# copy inputs
+# use transform
 
 def random_augmentation(imageBatch):
     if(rand()>=0.1):

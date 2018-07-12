@@ -87,6 +87,7 @@ for epoch in range(Nepochs):
         # print statistics
         running_loss += loss.item()
         if i % log_iter == log_iter-1:
+            # print images to tensorboard
             print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0
