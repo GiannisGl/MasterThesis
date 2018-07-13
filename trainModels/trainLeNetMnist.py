@@ -11,13 +11,14 @@ from tensorboardX import SummaryWriter
 case = "lenet5mnistNoNormAugmented"
 model_folder = "models"
 
-trainstep = 1
+trainstep = 2
 if torch.cuda.is_available():
     batch_size = 60000
 else:
     batch_size = 100
-Nepochs = 100
-learningRate = 1e-3
+Nepochs = 20
+learningRate = 1e-4
+weight_decay = 1e-6
 
 if torch.cuda.is_available():
     data_folder = "/var/tmp/ioannis/data"
@@ -46,7 +47,7 @@ log_name = "%sBatch%iLR%f_Iter%i" % (modelname, batch_size, learningRate, trains
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=learningRate)
+optimizer = optim.Adam(model.parameters(), lr=learningRate, weight_decay=weight_decay)
 
 def train(epoch):
     model.train()
@@ -77,10 +78,10 @@ def train(epoch):
         pred = output.data.max(1)[1]
         total_correct += pred.eq(labels.data.view_as(pred)).sum()
         if i % log_iter == 0:
-            writer.add_image(tag='image', img_tensor=images[1], global_step=Nepochs*60000+i)
-            writer.add_scalar(tag='loss', scalar_value=loss, global_step=Nepochs*60000+i)
+            writer.add_image(tag='image', img_tensor=images[1])
+            writer.add_scalar(tag='loss', scalar_value=loss)
             print('[%d, %5d] loss: %f, Accuracy: %f' %
-                  (epoch+1, i, running_loss/log_iter, float(total_correct)/log_iter))
+                  (epoch+1, i, running_loss/log_iter, float(total_correct)/(log_iter*batch_size)))
             running_loss = 0.0
             total_correct = 0
 
