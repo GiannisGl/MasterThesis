@@ -9,6 +9,7 @@ class distance_loss(torch.nn.Module):
         self.step = 0
         self.delta = delta
         self.lamda = lamda
+        self.nAug = 3
 
     def forward(self, input1, input2, input3, featsModel, distanceModel):
         self.step += 1
@@ -45,11 +46,6 @@ class distance_loss(torch.nn.Module):
         learnedDist22 = distanceModel(input2, input2)
         learnedDist33 = distanceModel(input3, input3)
 
-        # get learned distance of input and its augmentation (should be zero)
-        learnedDist11aug = distanceModel(input1, input1augm)
-        learnedDist22aug = distanceModel(input2, input2augm)
-        learnedDist33aug = distanceModel(input3, input3augm)
-
         # Features model terms
         featsLoss = 0
         # terms that preserve distance
@@ -58,14 +54,6 @@ class distance_loss(torch.nn.Module):
         featsLossDist += mseLoss(dist23, learnedDist23)
         self.writer.add_scalar(tag='featsLossDist', scalar_value=featsLossDist, global_step=self.step)
         featsLoss += featsLossDist
-        # terms that enforce clustering
-        featsLossClust = mseLoss(input1feats, input1augmfeats)
-        featsLossClust += mseLoss(input2feats, input2augmfeats)
-        featsLossClust += mseLoss(input3feats, input3augmfeats)
-        self.writer.add_scalar(tag='featsLossClust', scalar_value=featsLossClust, global_step=self.step)
-        featsLoss += featsLossClust
-
-        self.writer.add_scalar(tag='featsLoss', scalar_value=featsLoss, global_step=self.step)
 
         # Distance model terms
         distLoss = 0
@@ -96,13 +84,6 @@ class distance_loss(torch.nn.Module):
         self.writer.add_scalar(tag='distLossSymm', scalar_value=distLossSymm, global_step=self.step)
         distLoss += distLossSymm
 
-        # terms that enforce neighbourhood
-        distLossNeigh = mseLoss(learnedDist11aug, zero)
-        distLossNeigh += mseLoss(learnedDist22aug, zero)
-        distLossNeigh += mseLoss(learnedDist33aug, zero)
-        self.writer.add_scalar(tag='distLossNeigh', scalar_value=distLossNeigh, global_step=self.step)
-        distLoss += distLossNeigh
-
         # terms that enforce distance greater than delta
         distLossDelta = mseLoss(relu(delta - learnedDist12), zero)
         distLossDelta += mseLoss(relu(delta - learnedDist13), zero)
@@ -123,8 +104,36 @@ class distance_loss(torch.nn.Module):
         self.writer.add_scalar(tag='distLossIneq', scalar_value=distLossIneq, global_step=self.step)
         distLoss += distLossIneq
 
-        self.writer.add_scalar(tag='distLoss', scalar_value=distLoss, global_step=self.step)
 
+        # Augmentation terms
+        for i in range(self.nAug):
+            input1augm = augment_batch(input1)
+            input1augmfeats = featsModel.forward(input1augm)
+            input2augm = augment_batch(input2)
+            input2augmfeats = featsModel.forward(input2augm)
+            input3augm = augment_batch(input3)
+            input3augmfeats = featsModel.forward(input3augm)
+            # terms that enforce clustering
+            featsLossClust = mseLoss(input1feats, input1augmfeats)
+            featsLossClust += mseLoss(input2feats, input2augmfeats)
+            featsLossClust += mseLoss(input3feats, input3augmfeats)
+            self.writer.add_scalar(tag='featsLossClust', scalar_value=featsLossClust, global_step=self.step)
+            featsLoss += featsLossClust
+
+            # get learned distance of input and its augmentation (should be zero)
+            learnedDist11aug = distanceModel(input1, input1augm)
+            learnedDist22aug = distanceModel(input2, input2augm)
+            learnedDist33aug = distanceModel(input3, input3augm)
+
+            # terms that enforce neighbourhood
+            distLossNeigh = mseLoss(learnedDist11aug, zero)
+            distLossNeigh += mseLoss(learnedDist22aug, zero)
+            distLossNeigh += mseLoss(learnedDist33aug, zero)
+            self.writer.add_scalar(tag='distLossNeigh', scalar_value=distLossNeigh, global_step=self.step)
+            distLoss += distLossNeigh
+
+        self.writer.add_scalar(tag='featsLoss', scalar_value=featsLoss, global_step=self.step)
+        self.writer.add_scalar(tag='distLoss', scalar_value=distLoss, global_step=self.step)
         loss = featsLoss+self.lamda*distLoss
         self.writer.add_scalar(tag='loss', scalar_value=loss, global_step=self.step)
 

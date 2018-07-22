@@ -7,20 +7,19 @@ from helperFunctions import *
 
 import sys
 sys.path.insert(0, '../../trainModels')
-import lenet
 
-trainstep = 5
+trainstep = 2
 delta = 50
 lamda = 1
 Nsamples = 1000
 
 name = "LearnDistanceNoPretrainDistAlexNetAutoencoderDelta%iLamda%i_Iter%i" % (delta, lamda, trainstep)
 modelfolder = "trainedModels"
-modelfilename = '%s/featsModel%s' % (modelfolder, name)
-modelfile = torch.load(modelfilename+".state")
-featsModel = featsAE()
-featsModel.load_state_dict(modelfile)
-#model = load_model(model, modelname, model_folder, trainstep)
+# modelfilename = '%s/featsModel%s' % (modelfolder, name)
+# modelfile = torch.load(modelfilename+".state")
+# featsModel = featsLenetFull()
+# featsModel.load_state_dict(modelfile)
+model = load_model(featsLenetFull, modelfolder, modelname, trainstep)
 
 
 transform = transforms.Compose(
@@ -48,7 +47,7 @@ writerEmb = SummaryWriter(comment='%s_Iter%i_mnist_embedding_train' % (name, tra
 
 iterTrainLoader = iter(trainloader)
 input, label = next(iterTrainLoader)
-output = featsModel.encoder(input)
+output = featsModel.forward(input)
 output = torch.squeeze(output)
 print(output.size())
 #output = torch.cat((output.item(), torch.ones(len(output), 1)), 1)
@@ -64,7 +63,7 @@ writerEmb = SummaryWriter(comment='%s_Iter%i_mnist_embedding_test' % (name, trai
 
 iterTestLoader = iter(testloader)
 input, label = next(iterTestLoader)
-output = featsModel.encoder(input)
+output = featsModel.forward(input)
 output = torch.squeeze(output)
 print(output.size())
 #output = torch.cat((output.data, torch.ones(len(output), 1)), 1)

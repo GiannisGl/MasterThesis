@@ -68,7 +68,7 @@ def augment_batch(batch):
     batchSize = batch.shape[0]
     batchAug = torch.Tensor(batch.shape)
     for i in range(batchSize):
-        batchAug[i] = transformAug(batch[i])
+        batchAug[i] = transformAug(batch[i].cpu())
     return batchAug
 
 

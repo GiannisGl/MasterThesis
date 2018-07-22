@@ -165,7 +165,7 @@ class FeatsLeNet5Fix(nn.Module):
             ('f6', nn.Linear(120, 84)),
             ('relu6', nn.ReLU()),
             ('f7', nn.Linear(84, 10)),
-            ('sig7', nn.LogSoftmax())
+            ('sig7', nn.LogSoftmax(0))
         ]))
 
     def forward(self, img):

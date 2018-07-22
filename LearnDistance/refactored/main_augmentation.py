@@ -29,7 +29,7 @@ log_iter = int(Nsamples/2)
 featsPretrained = False
 distPretrained = False
 modelname = "LearnDistanceDistLeNetNoNorm%sDelta%iLamda%i" % (case, delta, lamda)
-log_name = "%s%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
+log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 # dataset loading
