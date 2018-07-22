@@ -1,12 +1,9 @@
 from collections import OrderedDict
-
 import torch
 import torch.nn as nn
-
+from helperFunctions import model_weights_random_xavier, initialize_pretrained_model
 import sys
 sys.path.insert(0, '../../trainModels')
-import lenet
-
 
 # __all__ = ['FeatsAlexNet']
 #
@@ -68,9 +65,7 @@ class FeatsLeNet5(nn.Module):
     tanh
     S4 - 16@4x4 (2x2 kernel, stride 2) Subsampling
     C5 - 120@1x1 (5x5 kernel)
-    F6 - 84
-    tanh
-    F7 - 10 (Output)
+    F7 - 3 (Output)
     """
     def __init__(self):
         super(FeatsLeNet5, self).__init__()
@@ -87,8 +82,7 @@ class FeatsLeNet5(nn.Module):
         ]))
 
         self.fc = nn.Sequential(OrderedDict([
-            ('f6b', nn.Linear(120, 3)),
-            ('sig6b', nn.LogSoftmax(0))
+            ('f6b', nn.Linear(120, 3))
         ]))
 
     def forward(self, img):
@@ -109,7 +103,7 @@ class FeatsLeNet5Full(nn.Module):
     # C5 - 120@1x1 (5x5 kernel)
     # F6 - 84
     # tanh
-    # F7 - 10 (Output)
+    # F7 - 3 (Output)
 
     def __init__(self):
         super(FeatsLeNet5Full, self).__init__()
@@ -208,51 +202,35 @@ class autoencoder(nn.Module):
 
 def featsAE(pretrained=False, **kwargs):
     model = autoencoder(**kwargs)
+    model_weights_random_xavier(model)
     if pretrained:
         modelFilename = '../../trainModels/models/modellenet5_Iter1.torchmodel'
-        pretrained = torch.load(modelFilename)
-        pretrained_dict = pretrained.state_dict()
-        model_dict = model.state_dict()
-        pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
-        model_dict.update(pretrained_dict)
-        model.load_state_dict(model_dict)
+        initialize_pretrained_model(model, modelFilename)
     return model
 
 
 def featsLenet(pretrained=False, **kwargs):
     model = FeatsLeNet5(**kwargs)
+    model_weights_random_xavier(model)
     if pretrained:
         modelFilename = '../../trainModels/models/modellenet5_Iter1.torchmodel'
-        pretrained = torch.load(modelFilename)
-        pretrained_dict = pretrained.state_dict()
-        model_dict = model.state_dict()
-        pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
-        model_dict.update(pretrained_dict)
-        model.load_state_dict(model_dict)
+        initialize_pretrained_model(model, modelFilename)
     return model
 
 
 def featsLenetFull(pretrained=False, **kwargs):
     model = FeatsLeNet5Full(**kwargs)
+    model_weights_random_xavier(model)
     if pretrained:
         modelFilename = '../../trainModels/models/modellenet5mnist_Iter6.torchmodel'
-        pretrained = torch.load(modelFilename)
-        pretrained_dict = pretrained.state_dict()
-        model_dict = model.state_dict()
-        pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
-        model_dict.update(pretrained_dict)
-        model.load_state_dict(model_dict)
+        initialize_pretrained_model(model, modelFilename)
     return model
 
 
 def featsLenetFix(pretrained=False, **kwargs):
     model = FeatsLeNet5Fix(**kwargs)
+    model_weights_random_xavier(model)
     if pretrained:
         modelFilename = '../../trainModels/models/modellenet5mnist_Iter6.torchmodel'
-        pretrained = torch.load(modelFilename)
-        pretrained_dict = pretrained.state_dict()
-        model_dict = model.state_dict()
-        pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
-        model_dict.update(pretrained_dict)
-        model.load_state_dict(model_dict)
+        initialize_pretrained_model(model, modelFilename)
     return model

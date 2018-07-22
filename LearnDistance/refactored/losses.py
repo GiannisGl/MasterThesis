@@ -264,13 +264,13 @@ class distance_loss_fixFeatsConv(torch.nn.Module):
 
         # get features of inputs
         input1feats = featsModel.convnet(input1)
-        input1augm = random_augmentation(input1)
+        input1augm = augment_batch(input1)
         input1augmfeats = featsModel.convnet(input1augm)
         input2feats = featsModel.convnet(input2)
-        input2augm = random_augmentation(input2)
+        input2augm = augment_batch(input2)
         input2augmfeats = featsModel.convnet(input2augm)
         input3feats = featsModel.convnet(input3)
-        input3augm = random_augmentation(input3)
+        input3augm = augment_batch(input3)
         input3augmfeats = featsModel.convnet(input3augm)
 
         # get L2 distance of the 3 pairs of features
@@ -308,6 +308,19 @@ class distance_loss_fixFeatsConv(torch.nn.Module):
 
         # Distance model terms
         distLoss = 0
+
+        #terms that enforce positivity
+        distLossPos = mseLoss(relu(-learnedDist11), zero)
+        distLossPos += mseLoss(relu(-learnedDist22), zero)
+        distLossPos += mseLoss(relu(-learnedDist12), zero)
+        distLossPos += mseLoss(relu(-learnedDist21), zero)
+        distLossPos += mseLoss(relu(-learnedDist13), zero)
+        distLossPos += mseLoss(relu(-learnedDist31), zero)
+        distLossPos += mseLoss(relu(-learnedDist23), zero)
+        distLossPos += mseLoss(relu(-learnedDist32), zero)
+        self.writer.add_scalar(tag='distLossPos', scalar_value=distLossPos, global_step=self.step)
+        distLoss += distLossPos
+
         # terms that enforce 0 distance for same inputs
         distLossId = mseLoss(learnedDist11, zero)
         distLossId += mseLoss(learnedDist22, zero)

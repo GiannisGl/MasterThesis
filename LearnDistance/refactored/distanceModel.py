@@ -1,5 +1,5 @@
 import torch.nn as nn
-import torch.utils.model_zoo as model_zoo
+from helperFunctions import model_weights_random_xavier, initialize_pretrained_model
 from torch import cat
 from collections import OrderedDict
 
@@ -75,18 +75,18 @@ class DistanceLeNet5(nn.Module):
 
         self.features = nn.Sequential(OrderedDict([
             ('c1', nn.Conv2d(2, 6, kernel_size=(5, 5))),
-            ('relu1', nn.ReLU()),
+            ('relu1', nn.ELU()),
             ('s2', nn.MaxPool2d(kernel_size=(2, 2), stride=2)),
             ('c3', nn.Conv2d(6, 16, kernel_size=(5, 5))),
-            ('relu3', nn.ReLU()),
+            ('relu3', nn.ELU()),
             ('s4', nn.MaxPool2d(kernel_size=(2, 2), stride=2)),
             ('c5', nn.Conv2d(16, 120, kernel_size=(4, 4))),
-            ('relu5', nn.ReLU())
+            ('relu5', nn.ELU())
         ]))
 
         self.classifier = nn.Sequential(OrderedDict([
             ('f6', nn.Linear(120, 84)),
-            ('relu6', nn.ReLU()),
+            ('relu6', nn.ELU()),
             ('f7b', nn.Linear(84, 1)),
             # no RELU
         ]))
@@ -105,12 +105,7 @@ class DistanceLeNet5(nn.Module):
 
 def distanceModel(pretrained=False, **kwargs):
     model = DistanceLeNet5(**kwargs)
+    model_weights_random_xavier(model)
     if pretrained:
-        modelFilename = '../../trainModels/models/modellenet5mnist_Iter6.torchmodel'
-        pretrained = torch.load(modelFilename)
-        pretrained_dict = pretrained.state_dict()
-        model_dict = model.state_dict()
-        pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
-        model_dict.update(pretrained_dict)
-        model.load_state_dict(model_dict)
+        initialize_pretrained_model
     return model
