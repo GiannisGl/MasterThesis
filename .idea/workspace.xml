@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="744af0ac-869a-460a-bf81-97755d885eff" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/LearnDistance/refactored/distanceModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/LearnDistance/refactored/distanceModel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnDistance/refactored/losses.py" beforeDir="false" afterPath="$PROJECT_DIR$/LearnDistance/refactored/losses.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" beforeDir="false" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_convlayersfixed.py" beforeDir="false" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_convlayersfixed.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py" beforeDir="false" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -55,11 +51,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main_fixFeats.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main_fixFeats.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="29" column="22" lean-forward="true" selection-start-line="29" selection-start-column="22" selection-end-line="30" selection-end-column="81" />
+            <state relative-caret-position="420">
+              <caret line="43" column="37" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -67,11 +63,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main_augmentation.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main_augmentation.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-315">
-              <caret line="49" column="66" selection-start-line="49" selection-start-column="66" selection-end-line="49" selection-end-column="66" />
+            <state>
+              <caret line="70" column="16" lean-forward="true" selection-start-line="70" selection-start-column="16" selection-end-line="70" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -100,8 +96,8 @@
       <file leaf-file-name="featuresModel.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1259">
-              <caret line="225" column="57" selection-start-line="225" selection-start-column="57" selection-end-line="225" selection-end-column="57" />
+            <state relative-caret-position="374">
+              <caret line="230" column="17" selection-start-line="230" selection-start-column="4" selection-end-line="230" selection-end-column="17" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -124,8 +120,8 @@
       <file leaf-file-name="losses.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/losses.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3030">
-              <caret line="322" selection-start-line="322" selection-end-line="322" />
+            <state relative-caret-position="1125">
+              <caret line="207" column="47" selection-start-line="207" selection-start-column="47" selection-end-line="207" selection-end-column="47" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -229,11 +225,11 @@
         <option value="$PROJECT_DIR$/LearnDistance/refactored/testAugmentations.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/distanceModel.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_convlayersfixed.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/losses.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py" />
       </list>
     </option>
   </component>
@@ -822,16 +818,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1259">
-          <caret line="225" column="57" selection-start-line="225" selection-start-column="57" selection-end-line="225" selection-end-column="57" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_pretrained.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="885">
@@ -839,6 +825,13 @@
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="70" column="16" lean-forward="true" selection-start-line="70" selection-start-column="16" selection-end-line="70" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -851,28 +844,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/losses.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3030">
-          <caret line="322" selection-start-line="322" selection-end-line="322" />
+        <state relative-caret-position="1125">
+          <caret line="207" column="47" selection-start-line="207" selection-start-column="47" selection-end-line="207" selection-end-column="47" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py">
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="29" column="22" lean-forward="true" selection-start-line="29" selection-start-column="22" selection-end-line="30" selection-end-column="81" />
+        <state relative-caret-position="374">
+          <caret line="230" column="17" selection-start-line="230" selection-start-column="4" selection-end-line="230" selection-end-column="17" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py">
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-315">
-          <caret line="49" column="66" selection-start-line="49" selection-start-column="66" selection-end-line="49" selection-end-column="66" />
+        <state relative-caret-position="420">
+          <caret line="43" column="37" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

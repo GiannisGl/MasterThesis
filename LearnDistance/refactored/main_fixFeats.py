@@ -4,7 +4,7 @@ import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
 from augmentation import *
-from featuresModel import featsLenet, featsLenetFull
+from featuresModel import featsLenet, featsLenetFull, featsLenetFix
 from distanceModel import distanceModel
 from helperFunctions import *
 from losses import *
@@ -41,7 +41,7 @@ train_loader = load_mnist(data_folder, train_batch_size, train=True, download=Fa
 
 # model loading
 featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsLenetFull, model_folder, featsModelname, trainstep-1, featsPretrained)
+featsModel = load_model(featsLenetFix, model_folder, featsModelname, trainstep-1, featsPretrained)
 distModelname = "distModel%s" % modelname
 distModel = load_model(distanceModel, model_folder, distModelname, trainstep-1, distPretrained)
 
