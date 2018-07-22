@@ -73,8 +73,7 @@ def augment_batch(batch):
 
 
 def initialize_pretrained_model(model, pretrained_filename):
-    pretrained_filename = '../../trainModels/models/modellenet5mnist_Iter6.torchmodel'
-    pretrained = torch.load(modelFilename)
+    pretrained = torch.load(pretrained_filename)
     pretrained_dict = pretrained.state_dict()
     model_dict = model.state_dict()
     pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}

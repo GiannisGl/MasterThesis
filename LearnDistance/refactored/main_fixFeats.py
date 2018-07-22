@@ -1,8 +1,5 @@
-import datetime
 import torch
 import torch.optim as optim
-import torchvision
-import torchvision.transforms as transforms
 from augmentation import *
 from featuresModel import featsLenet, featsLenetFull, featsLenetFix
 from distanceModel import distanceModel
