@@ -38,7 +38,7 @@ if torch.cuda.is_available():
     data_folder = "/var/tmp/ioannis/data"
 else:
     data_folder = "../../data"
-train_loader = load_mnist(data_folder, train_batch_size, train=True, download=False)
+train_loader = load_mnist(data_folder, train_batch_size, train=True, download=True)
 
 # model loading
 featsModelname = "featsModel%s" % modelname

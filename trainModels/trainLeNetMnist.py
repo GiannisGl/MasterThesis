@@ -8,10 +8,10 @@ from torch.utils.data import DataLoader
 from LearnDistance.refactored.helperFunctions import *
 from tensorboardX import SummaryWriter
 
-case = "lenet5mnistNoNormAugmented"
+case = "lenet5mnistNoNormAugmentedTest"
 model_folder = "models"
 
-trainstep = 2
+trainstep = 1
 if torch.cuda.is_available():
     batch_size = 60000
 else:
@@ -27,7 +27,7 @@ else:
 
 # no normalization
 transform = transforms.Compose(
-    [transforms.RandomAffine(degrees=10, translate=[0.2,0.2], shear=5),
+    [transforms.RandomAffine(degrees=10, translate=[0.2, 0.2], shear=5),
         transforms.ToTensor()])
 
 data_train = MNIST(root=data_folder, train=True,

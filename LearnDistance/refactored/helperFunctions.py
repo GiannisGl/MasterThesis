@@ -54,8 +54,19 @@ def save_model_weights(model, model_folder, modelname, trainstep):
 
 
 def load_mnist(data_folder, batch_size, train=True, download=False):
-    # dont normalize
+    # don't normalize
     transform = transforms.Compose([transforms.ToTensor()])
-    set = torchvision.datasets.MNIST(root=data_folder, train=train, download=download, transform=transform)
-    loader = torch.utils.data.DataLoader(set, batch_size=batch_size, shuffle=True, num_workers=0)
+    dataset = torchvision.datasets.MNIST(root=data_folder, train=train, download=download, transform=transform)
+    loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=0)
     return loader
+
+
+def augment_batch(batch):
+    transformAug = transforms.Compose(
+        [transforms.ToPILImage(), transforms.RandomAffine(scale=[0.8, 1.1], degrees=10, translate=[0.2, 0.2], shear=10),
+         transforms.ToTensor()])
+    batchSize = batch.shape[0]
+    batchAug = torch.Tensor(batch.shape)
+    for i in range(batchSize):
+        batchAug[i] = transformAug(batch[i])
+    return batchAug

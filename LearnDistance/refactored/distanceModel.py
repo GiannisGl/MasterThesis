@@ -88,6 +88,7 @@ class DistanceLeNet5(nn.Module):
             ('f6', nn.Linear(120, 84)),
             ('relu6', nn.ReLU()),
             ('f7b', nn.Linear(84, 1)),
+            # no RELU
         ]))
 
 
