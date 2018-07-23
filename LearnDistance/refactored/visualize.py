@@ -13,13 +13,14 @@ delta = 50
 lamda = 1
 Nsamples = 1000
 
-name = "LearnDistanceNoPretrainDistAlexNetAutoencoderDelta%iLamda%i_Iter%i" % (delta, lamda, trainstep)
+name = "LearnDistanceNoPretrainDistAlexNetAutoencoderDelta%iLamda%i" % (delta, lamda)
 modelfolder = "trainedModels"
 # modelfilename = '%s/featsModel%s' % (modelfolder, name)
 # modelfile = torch.load(modelfilename+".state")
 # featsModel = featsLenetFull()
 # featsModel.load_state_dict(modelfile)
-model = load_model(featsLenetFull, modelfolder, modelname, trainstep)
+featsModel = load_model(featsLenetFull, modelfolder, modelname, trainstep)
+featsModel.cpu()
 
 
 transform = transforms.Compose(

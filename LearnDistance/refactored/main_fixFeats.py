@@ -20,7 +20,7 @@ else:
     Nepochs = 1
 Nsamples = int(60000 / (3*train_batch_size))
 learningRate = 1e-3
-delta = 50
+delta = 5
 lamda = 1
 log_iter = int(Nsamples/2)
 featsPretrained = False
@@ -38,7 +38,7 @@ train_loader = load_mnist(data_folder, train_batch_size, train=True, download=Fa
 
 # model loading
 featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsLenetFix, model_folder, featsModelname, trainstep-1, featsPretrained)
+featsModel = load_model(featsLenetFix, model_folder, featsModelname, 0, featsPretrained)
 distModelname = "distModel%s" % modelname
 distModel = load_model(distanceModel, model_folder, distModelname, trainstep-1, distPretrained)
 
@@ -47,7 +47,7 @@ distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate)
 
 # writer and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
-criterion = distance_loss_fixFeats(writer, delta, lamda)
+criterion = distance_loss_convFeats(writer, delta, lamda, nAug)
 
 # Training
 print('Start Training')

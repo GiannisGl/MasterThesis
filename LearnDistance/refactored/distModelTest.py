@@ -10,9 +10,7 @@ import lenet
 trainstep = 1
 delta = 50
 lamda = 1
-batch_size = 500
-learningRate = 1e-3
-modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%iBatch%iLR%f" % (delta, lamda, batch_size, learningRate)
+modelName = "LearnDistanceNoPretrainDistAlexNetAugmentationDelta%iLamda%i" % (delta, lamda)
 
 modelfolder = "trainedModels"
 
@@ -27,11 +25,8 @@ model.load_state_dict(modelfile)
 batchSize = 100
 Nsamples = 2
 
-
-
 transform = transforms.Compose(
-    [transforms.ToTensor(),
-     transforms.Normalize((0, 0, 0), (1, 1, 1))])
+    [transforms.ToTensor()])
 
 if torch.cuda.is_available():
     datafolder = "/var/tmp/ioannis/data"

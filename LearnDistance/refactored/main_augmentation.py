@@ -12,7 +12,8 @@ from tensorboardX import SummaryWriter
 
 
 # parameters and names
-case = "Augmentation"
+nAug = 10
+case = "Augmentation%i" % nAug
 trainstep = 1
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -23,7 +24,7 @@ else:
     Nepochs = 1
 Nsamples = int(60000 / (3*train_batch_size))
 learningRate = 1e-3
-delta = 50
+delta = 5
 lamda = 1
 log_iter = int(Nsamples/2)
 featsPretrained = False
@@ -51,7 +52,7 @@ distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate)
 
 # writer and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
-criterion = distance_loss(writer, delta, lamda)
+criterion = distance_loss(writer, delta, lamda, nAug)
 
 # Training
 print('Start Training')
