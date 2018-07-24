@@ -12,8 +12,9 @@ trainstep = 2
 delta = 50
 lamda = 1
 Nsamples = 1000
+nAug = 10
 
-name = "LearnDistanceNoPretrainDistAlexNetAutoencoderDelta%iLamda%i" % (delta, lamda)
+modelname = "featsModelLearnDistanceDistLeNetNoNormAugmentation%iDelta%iLamda%i" % (nAug, delta, lamda)
 modelfolder = "trainedModels"
 # modelfilename = '%s/featsModel%s' % (modelfolder, name)
 # modelfile = torch.load(modelfilename+".state")
@@ -44,7 +45,7 @@ testloader = torch.utils.data.DataLoader(testset, batch_size=Nsamples,
 
 # Train Visualization
 print('visualizing..')
-writerEmb = SummaryWriter(comment='%s_Iter%i_mnist_embedding_train' % (name, trainstep))
+writerEmb = SummaryWriter(comment='%s_Iter%i_mnist_embedding_train' % (modelname, trainstep))
 
 iterTrainLoader = iter(trainloader)
 input, label = next(iterTrainLoader)
@@ -60,7 +61,7 @@ writerEmb.close()
 
 # Test Visualization
 print('visualizing..')
-writerEmb = SummaryWriter(comment='%s_Iter%i_mnist_embedding_test' % (name, trainstep))
+writerEmb = SummaryWriter(comment='%s_Iter%i_mnist_embedding_test' % (modelname, trainstep))
 
 iterTestLoader = iter(testloader)
 input, label = next(iterTestLoader)

@@ -1,11 +1,14 @@
 import torch
 from helperFunctions import augment_batch
+from tensorboardX import SummaryWriter
 
 class distance_loss(torch.nn.Module):
 
-    def __init__(self, writer, delta, lamda, nAug=3):
+    def __init__(self, writer, writer_img, log_iter, delta, lamda, nAug=3):
         super(distance_loss, self).__init__()
         self.writer = writer
+        self.writer_img = writer_img
+        self.log_iter = log_iter
         self.step = 0
         self.delta = delta
         self.lamda = lamda
@@ -130,6 +133,7 @@ class distance_loss(torch.nn.Module):
             distLossNeigh += mseLoss(learnedDist22aug, zero)
             distLossNeigh += mseLoss(learnedDist33aug, zero)
 
+
         self.writer.add_scalar(tag='featsLossClust', scalar_value=featsLossClust, global_step=self.step)
         featsLoss += featsLossClust
         self.writer.add_scalar(tag='distLossNeigh', scalar_value=distLossNeigh, global_step=self.step)
@@ -139,6 +143,14 @@ class distance_loss(torch.nn.Module):
         self.writer.add_scalar(tag='distLoss', scalar_value=distLoss, global_step=self.step)
         loss = featsLoss+self.lamda*distLoss
         self.writer.add_scalar(tag='loss', scalar_value=loss, global_step=self.step)
+
+        if self.step % self.log_iter ==1:
+            self.writer_img.add_image(tag= 'input1', img_tensor=input1[1])
+            self.writer_img.add_image(tag= 'input1augm', img_tensor=input1augm[1])
+            self.writer_img.add_image(tag= 'input2', img_tensor=input2[1])
+            self.writer_img.add_image(tag= 'input2augm', img_tensor=input2augm[1])
+            self.writer_img.add_image(tag= 'input3', img_tensor=input3[1])
+            self.writer_img.add_image(tag= 'input3augm', img_tensor=input3augm[1])
 
         return loss
 

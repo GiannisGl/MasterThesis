@@ -1,8 +1,5 @@
-import datetime
 import torch
 import torch.optim as optim
-import torchvision
-import torchvision.transforms as transforms
 from augmentation import *
 from featuresModel import featsLenet, featsLenetFull
 from distanceModel import distanceModel
@@ -12,7 +9,7 @@ from tensorboardX import SummaryWriter
 
 
 # parameters and names
-case = "lastNlayers"
+case = "convlayersfixed"
 trainstep = 1
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -23,13 +20,14 @@ else:
     Nepochs = 1
 Nsamples = int(60000 / (3*train_batch_size))
 learningRate = 1e-3
-delta = 50
+delta = 5
 lamda = 1
 log_iter = int(Nsamples/2)
 featsPretrained = True
 distPretrained = False
-modelname = "LearnDistancePretrainDistAlexNet%sDelta%iLamda%i" % (case, delta, lamda)
-log_name = "%s%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
+nAug = 10
+modelname = "LearnDistanceDistLeNetNoNorm%sDelta%iLamda%i" % (case, delta, lamda)
+log_name = "%snAug%iBatch%iLR%f_Iter%i" % (modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 # dataset loading
@@ -48,12 +46,13 @@ distModelname = "distModel%s" % modelname
 distModel = load_model(distanceModel, model_folder, distModelname, trainstep-1, distPretrained)
 
 # optimizers
-featsOptimizer = optim.Adam(featsModel.fc.parameters(), lr=learningRate, weight_decay=0.00001)
-distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate, weight_decay=0.00001)
+featsOptimizer = optim.Adam(featsModel.fc.parameters(), lr=learningRate)
+distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate,)
 
-# writer and criterion
+# writers and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
-criterion = distance_loss(writer, delta, lamda)
+writer_img = SummaryWriter(comment='%s_images' % (log_name))
+criterion = distance_loss(writer, writer_img, log_iter, delta, lamda, nAug)
 
 # Training
 print('Start Training')

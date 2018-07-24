@@ -8,7 +8,6 @@ from featuresModel import featsLenet, featsLenetFull
 from distanceModel import distanceModel
 from helperFunctions import *
 from losses import *
-from tensorboardX import SummaryWriter
 
 
 # parameters and names
@@ -22,7 +21,7 @@ if torch.cuda.is_available():
 else:
     train_batch_size = 10
     Nepochs = 1
-Nsamples = int(60000 / (3*train_batch_size))
+Nsamples = int(600 / (3*train_batch_size))
 learningRate = 1e-3
 delta = 5
 lamda = 1
@@ -50,9 +49,10 @@ distModel = load_model(distanceModel, model_folder, distModelname, trainstep-1, 
 featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate)
 distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate)
 
-# writer and criterion
+# writers and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
-criterion = distance_loss(writer, delta, lamda, nAug)
+writer_img = SummaryWriter(comment='%s_images' % (log_name))
+criterion = distance_loss(writer, writer_img, log_iter, delta, lamda, nAug)
 
 # Training
 print('Start Training')
@@ -93,9 +93,6 @@ for epoch in range(Nepochs):
             running_loss = 0.0
 
 print('Finished Training')
-
-
-writer.close()
 
 # save weights
 save_model_weights(featsModel, model_folder, featsModelname, trainstep)

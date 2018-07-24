@@ -7,3 +7,5 @@ setup
 */trainedModels
 **.pyc
 **/runs
+**/runs*
+LearnDistance/runs_refactored_preBug
