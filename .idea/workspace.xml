@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="744af0ac-869a-460a-bf81-97755d885eff" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_convlayersfixed.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_convlayersfixed.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -51,7 +48,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main_fixFeats.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main_fixFeats.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1228">
@@ -83,11 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="featuresModel.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="featuresModel.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="166" column="37" lean-forward="false" selection-start-line="166" selection-start-column="37" selection-end-line="166" selection-end-column="37" />
+            <state relative-caret-position="414">
+              <caret line="165" column="26" lean-forward="false" selection-start-line="165" selection-start-column="26" selection-end-line="165" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -223,10 +220,10 @@
         <option value="$PROJECT_DIR$/LearnDistance/refactored/distModelTest.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/losses.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_convlayersfixed.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py" />
       </list>
     </option>
   </component>
@@ -1055,14 +1052,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="166" column="37" lean-forward="false" selection-start-line="166" selection-start-column="37" selection-end-line="166" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
@@ -1087,6 +1076,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1228">
           <caret line="92" column="0" lean-forward="false" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="165" column="26" lean-forward="false" selection-start-line="165" selection-start-column="26" selection-end-line="165" selection-end-column="26" />
           <folding />
         </state>
       </provider>
