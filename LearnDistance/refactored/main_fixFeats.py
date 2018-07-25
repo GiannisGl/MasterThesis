@@ -47,7 +47,8 @@ distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate)
 
 # writer and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
-criterion = distance_loss_convFeats(writer, delta, lamda, nAug)
+writer_img = SummaryWriter(comment='%s_images' % (log_name))
+criterion = distance_loss(writer, writer_img, log_iter, delta, lamda, nAug)
 
 # Training
 print('Start Training')
@@ -86,8 +87,8 @@ for epoch in range(Nepochs):
 
 print('Finished Training')
 
-
 writer.close()
+writer_img.close()
 
 # save weights
 save_model_weights(distModel, model_folder, distModelname, trainstep)

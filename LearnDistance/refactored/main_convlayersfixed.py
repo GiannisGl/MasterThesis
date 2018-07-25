@@ -93,8 +93,8 @@ for epoch in range(Nepochs):
 
 print('Finished Training')
 
-
 writer.close()
+writer_img.close()
 
 # save weights
 save_model_weights(featsModel, model_folder, featsModelname, trainstep)
