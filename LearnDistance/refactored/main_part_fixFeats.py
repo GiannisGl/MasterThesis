@@ -1,4 +1,7 @@
 import torch
+import torchvision
+import torchvision.transforms as transforms
+from torch.utils.data.sampler import SubsetRandomSampler
 import torch.optim as optim
 from augmentation import *
 from featuresModel import featsLenet, featsLenetFull, featsLenetFix
@@ -9,22 +12,23 @@ from tensorboardX import SummaryWriter
 
 
 # parameters and names
-case = "fixFeats"
+case = "partFixFeats"
 trainstep = 1
-nAug = 10
+nAug = 5
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
-    train_batch_size = 1000
+    train_batch_size = 300
     Nepochs = 50
 else:
-    train_batch_size = 10
+    train_batch_size = 50
     Nepochs = 1
-Nsamples = int(60000 / (3*train_batch_size))
+Nsamples = 900
+Nbatches = Nsamples/(train_batch_size*3)
 learningRate = 1e-3
 delta = 5
 lamda = 1
 log_iter = int(Nsamples/2)
-featsPretrained = False
+featsPretrained = True
 distPretrained = False
 modelname = "LearnDistanceDistLeNetNoNorm%sDelta%iLamda%i" % (case, delta, lamda)
 log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
@@ -35,7 +39,11 @@ if torch.cuda.is_available():
     data_folder = "/var/tmp/ioannis/data"
 else:
     data_folder = "../../data"
-train_loader = load_mnist(data_folder, train_batch_size, train=True, download=False)
+
+transform = transforms.Compose([transforms.ToTensor()])
+train_dataset = torchvision.datasets.MNIST(root=data_folder, train=True, download=False, transform=transform)
+train_sampler = SubsetRandomSampler(range(Nsamples))
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=train_batch_size, sampler=train_sampler, shuffle=False, num_workers=0)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
@@ -49,7 +57,7 @@ distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate)
 # writer and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
 writer_img = SummaryWriter(comment='%s_images' % (log_name))
-criterion = distance_loss(writer, writer_img, log_iter, delta, lamda, nAug)
+criterion = distance_loss_part(writer, writer_img, log_iter, delta, lamda, nAug)
 
 # Training
 print('Start Training')
@@ -58,7 +66,7 @@ for epoch in range(Nepochs):
 
     running_loss = 0.0
     iterTrainLoader = iter(train_loader)
-    for i in range(Nsamples):
+    for i in range(Nbatches):
         input1, _ = next(iterTrainLoader)
         input2, _ = next(iterTrainLoader)
         input3, _ = next(iterTrainLoader)

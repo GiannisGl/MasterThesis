@@ -2,6 +2,61 @@ import torch
 from helperFunctions import augment_batch
 from tensorboardX import SummaryWriter
 
+class distance_loss_part(torch.nn.Module):
+    def __init__(self, writer, writer_img, log_iter, delta, lamda, nAug=3):
+        super(distance_loss, self).__init__()
+        self.writer = writer
+        self.writer_img = writer_img
+        self.log_iter = log_iter
+        self.step = 0
+        self.delta = delta
+        self.lamda = lamda
+        self.nAug = nAug
+
+    def forward(self, input1, input2, input3, featsModel, distanceModel):
+        self.step += 1
+        delta = torch.ones(input1.size()[0]) * self.delta
+        zero = torch.zeros(input1.size()[0])
+        if torch.cuda.is_available():
+            torch.set_default_tensor_type('torch.cuda.FloatTensor')
+
+        # get features of inputs
+        ## copy inputs
+        input1feats = featsModel.forward(input1)
+        input2feats = featsModel.forward(input2)
+        input3feats = featsModel.forward(input3)
+
+        # get L2 distance of the 3 pairs of features
+        dist12 = mse_batch_loss(input1feats, input2feats)
+        dist13 = mse_batch_loss(input1feats, input3feats)
+        dist23 = mse_batch_loss(input2feats, input3feats)
+
+        # get learned distance of the 3 pairs both ways
+        learnedDist12 = distanceModel(input1, input2)
+        learnedDist21 = distanceModel(input2, input1)
+        learnedDist13 = distanceModel(input1, input3)
+        learnedDist31 = distanceModel(input3, input1)
+        learnedDist23 = distanceModel(input2, input3)
+        learnedDist32 = distanceModel(input3, input2)
+        learnedDist11 = distanceModel(input1, input1)
+        learnedDist22 = distanceModel(input2, input2)
+        learnedDist33 = distanceModel(input3, input3)
+
+        # Features model terms
+        featsLoss = 0
+        # terms that preserve distance
+        featsLossDist = mseLoss(dist12, learnedDist12)
+        featsLossDist += mseLoss(dist13, learnedDist13)
+        featsLossDist += mseLoss(dist23, learnedDist23)
+        self.writer.add_scalar(tag='featsLossDist', scalar_value=featsLossDist, global_step=self.step)
+        featsLoss += featsLossDist
+
+        loss = featsLoss + self.lamda * distLoss
+        self.writer.add_scalar(tag='loss', scalar_value=loss, global_step=self.step)
+
+        return loss
+
+
 class distance_loss(torch.nn.Module):
 
     def __init__(self, writer, writer_img, log_iter, delta, lamda, nAug=3):
