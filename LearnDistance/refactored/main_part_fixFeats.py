@@ -27,7 +27,7 @@ Nbatches = int(Nsamples/(train_batch_size*3))
 learningRate = 1e-3
 delta = 5
 lamda = 1
-log_iter = int(Nsamples/2)
+log_iter = 1
 featsPretrained = True
 distPretrained = False
 modelname = "LearnDistanceDistLeNetNoNorm%sDelta%iLamda%i" % (case, delta, lamda)
@@ -42,7 +42,7 @@ else:
 
 transform = transforms.Compose([transforms.ToTensor()])
 train_dataset = torchvision.datasets.MNIST(root=data_folder, train=True, download=False, transform=transform)
-train_subset = torch.utils.data.dataset.Subset(dataset, range(Nsamples))
+train_subset = torch.utils.data.dataset.Subset(train_dataset, range(Nsamples))
 train_loader = torch.utils.data.DataLoader(train_subset, batch_size=train_batch_size, shuffle=False, num_workers=0)
 
 # model loading
