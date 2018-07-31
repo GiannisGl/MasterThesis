@@ -18,7 +18,7 @@ nAug = 5
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
     train_batch_size = 300
-    Nepochs = 50
+    Nepochs = 2000
 else:
     train_batch_size = 50
     Nepochs = 1

@@ -46,8 +46,11 @@ class distance_loss_part(torch.nn.Module):
         featsLoss = 0
         # terms that preserve distance
         featsLossDist = mseLoss(dist12, learnedDist12)
+        featsLossDist += mseLoss(dist12, learnedDist21)
         featsLossDist += mseLoss(dist13, learnedDist13)
+        featsLossDist += mseLoss(dist13, learnedDist31)
         featsLossDist += mseLoss(dist23, learnedDist23)
+        featsLossDist += mseLoss(dist23, learnedDist32)
         self.writer.add_scalar(tag='featsLossDist', scalar_value=featsLossDist, global_step=self.step)
         featsLoss += featsLossDist
 
@@ -65,6 +68,13 @@ class distance_loss_part(torch.nn.Module):
         distLossPos += mseLoss(relu(-learnedDist32), zero)
         self.writer.add_scalar(tag='distLossPos', scalar_value=distLossPos, global_step=self.step)
         distLoss += distLossPos
+
+        # terms that enforce 0 distance for same inputs
+        distLossId = mseLoss(learnedDist11, zero)
+        distLossId += mseLoss(learnedDist22, zero)
+        distLossId += mseLoss(learnedDist33, zero)
+        self.writer.add_scalar(tag='distLossId', scalar_value=distLossId, global_step=self.step)
+        distLoss += distLossId
 
         loss = featsLoss+self.lamda*distLoss
         self.writer.add_scalar(tag='loss', scalar_value=loss, global_step=self.step)
