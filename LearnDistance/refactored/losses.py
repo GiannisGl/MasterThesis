@@ -4,7 +4,7 @@ from tensorboardX import SummaryWriter
 
 class distance_loss_part(torch.nn.Module):
     def __init__(self, writer, writer_img, log_iter, delta, lamda, nAug=3):
-        super(distance_loss, self).__init__()
+        super(distance_loss_part, self).__init__()
         self.writer = writer
         self.writer_img = writer_img
         self.log_iter = log_iter
@@ -51,7 +51,7 @@ class distance_loss_part(torch.nn.Module):
         self.writer.add_scalar(tag='featsLossDist', scalar_value=featsLossDist, global_step=self.step)
         featsLoss += featsLossDist
 
-        loss = featsLoss + self.lamda * distLoss
+        loss = featsLoss
         self.writer.add_scalar(tag='loss', scalar_value=loss, global_step=self.step)
 
         return loss

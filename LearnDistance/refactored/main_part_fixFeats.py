@@ -23,7 +23,7 @@ else:
     train_batch_size = 50
     Nepochs = 1
 Nsamples = 900
-Nbatches = Nsamples/(train_batch_size*3)
+Nbatches = int(Nsamples/(train_batch_size*3))
 learningRate = 1e-3
 delta = 5
 lamda = 1
@@ -42,8 +42,8 @@ else:
 
 transform = transforms.Compose([transforms.ToTensor()])
 train_dataset = torchvision.datasets.MNIST(root=data_folder, train=True, download=False, transform=transform)
-train_sampler = SubsetRandomSampler(range(Nsamples))
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=train_batch_size, sampler=train_sampler, shuffle=False, num_workers=0)
+train_subset = torch.utils.data.dataset.Subset(dataset, range(Nsamples))
+train_loader = torch.utils.data.DataLoader(train_subset, batch_size=train_batch_size, shuffle=False, num_workers=0)
 
 # model loading
 featsModelname = "featsModel%s" % modelname

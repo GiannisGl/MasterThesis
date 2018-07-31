@@ -18,8 +18,8 @@ else:
 
 transform = transforms.Compose([transforms.ToTensor()])
 dataset = torchvision.datasets.MNIST(root=data_folder, train=True, download=False, transform=transform)
-sampler = SubsetRandomSampler(range(Nsamples))
-loader = torch.utils.data.DataLoader(dataset, batch_size=train_batch_size, sampler=sampler, shuffle=False, num_workers=0)
+subset = torch.utils.data.dataset.Subset(dataset, range(Nsamples))
+loader = torch.utils.data.DataLoader(subset, batch_size=train_batch_size, shuffle=False, num_workers=0)
 
 # Training
 iterLoader = iter(loader)
