@@ -3,7 +3,7 @@ from helperFunctions import augment_batch
 from tensorboardX import SummaryWriter
 
 class distance_loss_part(torch.nn.Module):
-    def __init__(self, writer, writer_img, log_iter, delta, lamda, nAug=3):
+    def __init__(self, writer, log_iter, delta, lamda, nAug=3):
         super(distance_loss_part, self).__init__()
         self.writer = writer
         self.writer_img = writer_img
@@ -75,6 +75,13 @@ class distance_loss_part(torch.nn.Module):
         distLossId += mseLoss(learnedDist33, zero)
         self.writer.add_scalar(tag='distLossId', scalar_value=distLossId, global_step=self.step)
         distLoss += distLossId
+
+        # terms that enforce symmetry
+        distLossSymm = mseLoss(learnedDist12, learnedDist21)
+        distLossSymm += mseLoss(learnedDist13, learnedDist31)
+        distLossSymm += mseLoss(learnedDist23, learnedDist32)
+        self.writer.add_scalar(tag='distLossSymm', scalar_value=distLossSymm, global_step=self.step)
+        distLoss += distLossSymm
 
         loss = featsLoss+self.lamda*distLoss
         self.writer.add_scalar(tag='loss', scalar_value=loss, global_step=self.step)
