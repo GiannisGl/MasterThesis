@@ -6,7 +6,6 @@ class distance_loss_part(torch.nn.Module):
     def __init__(self, writer, log_iter, delta, lamda, nAug=3):
         super(distance_loss_part, self).__init__()
         self.writer = writer
-        self.writer_img = writer_img
         self.log_iter = log_iter
         self.step = 0
         self.delta = delta
@@ -82,6 +81,16 @@ class distance_loss_part(torch.nn.Module):
         distLossSymm += mseLoss(learnedDist23, learnedDist32)
         self.writer.add_scalar(tag='distLossSymm', scalar_value=distLossSymm, global_step=self.step)
         distLoss += distLossSymm
+
+        # terms that enforce triangular inequality
+        distLossIneq = mseLoss(relu(learnedDist13 - learnedDist12 - learnedDist23), zero)
+        distLossIneq += mseLoss(relu(learnedDist31 - learnedDist32 - learnedDist21), zero)
+        distLossIneq += mseLoss(relu(learnedDist23 - learnedDist21 - learnedDist13), zero)
+        distLossIneq += mseLoss(relu(learnedDist32 - learnedDist31 - learnedDist12), zero)
+        distLossIneq += mseLoss(relu(learnedDist12 - learnedDist13 - learnedDist32), zero)
+        distLossIneq += mseLoss(relu(learnedDist21 - learnedDist23 - learnedDist31), zero)
+        self.writer.add_scalar(tag='distLossIneq', scalar_value=distLossIneq, global_step=self.step)
+        distLoss += distLossIneq
 
         loss = featsLoss+self.lamda*distLoss
         self.writer.add_scalar(tag='loss', scalar_value=loss, global_step=self.step)
