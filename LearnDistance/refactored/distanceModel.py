@@ -87,7 +87,7 @@ class DistanceLeNet5(nn.Module):
         self.classifier = nn.Sequential(OrderedDict([
             ('f6', nn.Linear(120, 84)),
             ('relu6', nn.ELU()),
-            ('f7b', nn.Linear(84, 1)),
+            ('f7b', nn.Linear(84, 1))
             # no RELU
         ]))
 

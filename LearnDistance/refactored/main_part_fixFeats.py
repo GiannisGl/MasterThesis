@@ -43,7 +43,7 @@ else:
 transform = transforms.Compose([transforms.ToTensor()])
 train_dataset = torchvision.datasets.MNIST(root=data_folder, train=True, download=False, transform=transform)
 train_subset = torch.utils.data.dataset.Subset(train_dataset, range(Nsamples))
-train_loader = torch.utils.data.DataLoader(train_subset, batch_size=train_batch_size, shuffle=False, num_workers=0)
+train_loader = torch.utils.data.DataLoader(train_subset, batch_size=train_batch_size, shuffle=True, num_workers=0)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
@@ -61,9 +61,9 @@ criterion = distance_loss_part(writer, log_iter, delta, lamda, nAug)
 # Training
 print('Start Training')
 print(log_name)
+running_loss = 0.0
 for epoch in range(Nepochs):
 
-    running_loss = 0.0
     iterTrainLoader = iter(train_loader)
     for i in range(Nbatches):
         input1, _ = next(iterTrainLoader)

@@ -1,6 +1,5 @@
 import torch
 from helperFunctions import augment_batch
-from tensorboardX import SummaryWriter
 
 class distance_loss_part(torch.nn.Module):
     def __init__(self, writer, log_iter, delta, lamda, nAug=3):
@@ -15,7 +14,6 @@ class distance_loss_part(torch.nn.Module):
     def forward(self, input1, input2, input3, featsModel, distanceModel):
         self.step += 1
         delta = torch.ones(input1.size()[0]) * self.delta
-        zero = torch.zeros(input1.size()[0])
         if torch.cuda.is_available():
             torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
@@ -57,40 +55,40 @@ class distance_loss_part(torch.nn.Module):
         distLoss = 0
 
         # terms that enforce positivity
-        distLossPos = mseLoss(relu(-learnedDist11), zero)
-        distLossPos += mseLoss(relu(-learnedDist22), zero)
-        distLossPos += mseLoss(relu(-learnedDist12), zero)
-        distLossPos += mseLoss(relu(-learnedDist21), zero)
-        distLossPos += mseLoss(relu(-learnedDist13), zero)
-        distLossPos += mseLoss(relu(-learnedDist31), zero)
-        distLossPos += mseLoss(relu(-learnedDist23), zero)
-        distLossPos += mseLoss(relu(-learnedDist32), zero)
+        distLossPos = mseLoss(relu(-learnedDist11))
+        distLossPos += mseLoss(relu(-learnedDist22))
+        distLossPos += mseLoss(relu(-learnedDist12))
+        distLossPos += mseLoss(relu(-learnedDist21))
+        distLossPos += mseLoss(relu(-learnedDist13))
+        distLossPos += mseLoss(relu(-learnedDist31))
+        distLossPos += mseLoss(relu(-learnedDist23))
+        distLossPos += mseLoss(relu(-learnedDist32))
         self.writer.add_scalar(tag='distLossPos', scalar_value=distLossPos, global_step=self.step)
         distLoss += distLossPos
 
-        # terms that enforce 0 distance for same inputs
-        distLossId = mseLoss(learnedDist11, zero)
-        distLossId += mseLoss(learnedDist22, zero)
-        distLossId += mseLoss(learnedDist33, zero)
-        self.writer.add_scalar(tag='distLossId', scalar_value=distLossId, global_step=self.step)
-        distLoss += distLossId
-
-        # terms that enforce symmetry
-        distLossSymm = mseLoss(learnedDist12, learnedDist21)
-        distLossSymm += mseLoss(learnedDist13, learnedDist31)
-        distLossSymm += mseLoss(learnedDist23, learnedDist32)
-        self.writer.add_scalar(tag='distLossSymm', scalar_value=distLossSymm, global_step=self.step)
-        distLoss += distLossSymm
-
-        # terms that enforce triangular inequality
-        distLossIneq = mseLoss(relu(learnedDist13 - learnedDist12 - learnedDist23), zero)
-        distLossIneq += mseLoss(relu(learnedDist31 - learnedDist32 - learnedDist21), zero)
-        distLossIneq += mseLoss(relu(learnedDist23 - learnedDist21 - learnedDist13), zero)
-        distLossIneq += mseLoss(relu(learnedDist32 - learnedDist31 - learnedDist12), zero)
-        distLossIneq += mseLoss(relu(learnedDist12 - learnedDist13 - learnedDist32), zero)
-        distLossIneq += mseLoss(relu(learnedDist21 - learnedDist23 - learnedDist31), zero)
-        self.writer.add_scalar(tag='distLossIneq', scalar_value=distLossIneq, global_step=self.step)
-        distLoss += distLossIneq
+        # # terms that enforce 0 distance for same inputs
+        # distLossId = mseLoss(learnedDist11)
+        # distLossId += mseLoss(learnedDist22)
+        # distLossId += mseLoss(learnedDist33)
+        # self.writer.add_scalar(tag='distLossId', scalar_value=distLossId, global_step=self.step)
+        # distLoss += distLossId
+        #
+        # # terms that enforce symmetry
+        # distLossSymm = mseLoss(learnedDist12, learnedDist21)
+        # distLossSymm += mseLoss(learnedDist13, learnedDist31)
+        # distLossSymm += mseLoss(learnedDist23, learnedDist32)
+        # self.writer.add_scalar(tag='distLossSymm', scalar_value=distLossSymm, global_step=self.step)
+        # distLoss += distLossSymm
+        #
+        # # terms that enforce triangular inequality
+        # distLossIneq = mseLoss(relu(learnedDist13 - learnedDist12 - learnedDist23))
+        # distLossIneq += mseLoss(relu(learnedDist31 - learnedDist32 - learnedDist21))
+        # distLossIneq += mseLoss(relu(learnedDist23 - learnedDist21 - learnedDist13))
+        # distLossIneq += mseLoss(relu(learnedDist32 - learnedDist31 - learnedDist12))
+        # distLossIneq += mseLoss(relu(learnedDist12 - learnedDist13 - learnedDist32))
+        # distLossIneq += mseLoss(relu(learnedDist21 - learnedDist23 - learnedDist31))
+        # self.writer.add_scalar(tag='distLossIneq', scalar_value=distLossIneq, global_step=self.step)
+        # distLoss += distLossIneq
 
         loss = featsLoss+self.lamda*distLoss
         self.writer.add_scalar(tag='loss', scalar_value=loss, global_step=self.step)
@@ -152,21 +150,21 @@ class distance_loss(torch.nn.Module):
         distLoss = 0
 
         #terms that enforce positivity
-        distLossPos = mseLoss(relu(-learnedDist11), zero)
-        distLossPos += mseLoss(relu(-learnedDist22), zero)
-        distLossPos += mseLoss(relu(-learnedDist12), zero)
-        distLossPos += mseLoss(relu(-learnedDist21), zero)
-        distLossPos += mseLoss(relu(-learnedDist13), zero)
-        distLossPos += mseLoss(relu(-learnedDist31), zero)
-        distLossPos += mseLoss(relu(-learnedDist23), zero)
-        distLossPos += mseLoss(relu(-learnedDist32), zero)
+        distLossPos = mseLoss(relu(-learnedDist11))
+        distLossPos += mseLoss(relu(-learnedDist22))
+        distLossPos += mseLoss(relu(-learnedDist12))
+        distLossPos += mseLoss(relu(-learnedDist21))
+        distLossPos += mseLoss(relu(-learnedDist13))
+        distLossPos += mseLoss(relu(-learnedDist31))
+        distLossPos += mseLoss(relu(-learnedDist23))
+        distLossPos += mseLoss(relu(-learnedDist32))
         self.writer.add_scalar(tag='distLossPos', scalar_value=distLossPos, global_step=self.step)
         distLoss += distLossPos
 
         # terms that enforce 0 distance for same inputs
-        distLossId = mseLoss(learnedDist11, zero)
-        distLossId += mseLoss(learnedDist22, zero)
-        distLossId += mseLoss(learnedDist33, zero)
+        distLossId = mseLoss(learnedDist11)
+        distLossId += mseLoss(learnedDist22)
+        distLossId += mseLoss(learnedDist33)
         self.writer.add_scalar(tag='distLossId', scalar_value=distLossId, global_step=self.step)
         distLoss += distLossId
 
@@ -178,22 +176,22 @@ class distance_loss(torch.nn.Module):
         distLoss += distLossSymm
 
         # terms that enforce distance greater than delta
-        distLossDelta = mseLoss(relu(delta - learnedDist12), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist13), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist23), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist21), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist32), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist31), zero)
+        distLossDelta = mseLoss(relu(delta - learnedDist12))
+        distLossDelta += mseLoss(relu(delta - learnedDist13))
+        distLossDelta += mseLoss(relu(delta - learnedDist23))
+        distLossDelta += mseLoss(relu(delta - learnedDist21))
+        distLossDelta += mseLoss(relu(delta - learnedDist32))
+        distLossDelta += mseLoss(relu(delta - learnedDist31))
         self.writer.add_scalar(tag='distLossDelta', scalar_value=distLossDelta, global_step=self.step)
         distLoss += distLossDelta
 
         # terms that enforce triangular inequality
-        distLossIneq = mseLoss(relu(learnedDist13 - learnedDist12 - learnedDist23), zero)
-        distLossIneq += mseLoss(relu(learnedDist31 - learnedDist32 - learnedDist21), zero)
-        distLossIneq += mseLoss(relu(learnedDist23 - learnedDist21 - learnedDist13), zero)
-        distLossIneq += mseLoss(relu(learnedDist32 - learnedDist31 - learnedDist12), zero)
-        distLossIneq += mseLoss(relu(learnedDist12 - learnedDist13 - learnedDist32), zero)
-        distLossIneq += mseLoss(relu(learnedDist21 - learnedDist23 - learnedDist31), zero)
+        distLossIneq = mseLoss(relu(learnedDist13 - learnedDist12 - learnedDist23))
+        distLossIneq += mseLoss(relu(learnedDist31 - learnedDist32 - learnedDist21))
+        distLossIneq += mseLoss(relu(learnedDist23 - learnedDist21 - learnedDist13))
+        distLossIneq += mseLoss(relu(learnedDist32 - learnedDist31 - learnedDist12))
+        distLossIneq += mseLoss(relu(learnedDist12 - learnedDist13 - learnedDist32))
+        distLossIneq += mseLoss(relu(learnedDist21 - learnedDist23 - learnedDist31))
         self.writer.add_scalar(tag='distLossIneq', scalar_value=distLossIneq, global_step=self.step)
         distLoss += distLossIneq
 
@@ -222,12 +220,12 @@ class distance_loss(torch.nn.Module):
             learnedDist3aug3 = distanceModel(input3augm, input3)
 
             # terms that enforce neighbourhood
-            distLossNeigh += mseLoss(learnedDist11aug, zero)
-            distLossNeigh += mseLoss(learnedDist22aug, zero)
-            distLossNeigh += mseLoss(learnedDist33aug, zero)
-            distLossNeigh += mseLoss(learnedDist1aug1, zero)
-            distLossNeigh += mseLoss(learnedDist2aug2, zero)
-            distLossNeigh += mseLoss(learnedDist3aug3, zero)
+            distLossNeigh += mseLoss(learnedDist11aug)
+            distLossNeigh += mseLoss(learnedDist22aug)
+            distLossNeigh += mseLoss(learnedDist33aug)
+            distLossNeigh += mseLoss(learnedDist1aug1)
+            distLossNeigh += mseLoss(learnedDist2aug2)
+            distLossNeigh += mseLoss(learnedDist3aug3)
 
 
         self.writer.add_scalar(tag='featsLossClust', scalar_value=featsLossClust, global_step=self.step)
@@ -308,21 +306,21 @@ class distance_loss_convFeats(torch.nn.Module):
         distLoss = 0
 
         # terms that enforce positivity
-        distLossPos = mseLoss(relu(-learnedDist11), zero)
-        distLossPos += mseLoss(relu(-learnedDist22), zero)
-        distLossPos += mseLoss(relu(-learnedDist12), zero)
-        distLossPos += mseLoss(relu(-learnedDist21), zero)
-        distLossPos += mseLoss(relu(-learnedDist13), zero)
-        distLossPos += mseLoss(relu(-learnedDist31), zero)
-        distLossPos += mseLoss(relu(-learnedDist23), zero)
-        distLossPos += mseLoss(relu(-learnedDist32), zero)
+        distLossPos = mseLoss(relu(-learnedDist11))
+        distLossPos += mseLoss(relu(-learnedDist22))
+        distLossPos += mseLoss(relu(-learnedDist12))
+        distLossPos += mseLoss(relu(-learnedDist21))
+        distLossPos += mseLoss(relu(-learnedDist13))
+        distLossPos += mseLoss(relu(-learnedDist31))
+        distLossPos += mseLoss(relu(-learnedDist23))
+        distLossPos += mseLoss(relu(-learnedDist32))
         self.writer.add_scalar(tag='distLossPos', scalar_value=distLossPos, global_step=self.step)
         distLoss += distLossPos
 
         # terms that enforce 0 distance for same inputs
-        distLossId = mseLoss(learnedDist11, zero)
-        distLossId += mseLoss(learnedDist22, zero)
-        distLossId += mseLoss(learnedDist33, zero)
+        distLossId = mseLoss(learnedDist11)
+        distLossId += mseLoss(learnedDist22)
+        distLossId += mseLoss(learnedDist33)
         self.writer.add_scalar(tag='distLossId', scalar_value=distLossId, global_step=self.step)
         distLoss += distLossId
 
@@ -334,22 +332,22 @@ class distance_loss_convFeats(torch.nn.Module):
         distLoss += distLossSymm
 
         # terms that enforce distance greater than delta
-        distLossDelta = mseLoss(relu(delta - learnedDist12), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist13), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist23), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist21), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist32), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist31), zero)
+        distLossDelta = mseLoss(relu(delta - learnedDist12))
+        distLossDelta += mseLoss(relu(delta - learnedDist13))
+        distLossDelta += mseLoss(relu(delta - learnedDist23))
+        distLossDelta += mseLoss(relu(delta - learnedDist21))
+        distLossDelta += mseLoss(relu(delta - learnedDist32))
+        distLossDelta += mseLoss(relu(delta - learnedDist31))
         self.writer.add_scalar(tag='distLossDelta', scalar_value=distLossDelta, global_step=self.step)
         distLoss += distLossDelta
 
         # terms that enforce triangular inequality
-        distLossIneq = mseLoss(relu(learnedDist13 - learnedDist12 - learnedDist23), zero)
-        distLossIneq += mseLoss(relu(learnedDist31 - learnedDist32 - learnedDist21), zero)
-        distLossIneq += mseLoss(relu(learnedDist23 - learnedDist21 - learnedDist13), zero)
-        distLossIneq += mseLoss(relu(learnedDist32 - learnedDist31 - learnedDist12), zero)
-        distLossIneq += mseLoss(relu(learnedDist12 - learnedDist13 - learnedDist32), zero)
-        distLossIneq += mseLoss(relu(learnedDist21 - learnedDist23 - learnedDist31), zero)
+        distLossIneq = mseLoss(relu(learnedDist13 - learnedDist12 - learnedDist23))
+        distLossIneq += mseLoss(relu(learnedDist31 - learnedDist32 - learnedDist21))
+        distLossIneq += mseLoss(relu(learnedDist23 - learnedDist21 - learnedDist13))
+        distLossIneq += mseLoss(relu(learnedDist32 - learnedDist31 - learnedDist12))
+        distLossIneq += mseLoss(relu(learnedDist12 - learnedDist13 - learnedDist32))
+        distLossIneq += mseLoss(relu(learnedDist21 - learnedDist23 - learnedDist31))
         self.writer.add_scalar(tag='distLossIneq', scalar_value=distLossIneq, global_step=self.step)
         distLoss += distLossIneq
 
@@ -374,9 +372,9 @@ class distance_loss_convFeats(torch.nn.Module):
             learnedDist33aug = distanceModel(input3, input3augm)
 
             # terms that enforce neighbourhood
-            distLossNeigh += mseLoss(learnedDist11aug, zero)
-            distLossNeigh += mseLoss(learnedDist22aug, zero)
-            distLossNeigh += mseLoss(learnedDist33aug, zero)
+            distLossNeigh += mseLoss(learnedDist11aug)
+            distLossNeigh += mseLoss(learnedDist22aug)
+            distLossNeigh += mseLoss(learnedDist33aug)
 
         self.writer.add_scalar(tag='featsLossClust', scalar_value=featsLossClust, global_step=self.step)
         featsLoss += featsLossClust
@@ -454,21 +452,21 @@ class distance_loss_fixFeatsConv(torch.nn.Module):
         distLoss = 0
 
         #terms that enforce positivity
-        distLossPos = mseLoss(relu(-learnedDist11), zero)
-        distLossPos += mseLoss(relu(-learnedDist22), zero)
-        distLossPos += mseLoss(relu(-learnedDist12), zero)
-        distLossPos += mseLoss(relu(-learnedDist21), zero)
-        distLossPos += mseLoss(relu(-learnedDist13), zero)
-        distLossPos += mseLoss(relu(-learnedDist31), zero)
-        distLossPos += mseLoss(relu(-learnedDist23), zero)
-        distLossPos += mseLoss(relu(-learnedDist32), zero)
+        distLossPos = mseLoss(relu(-learnedDist11))
+        distLossPos += mseLoss(relu(-learnedDist22))
+        distLossPos += mseLoss(relu(-learnedDist12))
+        distLossPos += mseLoss(relu(-learnedDist21))
+        distLossPos += mseLoss(relu(-learnedDist13))
+        distLossPos += mseLoss(relu(-learnedDist31))
+        distLossPos += mseLoss(relu(-learnedDist23))
+        distLossPos += mseLoss(relu(-learnedDist32))
         self.writer.add_scalar(tag='distLossPos', scalar_value=distLossPos, global_step=self.step)
         distLoss += distLossPos
 
         # terms that enforce 0 distance for same inputs
-        distLossId = mseLoss(learnedDist11, zero)
-        distLossId += mseLoss(learnedDist22, zero)
-        distLossId += mseLoss(learnedDist33, zero)
+        distLossId = mseLoss(learnedDist11)
+        distLossId += mseLoss(learnedDist22)
+        distLossId += mseLoss(learnedDist33)
         self.writer.add_scalar(tag='distLossId', scalar_value=distLossId, global_step=self.step)
         distLoss += distLossId
 
@@ -480,22 +478,22 @@ class distance_loss_fixFeatsConv(torch.nn.Module):
         distLoss += distLossSymm
 
         # terms that enforce distance greater than delta
-        distLossDelta = mseLoss(relu(delta - learnedDist12), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist13), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist23), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist21), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist32), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist31), zero)
+        distLossDelta = mseLoss(relu(delta - learnedDist12))
+        distLossDelta += mseLoss(relu(delta - learnedDist13))
+        distLossDelta += mseLoss(relu(delta - learnedDist23))
+        distLossDelta += mseLoss(relu(delta - learnedDist21))
+        distLossDelta += mseLoss(relu(delta - learnedDist32))
+        distLossDelta += mseLoss(relu(delta - learnedDist31))
         self.writer.add_scalar(tag='distLossDelta', scalar_value=distLossDelta, global_step=self.step)
         distLoss += distLossDelta
 
         # terms that enforce triangular inequality
-        distLossIneq = mseLoss(relu(learnedDist13 - learnedDist12 - learnedDist23), zero)
-        distLossIneq += mseLoss(relu(learnedDist31 - learnedDist32 - learnedDist21), zero)
-        distLossIneq += mseLoss(relu(learnedDist23 - learnedDist21 - learnedDist13), zero)
-        distLossIneq += mseLoss(relu(learnedDist32 - learnedDist31 - learnedDist12), zero)
-        distLossIneq += mseLoss(relu(learnedDist12 - learnedDist13 - learnedDist32), zero)
-        distLossIneq += mseLoss(relu(learnedDist21 - learnedDist23 - learnedDist31), zero)
+        distLossIneq = mseLoss(relu(learnedDist13 - learnedDist12 - learnedDist23))
+        distLossIneq += mseLoss(relu(learnedDist31 - learnedDist32 - learnedDist21))
+        distLossIneq += mseLoss(relu(learnedDist23 - learnedDist21 - learnedDist13))
+        distLossIneq += mseLoss(relu(learnedDist32 - learnedDist31 - learnedDist12))
+        distLossIneq += mseLoss(relu(learnedDist12 - learnedDist13 - learnedDist32))
+        distLossIneq += mseLoss(relu(learnedDist21 - learnedDist23 - learnedDist31))
         self.writer.add_scalar(tag='distLossIneq', scalar_value=distLossIneq, global_step=self.step)
         distLoss += distLossIneq
 
@@ -598,9 +596,9 @@ class distance_AE_loss(torch.nn.Module):
         ## Distance model terms
         distLoss = 0.0
         # terms that enforce 0 distance for same inputs
-        distLossId = mseLoss(learnedDist11, zero)
-        distLossId += mseLoss(learnedDist22, zero)
-        distLossId += mseLoss(learnedDist33, zero)
+        distLossId = mseLoss(learnedDist11)
+        distLossId += mseLoss(learnedDist22)
+        distLossId += mseLoss(learnedDist33)
         self.writer.add_scalar(tag='distLossId', scalar_value=distLossId, global_step=self.step)
         distLoss += distLossId
 
@@ -612,22 +610,22 @@ class distance_AE_loss(torch.nn.Module):
         distLoss += distLossSymm
 
         # terms that enforce distance greater than delta
-        distLossDelta = mseLoss(relu(delta - learnedDist12), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist13), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist23), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist21), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist32), zero)
-        distLossDelta += mseLoss(relu(delta - learnedDist31), zero)
+        distLossDelta = mseLoss(relu(delta - learnedDist12))
+        distLossDelta += mseLoss(relu(delta - learnedDist13))
+        distLossDelta += mseLoss(relu(delta - learnedDist23))
+        distLossDelta += mseLoss(relu(delta - learnedDist21))
+        distLossDelta += mseLoss(relu(delta - learnedDist32))
+        distLossDelta += mseLoss(relu(delta - learnedDist31))
         self.writer.add_scalar(tag='distLossDelta', scalar_value=distLossDelta, global_step=self.step)
         distLoss += distLossDelta
 
         # terms that enforce triangular inequality
-        distLossIneq = mseLoss(relu(learnedDist13 - learnedDist12 - learnedDist23), zero)
-        distLossIneq += mseLoss(relu(learnedDist31 - learnedDist32 - learnedDist21), zero)
-        distLossIneq += mseLoss(relu(learnedDist23 - learnedDist21 - learnedDist13), zero)
-        distLossIneq += mseLoss(relu(learnedDist32 - learnedDist31 - learnedDist12), zero)
-        distLossIneq += mseLoss(relu(learnedDist12 - learnedDist13 - learnedDist32), zero)
-        distLossIneq += mseLoss(relu(learnedDist21 - learnedDist23 - learnedDist31), zero)
+        distLossIneq = mseLoss(relu(learnedDist13 - learnedDist12 - learnedDist23))
+        distLossIneq += mseLoss(relu(learnedDist31 - learnedDist32 - learnedDist21))
+        distLossIneq += mseLoss(relu(learnedDist23 - learnedDist21 - learnedDist13))
+        distLossIneq += mseLoss(relu(learnedDist32 - learnedDist31 - learnedDist12))
+        distLossIneq += mseLoss(relu(learnedDist12 - learnedDist13 - learnedDist32))
+        distLossIneq += mseLoss(relu(learnedDist21 - learnedDist23 - learnedDist31))
         self.writer.add_scalar(tag='distLossIneq', scalar_value=distLossIneq, global_step=self.step)
         distLoss += distLossIneq
 
@@ -642,7 +640,9 @@ class distance_AE_loss(torch.nn.Module):
 def mse_batch(input):
     return torch.mean(torch.pow(flatten(input),2),1)
 
-def mseLoss(input, target):
+def mseLoss(input, target=None):
+    if target is None:
+        target = torch.zeros(input.size())
     return torch.mean(torch.pow(flatten(input)-flatten(target),2))
 
 def mse_batch_loss(input, target):
