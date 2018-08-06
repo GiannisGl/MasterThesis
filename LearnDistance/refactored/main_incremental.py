@@ -10,7 +10,7 @@ from losses import *
 
 # parameters and names
 nAug = 1
-case = "Augmentation%i" % nAug
+case = "partLoss"
 trainstep = 1
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -24,12 +24,12 @@ else:
     log_iter = 10
     Nepochs = 1
 learningRate = 1e-3
-delta = 5
+delta = 500
 lamda = 1
 featsPretrained = False
 distPretrained = False
 modelname = "LearnDistanceDistLeNetNoNorm%sDelta%iLamda%i" % (case, delta, lamda)
-log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
+log_name = "%sAug%iBatch%iLR%f_Iter%i" % (modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 # dataset loading
