@@ -91,14 +91,14 @@ class distance_loss_part(torch.nn.Module):
         # distLoss += distLossIneq
         # terms that enforce distance greater than delta
 
-        # distLossDelta = mseLoss(relu(delta - learnedDist12))
-        # distLossDelta += mseLoss(relu(delta - learnedDist13))
-        # distLossDelta += mseLoss(relu(delta - learnedDist23))
-        # distLossDelta += mseLoss(relu(delta - learnedDist21))
-        # distLossDelta += mseLoss(relu(delta - learnedDist32))
-        # distLossDelta += mseLoss(relu(delta - learnedDist31))
-        # self.writer.add_scalar(tag='distLossDelta', scalar_value=distLossDelta, global_step=self.step)
-        # distLoss += distLossDelta
+        distLossDelta = mseLoss(relu(delta - learnedDist12))
+        distLossDelta += mseLoss(relu(delta - learnedDist13))
+        distLossDelta += mseLoss(relu(delta - learnedDist23))
+        distLossDelta += mseLoss(relu(delta - learnedDist21))
+        distLossDelta += mseLoss(relu(delta - learnedDist32))
+        distLossDelta += mseLoss(relu(delta - learnedDist31))
+        self.writer.add_scalar(tag='distLossDelta', scalar_value=distLossDelta, global_step=self.step)
+        distLoss += distLossDelta
 
 
         # # Augmentation terms

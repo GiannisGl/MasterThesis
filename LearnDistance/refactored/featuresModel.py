@@ -5,56 +5,6 @@ from helperFunctions import model_weights_random_xavier, initialize_pretrained_m
 import sys
 sys.path.insert(0, '../../trainModels')
 
-# __all__ = ['FeatsAlexNet']
-#
-#
-# model_urls = {
-#     'alexnet': 'https://download.pytorch.org/trainedModels/alexnet-owt-4df8aa71.pth',
-# }
-
-
-class FeatsAlexNet(nn.Module):
-
-    def __init__(self):
-        super(FeatsAlexNet, self).__init__()
-        self.features = nn.Sequential(
-            nn.Conv2d(1, 64, kernel_size=5, stride=2, padding=2),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=3, stride=2),
-            nn.Conv2d(64, 192, kernel_size=5, padding=2),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=3, stride=1),
-            nn.Conv2d(192, 384, kernel_size=3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(384, 256, kernel_size=3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(256, 256, kernel_size=3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=3, stride=2),
-        )
-
-        self.classifier = nn.Sequential(
-            nn.Dropout(),
-            nn.Linear(256 * 1 * 1, 100),
-            nn.ReLU(inplace=True),
-            nn.Dropout(),
-            nn.Linear(100, 25),
-            nn.ReLU(inplace=True),
-            nn.Linear(25, 2),
-        )
-
-    def forward(self, x):
-        x = self.features(x)
-        x = x.view(x.size(0), 256 * 1 * 1)
-        x = self.classifier(x)
-        return x
-
-    # def forward(self, input1, input2):
-    #     input = cat((input1,input2),0)
-    #     output = self.forward_once(input)
-    #     return output
-
-
 class FeatsLeNet5(nn.Module):
     """
     Input - 1x28x28
@@ -214,7 +164,7 @@ def featsLenet(pretrained=False, **kwargs):
     model = FeatsLeNet5(**kwargs)
     model_weights_random_xavier(model)
     if pretrained:
-        modelFilename = '../../trainModels/models/modellenet5_Iter1.torchmodel'
+        modelFilename = '../../trainModels/models/modellenet5mnist_Iter6.torchmodel'
         initialize_pretrained_model(model, modelFilename)
     return model
 
@@ -235,3 +185,5 @@ def featsLenetFix(pretrained=False, **kwargs):
         modelFilename = '../../trainModels/models/modellenet5mnist_Iter6.torchmodel'
         initialize_pretrained_model(model, modelFilename)
     return model
+
+

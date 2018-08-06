@@ -2,24 +2,24 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 from tensorboardX import SummaryWriter
-from featuresModel import featsLenet, featsLenetFull, featsAE
+from featuresModel import featsLenetFix, featsLenetFull, featsAE
 from helperFunctions import *
 
 
-trainstep = 1
+trainstep = 24
 delta = 50
 lamda = 1
-Nsamples = 1000
+Nsamples = 2000
 nAug = 10
 
-modelname = "featsModelLearnDistanceDistLeNetNoNormAugmentation10Delta50Lamda1"
+modelname = "featsModelLearnDistanceDistLeNetNoNormpartFixFeatsDelta5Lamda1distFix"
 # modelname = "featsModelLearnDistanceDistLeNetNoNormAugmentation%iDelta%iLamda%i" % (nAug, delta, lamda)
 modelfolder = "trainedModels"
 # modelfilename = '%s/featsModel%s' % (modelfolder, name)
 # modelfile = torch.load(modelfilename+".state")
 # featsModel = featsLenetFull()
 # featsModel.load_state_dict(modelfile)
-featsModel = load_model(featsLenetFull, modelfolder, modelname, trainstep)
+featsModel = load_model(featsLenetFull, modelfolder, modelname, trainstep, pretrained=False)
 featsModel.cpu()
 
 
@@ -33,15 +33,16 @@ else:
 
 transform = transforms.Compose([transforms.ToTensor()])
 train_dataset = torchvision.datasets.MNIST(root=datafolder, train=True, download=False, transform=transform)
-train_subset = torch.utils.data.dataset.Subset(train_dataset, range(Nsamples))
-trainloader = torch.utils.data.DataLoader(train_subset, batch_size=Nsamples, shuffle=True, num_workers=0)
+train_subset = torch.utils.data.dataset.Subset(train_dataset, range(Nsamples, 2*Nsamples))
+trainloader = torch.utils.data.DataLoader(train_subset, batch_size=Nsamples, shuffle=False, num_workers=0)
 
 test_dataset = torchvision.datasets.MNIST(root=datafolder, train=False, download=False, transform=transform)
-test_subset = torch.utils.data.dataset.Subset(test_dataset, range(Nsamples))
-testloader = torch.utils.data.DataLoader(test_subset, batch_size=Nsamples, shuffle=True, num_workers=0)
+test_subset = torch.utils.data.dataset.Subset(test_dataset, range(Nsamples, 2*Nsamples))
+testloader = torch.utils.data.DataLoader(test_subset, batch_size=Nsamples, shuffle=False, num_workers=0)
 
 
 # Train Visualization
+global_step = 3
 print('visualizing..')
 writerEmb = SummaryWriter(comment='%s_Iter%i_mnist_embedding_train' % (modelname, trainstep))
 
@@ -53,7 +54,7 @@ print(output.size())
 #output = torch.cat((output.item(), torch.ones(len(output), 1)), 1)
 # input = input.to(torch.device("cpu"))
 # save embedding
-writerEmb.add_embedding(output, metadata=label.data, label_img=input.data)
+writerEmb.add_embedding(output, label_img=input, global_step=2*global_step)
 writerEmb.close()
 
 
@@ -69,5 +70,5 @@ print(output.size())
 #output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
 # input = input.to(torch.device("cpu"))
 # save embedding
-writerEmb.add_embedding(output, metadata=label.data, label_img=input.data)
+writerEmb.add_embedding(output, label_img=input, global_step=2*global_step+1)
 writerEmb.close()
