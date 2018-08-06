@@ -132,10 +132,10 @@ class distance_loss_part(torch.nn.Module):
         #     distLossNeigh += mseLoss(learnedDist2aug2)
         #     distLossNeigh += mseLoss(learnedDist3aug3)
 
-        self.writer.add_scalar(tag='featsLossClust', scalar_value=featsLossClust, global_step=self.step)
-        featsLoss += featsLossClust
-        self.writer.add_scalar(tag='distLossNeigh', scalar_value=distLossNeigh, global_step=self.step)
-        distLoss += distLossNeigh
+        # self.writer.add_scalar(tag='featsLossClust', scalar_value=featsLossClust, global_step=self.step)
+        # featsLoss += featsLossClust
+        # self.writer.add_scalar(tag='distLossNeigh', scalar_value=distLossNeigh, global_step=self.step)
+        # distLoss += distLossNeigh
 
         self.writer.add_scalar(tag='featsLoss', scalar_value=featsLoss, global_step=self.step)
         self.writer.add_scalar(tag='distLoss', scalar_value=distLoss, global_step=self.step)
