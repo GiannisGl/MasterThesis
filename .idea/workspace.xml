@@ -2,16 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="744af0ac-869a-460a-bf81-97755d885eff" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LearnDistance/refactored/testTensorBoard.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LearnDistance/refactored/embeddings/testTensorBoard.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LearnDistance/refactored/embeddings/visualize.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Master Thesis Project.iml" afterPath="$PROJECT_DIR$/.idea/Master Thesis Project.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/losses.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/losses.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_AE.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_AE.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_convlayersfixed.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_convlayersfixed.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_pretrained.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_pretrained.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/testTensorBoard.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/testTensorBoard.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,9 +25,9 @@
     <SUITE FILE_PATH="coverage/Master_Thesis_Project$main__3_.coverage" NAME="main (3) Coverage Results" MODIFIED="1525691526595" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TwoChannelsLearnDistance" />
     <SUITE FILE_PATH="coverage/Master_Thesis_Project$Unnamed.coverage" NAME="trainLeNetMnist.py Coverage Results" MODIFIED="1531386862246" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/trainModels" />
     <SUITE FILE_PATH="coverage/Master_Thesis_Project$main__2_.coverage" NAME="main (2) Coverage Results" MODIFIED="1529701268517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
-    <SUITE FILE_PATH="coverage/Master_Thesis_Project$visualize.coverage" NAME="visualize Coverage Results" MODIFIED="1533541175637" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
-    <SUITE FILE_PATH="coverage/Master_Thesis_Project$testTensorBoard.coverage" NAME="testTensorBoard Coverage Results" MODIFIED="1533541591864" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
-    <SUITE FILE_PATH="coverage/Master_Thesis_Project$main_augmentation.coverage" NAME="main_augmentation Coverage Results" MODIFIED="1532429973871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
+    <SUITE FILE_PATH="coverage/Master_Thesis_Project$testTensorBoard.coverage" NAME="testTensorBoard Coverage Results" MODIFIED="1533546553614" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
+    <SUITE FILE_PATH="coverage/Master_Thesis_Project$visualize.coverage" NAME="visualize Coverage Results" MODIFIED="1533549033239" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
+    <SUITE FILE_PATH="coverage/Master_Thesis_Project$main_augmentation.coverage" NAME="main_augmentation Coverage Results" MODIFIED="1533549059971" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
     <SUITE FILE_PATH="coverage/Master_Thesis_Project$main_autoencoder.coverage" NAME="main_autoencoder Coverage Results" MODIFIED="1529704414204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
     <SUITE FILE_PATH="coverage/Master Thesis Project$main.coverage" NAME="main Coverage Results" MODIFIED="1521650801501" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Master_Thesis_Project$visualize__3_.coverage" NAME="visualize (3) Coverage Results" MODIFIED="1526986972785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance" />
@@ -55,7 +55,7 @@
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_part_fixFeats.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="378">
-              <caret line="45" column="114" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="45" selection-end-column="114" />
+              <caret line="45" column="114" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="45" selection-end-column="114" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -66,8 +66,8 @@
       <file leaf-file-name="losses.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/losses.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1836">
-              <caret line="103" column="8" lean-forward="false" selection-start-line="103" selection-start-column="8" selection-end-line="103" selection-end-column="8" />
+            <state relative-caret-position="288">
+              <caret line="103" column="7" lean-forward="true" selection-start-line="103" selection-start-column="7" selection-end-line="132" selection-end-column="56" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -75,12 +75,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="featuresModel.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="featuresModel.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="233" column="18" lean-forward="true" selection-start-line="233" selection-start-column="18" selection-end-line="233" selection-end-column="18" />
-              <folding />
+            <state relative-caret-position="72">
+              <caret line="4" column="10" lean-forward="false" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
+              <folding>
+                <element signature="e#0#35#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -98,8 +100,8 @@
       <file leaf-file-name="main_augmentation.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-138">
-              <caret line="50" column="58" lean-forward="false" selection-start-line="50" selection-start-column="58" selection-end-line="51" selection-end-column="60" />
+            <state relative-caret-position="378">
+              <caret line="27" column="9" lean-forward="true" selection-start-line="27" selection-start-column="9" selection-end-line="27" selection-end-column="9" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -108,13 +110,21 @@
         </entry>
       </file>
       <file leaf-file-name="visualize.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/visualize.py">
+        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/embeddings/visualize.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="846">
-              <caret line="47" column="115" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-793">
+              <caret line="3" column="38" lean-forward="false" selection-start-line="3" selection-start-column="38" selection-end-line="3" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="10" column="14" lean-forward="false" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -122,21 +132,21 @@
       <file leaf-file-name="helperFunctions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
-              <caret line="76" column="45" lean-forward="true" selection-start-line="76" selection-start-column="45" selection-end-line="76" selection-end-column="45" />
+            <state relative-caret-position="1223">
+              <caret line="79" column="51" lean-forward="false" selection-start-line="79" selection-start-column="51" selection-end-line="79" selection-end-column="51" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
-                <marker date="1533541366692" expanded="true" signature="1671:2753" ph="..." />
+                <marker date="1533546658151" expanded="true" signature="1808:3033" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="testTensorBoard.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/testTensorBoard.py">
+        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/embeddings/testTensorBoard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="18" column="37" lean-forward="false" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
+            <state relative-caret-position="269">
+              <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="38" selection-end-column="104" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -170,7 +180,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/LearnDistance/visualize.py" />
         <option value="$PROJECT_DIR$/LearnDistance/losses.py" />
         <option value="$PROJECT_DIR$/LearnDistance/main.py" />
         <option value="$PROJECT_DIR$/LearnDistance/test.py" />
@@ -188,7 +197,6 @@
         <option value="$PROJECT_DIR$/trainModels/AlexNet.py" />
         <option value="$PROJECT_DIR$/LearnDistance/with_augmentation/testAugmentations.py" />
         <option value="$PROJECT_DIR$/LearnDistance/with_augmentation/augmentation.py" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/LearnDistance/with_augmentation/losses.py" />
         <option value="$PROJECT_DIR$/LearnDistance/with_augmentation/distModelTest.py" />
         <option value="$PROJECT_DIR$/LearnDistance/with_augmentation/main.py" />
@@ -215,12 +223,14 @@
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_convlayersfixed.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_pretrained.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/losses.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/testTensorBoard.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/embeddings/visualize.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/losses.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -263,7 +273,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Master Thesis Project" />
+              <option name="myItemId" value="refactored" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -271,81 +281,13 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="Master Thesis Project" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Master Thesis Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trainModels" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Master Thesis Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Master Thesis Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trainModels" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="runs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Master Thesis Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Master Thesis Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trainModels" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="models" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Master Thesis Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Master Thesis Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LearnDistance" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Master Thesis Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Master Thesis Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LearnDistance" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="refactored" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="embeddings" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -356,9 +298,9 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/anaconda3/envs/thesis/bin/python3.6" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/LearnDistance/refactored" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
@@ -374,19 +316,19 @@
     <option name="myShowDebugConsoleByDefault" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/LearnDistance/refactored/embeddings" />
+      <recent name="$PROJECT_DIR$/LearnDistance/refactored" />
+      <recent name="$PROJECT_DIR$/LearnDistance" />
+      <recent name="$PROJECT_DIR$/LearnDistance/learnboth_no_augm" />
+      <recent name="$PROJECT_DIR$/LearnDistance/with_augmentation" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/LearnDistance/refactored" />
       <recent name="$PROJECT_DIR$/LearnDistance" />
       <recent name="$PROJECT_DIR$/LearnDistance/with_augmentation" />
       <recent name="$PROJECT_DIR$/LearnDistance/trainOnlyLastLayerOfFeats" />
       <recent name="$PROJECT_DIR$/LearnDistance/fix_one" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/LearnDistance/refactored" />
-      <recent name="$PROJECT_DIR$/LearnDistance" />
-      <recent name="$PROJECT_DIR$/LearnDistance/learnboth_no_augm" />
-      <recent name="$PROJECT_DIR$/LearnDistance/with_augmentation" />
-      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -401,7 +343,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.testTensorBoard">
+  <component name="RunManager" selected="Python.main_augmentation">
     <configuration default="false" name="main_augmentation" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -472,7 +414,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="Master Thesis Project" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/LearnDistance/refactored/testTensorBoard.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/LearnDistance/refactored/embeddings/testTensorBoard.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -491,7 +433,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="Master Thesis Project" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/LearnDistance/refactored/embeddings/visualize.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -674,11 +616,11 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.testTensorBoard" />
+        <item index="0" class="java.lang.String" itemvalue="Python.main_augmentation" />
         <item index="1" class="java.lang.String" itemvalue="Python.visualize" />
-        <item index="2" class="java.lang.String" itemvalue="Python.main_part_fixFeats" />
-        <item index="3" class="java.lang.String" itemvalue="Python.test_dataset" />
-        <item index="4" class="java.lang.String" itemvalue="Python.main_augmentation" />
+        <item index="2" class="java.lang.String" itemvalue="Python.testTensorBoard" />
+        <item index="3" class="java.lang.String" itemvalue="Python.main_part_fixFeats" />
+        <item index="4" class="java.lang.String" itemvalue="Python.test_dataset" />
       </list>
     </recent_temporary>
   </component>
@@ -713,7 +655,7 @@
     <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26415095" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16442049" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -753,17 +695,12 @@
           <url>file://$PROJECT_DIR$/LearnDistance/refactored/main_part_fixFeats.py</url>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/LearnDistance/refactored/visualize.py</url>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
       </breakpoints>
       <option name="time" value="7" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/anaconda3/envs/thesis/lib/python3.6/site-packages/torchvision/utils.py" />
     <entry file="file://$USER_HOME$/anaconda3/envs/thesis/lib/python3.6/site-packages/torchvision/transforms.py" />
     <entry file="file://$USER_HOME$/anaconda3/envs/thesis/lib/python3.6/site-packages/torchvision.pth">
       <provider selected="true" editor-type-id="text-editor">
@@ -841,13 +778,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="8" lean-forward="false" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -1041,61 +971,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/losses.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1836">
-          <caret line="103" column="8" lean-forward="false" selection-start-line="103" selection-start-column="8" selection-end-line="103" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-138">
-          <caret line="50" column="58" lean-forward="false" selection-start-line="50" selection-start-column="58" selection-end-line="51" selection-end-column="60" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="76" column="45" lean-forward="true" selection-start-line="76" selection-start-column="45" selection-end-line="76" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-            <marker date="1533541366692" expanded="true" signature="1671:2753" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/visualize.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="846">
-          <caret line="47" column="115" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_part_fixFeats.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
-          <caret line="45" column="114" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="45" selection-end-column="114" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/testTensorBoard.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="18" column="37" lean-forward="false" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
+          <caret line="45" column="114" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="45" selection-end-column="114" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
@@ -1110,10 +989,77 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/embeddings/testTensorBoard.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="38" selection-end-column="104" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1223">
+          <caret line="79" column="51" lean-forward="false" selection-start-line="79" selection-start-column="51" selection-end-line="79" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+            <marker date="1533546658151" expanded="true" signature="1808:3033" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/losses.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="103" column="7" lean-forward="true" selection-start-line="103" selection-start-column="7" selection-end-line="132" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="233" column="18" lean-forward="true" selection-start-line="233" selection-start-column="18" selection-end-line="233" selection-end-column="18" />
+        <state relative-caret-position="72">
+          <caret line="4" column="10" lean-forward="false" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="27" column="9" lean-forward="true" selection-start-line="27" selection-start-column="9" selection-end-line="27" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/embeddings/visualize.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-793">
+          <caret line="3" column="38" lean-forward="false" selection-start-line="3" selection-start-column="38" selection-end-line="3" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/testTensorBoard.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="29" lean-forward="true" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" column="14" lean-forward="false" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
           <folding />
         </state>
       </provider>

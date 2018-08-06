@@ -164,7 +164,7 @@ class FeatsLeNet5Fix(nn.Module):
         self.fc = nn.Sequential(OrderedDict([
             ('f6', nn.Linear(120, 84)),
             ('relu6', nn.ELU()),
-            ('f7', nn.Linear(84, 10))
+            ('f7', nn.Linear(84, 10)),
             ('relu7', nn.ELU())
         ]))
 
@@ -223,7 +223,7 @@ def featsLenetFull(pretrained=False, **kwargs):
     model = FeatsLeNet5Full(**kwargs)
     model_weights_random_xavier(model)
     if pretrained:
-        modelFilename = '../../trainModels/models/modellenet5_Iter4.torchmodel'
+        modelFilename = '../../trainModels/models/modellenet5mnist_Iter6.torchmodel'
         initialize_pretrained_model(model, modelFilename)
     return model
 

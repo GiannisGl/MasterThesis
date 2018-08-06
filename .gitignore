@@ -8,4 +8,5 @@ setup
 **.pyc
 **/runs
 **/runs*
+**/embeddings*
 LearnDistance/runs_refactored_preBug

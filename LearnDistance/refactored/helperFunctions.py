@@ -30,7 +30,10 @@ def model_weights_random_xavier(model):
 
 
 def load_model_weights(model, modelfilename):
-    modelfile = torch.load(modelfilename)
+    if torch.cuda.is_available():
+        modelfile = torch.load(modelfilename)
+    else:
+        modelfile = torch.load(modelfilename, map_location=lambda storage, loc: storage)
     model.load_state_dict(modelfile)
     return model
 
@@ -72,8 +75,11 @@ def augment_batch(batch):
     return batchAug
 
 
-def initialize_pretrained_model(model, pretrained_filenamem):
-    pretrained = torch.load(pretrained_filename)
+def initialize_pretrained_model(model, pretrained_filename):
+    if torch.cuda.is_available():
+        pretrained = torch.load(pretrained_filename)
+    else:
+        pretrained = torch.load(pretrained_filename, map_location=lambda storage, loc: storage)
     pretrained_dict = pretrained.state_dict()
     model_dict = model.state_dict()
     pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}

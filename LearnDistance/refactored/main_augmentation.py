@@ -9,21 +9,23 @@ from losses import *
 
 
 # parameters and names
-nAug = 10
+nAug = 1
 case = "Augmentation%i" % nAug
 trainstep = 1
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
     train_batch_size = 1000
+    Nsamples = int(60000 / (3*train_batch_size))
+    log_iter = int(Nsamples/2)
     Nepochs = 50
 else:
     train_batch_size = 10
+    Nsamples = int(60000 / (3*train_batch_size))
+    log_iter = 10
     Nepochs = 1
-Nsamples = int(60000 / (3*train_batch_size))
 learningRate = 1e-3
 delta = 5
 lamda = 1
-log_iter = int(Nsamples/2)
 featsPretrained = False
 distPretrained = False
 modelname = "LearnDistanceDistLeNetNoNorm%sDelta%iLamda%i" % (case, delta, lamda)
