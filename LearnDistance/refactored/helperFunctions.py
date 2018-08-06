@@ -72,7 +72,7 @@ def augment_batch(batch):
     return batchAug
 
 
-def initialize_pretrained_model(model, pretrained_filename):
+def initialize_pretrained_model(model, pretrained_filenamem):
     pretrained = torch.load(pretrained_filename)
     pretrained_dict = pretrained.state_dict()
     model_dict = model.state_dict()

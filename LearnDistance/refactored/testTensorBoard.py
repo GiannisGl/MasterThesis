@@ -8,19 +8,15 @@ from helperFunctions import *
 import sys
 sys.path.insert(0, '../../trainModels')
 
-trainstep = 2
-delta = 50
+trainstep = 0
+delta = 5
 lamda = 1
 Nsamples = 1000
 nAug = 10
 
 modelname = "featsModelLearnDistanceDistLeNetNoNormAugmentation%iDelta%iLamda%i" % (nAug, delta, lamda)
 modelfolder = "trainedModels"
-# modelfilename = '%s/featsModel%s' % (modelfolder, name)
-# modelfile = torch.load(modelfilename+".state")
-# featsModel = featsLenetFull()
-# featsModel.load_state_dict(modelfile)
-featsModel = load_model(featsLenetFull, modelfolder, modelname, trainstep)
+featsModel = load_model(featsLenetFix, modelfolder, modelname, trainstep, pretrained=True)
 featsModel.cpu()
 
 
@@ -32,15 +28,14 @@ if torch.cuda.is_available():
 else:
     datafolder = "../../data"
 
-trainset = torchvision.datasets.MNIST(root=datafolder, train=True,
-                                        download=False, transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=Nsamples,
-                                          shuffle=True, num_workers=0)
+transform = transforms.Compose([transforms.ToTensor()])
+train_dataset = torchvision.datasets.MNIST(root=datafolder, train=True, download=False, transform=transform)
+train_subset = torch.utils.data.dataset.Subset(train_dataset, range(Nsamples))
+trainloader = torch.utils.data.DataLoader(train_subset, batch_size=Nsamples, shuffle=False, num_workers=0)
 
-testset = torchvision.datasets.MNIST(root=datafolder, train=False,
-                                       download=False, transform=transform)
-testloader = torch.utils.data.DataLoader(testset, batch_size=Nsamples,
-                                         shuffle=True, num_workers=0)
+test_dataset = torchvision.datasets.MNIST(root=datafolder, train=True, download=False, transform=transform)
+test_subset = torch.utils.data.dataset.Subset(test_dataset, range(Nsamples))
+testloader = torch.utils.data.DataLoader(test_subset, batch_size=Nsamples, shuffle=False, num_workers=0)
 
 
 # Train Visualization

@@ -1,8 +1,6 @@
-import datetime
 import torch
 import torch.optim as optim
-import torchvision
-import torchvision.transforms as transforms
+from tensorboardX import SummaryWriter
 from augmentation import *
 from featuresModel import featsLenet, featsLenetFull
 from distanceModel import distanceModel
@@ -21,7 +19,7 @@ if torch.cuda.is_available():
 else:
     train_batch_size = 10
     Nepochs = 1
-Nsamples = int(600 / (3*train_batch_size))
+Nsamples = int(60000 / (3*train_batch_size))
 learningRate = 1e-3
 delta = 5
 lamda = 1
@@ -57,9 +55,9 @@ criterion = distance_loss(writer, writer_img, log_iter, delta, lamda, nAug)
 # Training
 print('Start Training')
 print(log_name)
-running_loss = 0.0
 for epoch in range(Nepochs):
 
+    running_loss = 0.0
     iterTrainLoader = iter(train_loader)
     for i in range(Nsamples):
         input1, _ = next(iterTrainLoader)

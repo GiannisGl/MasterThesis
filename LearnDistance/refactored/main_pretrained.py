@@ -57,9 +57,9 @@ criterion = distance_loss(writer, delta, lamda)
 # Training
 print('Start Training')
 print(log_name)
-running_loss = 0.0
 for epoch in range(Nepochs):
 
+    running_loss = 0.0
     iterTrainLoader = iter(train_loader)
     for i in range(Nsamples):
         input1, _ = next(iterTrainLoader)

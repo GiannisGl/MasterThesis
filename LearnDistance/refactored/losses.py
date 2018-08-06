@@ -89,9 +89,66 @@ class distance_loss_part(torch.nn.Module):
         # distLossIneq += mseLoss(relu(learnedDist21 - learnedDist23 - learnedDist31))
         # self.writer.add_scalar(tag='distLossIneq', scalar_value=distLossIneq, global_step=self.step)
         # distLoss += distLossIneq
+        # terms that enforce distance greater than delta
 
-        loss = featsLoss+self.lamda*distLoss
+        # distLossDelta = mseLoss(relu(delta - learnedDist12))
+        # distLossDelta += mseLoss(relu(delta - learnedDist13))
+        # distLossDelta += mseLoss(relu(delta - learnedDist23))
+        # distLossDelta += mseLoss(relu(delta - learnedDist21))
+        # distLossDelta += mseLoss(relu(delta - learnedDist32))
+        # distLossDelta += mseLoss(relu(delta - learnedDist31))
+        # self.writer.add_scalar(tag='distLossDelta', scalar_value=distLossDelta, global_step=self.step)
+        # distLoss += distLossDelta
+
+
+        # Augmentation terms
+        featsLossClust = 0.0
+        distLossNeigh = 0.0
+        for i in range(self.nAug):
+            input1augm = augment_batch(input1)
+            input1augmfeats = featsModel.forward(input1augm)
+            input2augm = augment_batch(input2)
+            input2augmfeats = featsModel.forward(input2augm)
+            input3augm = augment_batch(input3)
+            input3augmfeats = featsModel.forward(input3augm)
+            # terms that enforce clustering
+            featsLossClust += mseLoss(input1feats, input1augmfeats)
+            featsLossClust += mseLoss(input2feats, input2augmfeats)
+            featsLossClust += mseLoss(input3feats, input3augmfeats)
+
+            # get learned distance of input and its augmentation (should be zero)
+            learnedDist11aug = distanceModel(input1, input1augm)
+            learnedDist1aug1 = distanceModel(input1augm, input1)
+            learnedDist22aug = distanceModel(input2, input2augm)
+            learnedDist2aug2 = distanceModel(input2augm, input2)
+            learnedDist33aug = distanceModel(input3, input3augm)
+            learnedDist3aug3 = distanceModel(input3augm, input3)
+
+            # terms that enforce neighbourhood
+            distLossNeigh += mseLoss(learnedDist11aug)
+            distLossNeigh += mseLoss(learnedDist22aug)
+            distLossNeigh += mseLoss(learnedDist33aug)
+            distLossNeigh += mseLoss(learnedDist1aug1)
+            distLossNeigh += mseLoss(learnedDist2aug2)
+            distLossNeigh += mseLoss(learnedDist3aug3)
+
+        self.writer.add_scalar(tag='featsLossClust', scalar_value=featsLossClust, global_step=self.step)
+        featsLoss += featsLossClust
+        self.writer.add_scalar(tag='distLossNeigh', scalar_value=distLossNeigh, global_step=self.step)
+        distLoss += distLossNeigh
+
+        self.writer.add_scalar(tag='featsLoss', scalar_value=featsLoss, global_step=self.step)
+        self.writer.add_scalar(tag='distLoss', scalar_value=distLoss, global_step=self.step)
+        loss = featsLoss + self.lamda * distLoss
         self.writer.add_scalar(tag='loss', scalar_value=loss, global_step=self.step)
+
+        if self.step % self.log_iter == 1:
+            self.writer_img.add_image(tag='input11', img_tensor=input1[1])
+            self.writer_img.add_image(tag='input11augm', img_tensor=input1augm[1])
+            self.writer_img.add_image(tag='input12', img_tensor=input1[2])
+            self.writer_img.add_image(tag='input12augm', img_tensor=input1augm[2])
+            self.writer_img.add_image(tag='input13', img_tensor=input1[3])
+            self.writer_img.add_image(tag='input13augm', img_tensor=input1augm[3])
 
         return loss
 
