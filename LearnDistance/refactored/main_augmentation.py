@@ -2,15 +2,16 @@ import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
 from augmentation import *
-from featuresModel import featsLenet, featsLenetFull
+from featuresModel import featsLenet
 from distanceModel import distanceModel
 from helperFunctions import *
 from losses import *
 
 
 # parameters and names
+case = "Augmentation"
+outDim = 10
 nAug = 10
-case = "Augmentation%i" % nAug
 trainstep = 1
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -20,7 +21,7 @@ if torch.cuda.is_available():
     Nepochs = 50
 else:
     train_batch_size = 10
-    Nsamples = int(60000 / (3*train_batch_size))
+    Nsamples = int(6000 / (3*train_batch_size))
     log_iter = 10
     Nepochs = 1
 learningRate = 1e-3
@@ -28,8 +29,8 @@ delta = 5
 lamda = 1
 featsPretrained = False
 distPretrained = False
-modelname = "LearnDistanceDistLeNetNoNorm%sDelta%iLamda%i" % (case, delta, lamda)
-log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
+modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+log_name = "%sAug%iBatch%iLR%f_Iter%i" % (modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 # dataset loading
@@ -41,7 +42,7 @@ train_loader = load_mnist(data_folder, train_batch_size, train=True, download=Fa
 
 # model loading
 featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsLenetFull, model_folder, featsModelname, trainstep-1, featsPretrained)
+featsModel = load_model(featsLenet, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
 distModelname = "distModel%s" % modelname
 distModel = load_model(distanceModel, model_folder, distModelname, trainstep-1, distPretrained)
 
@@ -93,6 +94,7 @@ for epoch in range(Nepochs):
             running_loss = 0.0
 
 print('Finished Training')
+print(log_name)
 
 writer.close()
 writer_img.close()

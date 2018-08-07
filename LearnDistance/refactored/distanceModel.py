@@ -4,14 +4,6 @@ from torch import cat
 from collections import OrderedDict
 
 
-__all__ = ['DistanceAlexNet']
-
-
-model_urls = {
-    'alexnet': 'https://download.pytorch.org/trainedModels/alexnet-owt-4df8aa71.pth',
-}
-
-
 class DistanceAlexNet(nn.Module):
 
     def __init__(self):
@@ -57,19 +49,19 @@ class DistanceAlexNet(nn.Module):
 
 
 class DistanceLeNet5(nn.Module):
-    """
-    Input - 1x28x28
-    C1 - 6@24x24 (5x5 kernel)
-    tanh
-    S2 - 6@12x12 (2x2 kernel, stride 2) Subsampling
-    C3 - 16@8x8 (5x5 kernel, complicated shit)
-    tanh
-    S4 - 16@4x4 (2x2 kernel, stride 2) Subsampling
-    C5 - 120@1x1 (5x5 kernel)
-    F6 - 84
-    tanh
-    F7 - 10 (Output)
-    """
+
+    # Input - 1x28x28
+    # C1 - 6@24x24 (5x5 kernel)
+    # ELU
+    # S2 - 6@12x12 (2x2 kernel, stride 2) Subsampling
+    # C3 - 16@8x8 (5x5 kernel)
+    # ELU
+    # S4 - 16@4x4 (2x2 kernel, stride 2) Subsampling
+    # C5 - 120@1x1 (5x5 kernel)
+    # F6 - 84
+    # ELU
+    # F7 - 1 (Output)
+
     def __init__(self):
         super(DistanceLeNet5, self).__init__()
 
@@ -88,7 +80,7 @@ class DistanceLeNet5(nn.Module):
             ('f6', nn.Linear(120, 84)),
             ('relu6', nn.ELU()),
             ('f7b', nn.Linear(84, 1))
-            # no RELU
+            # no ELU on output
         ]))
 
 
@@ -103,9 +95,10 @@ class DistanceLeNet5(nn.Module):
         output = self.forward_once(input)
         return output
 
-def distanceModel(pretrained=False, **kwargs):
-    model = DistanceLeNet5(**kwargs)
+def distanceModel(pretrained=False):
+    model = DistanceLeNet5()
     model_weights_random_xavier(model)
     if pretrained:
-        initialize_pretrained_model
+        modelFilename = '../../trainModels/models/modellenet5mnist_Iter6.torchmodel'
+        initialize_pretrained_model(model, modelFilename)
     return model

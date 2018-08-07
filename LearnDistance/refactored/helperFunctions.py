@@ -38,11 +38,12 @@ def load_model_weights(model, modelfilename):
     return model
 
 
-def load_model(modelFunction, model_folder, modelname, trainstep, pretrained=False):
-    model = modelFunction(pretrained)
-    if trainstep<1 & (not pretrained):
-        model_weights_random_xavier(model)
-    elif trainstep>=1:
+def load_model(modelFunction, model_folder, modelname, trainstep, pretrained=False, outDim=None):
+    if outDim is None:
+        model = modelFunction(pretrained)
+    else:
+        model = modelFunction(outDim, pretrained)
+    if trainstep>=1:
         modelfilename = '%s/%s_Iter%i.state' % (model_folder, modelname, trainstep)
         load_model_weights(model,modelfilename)
     if torch.cuda.is_available():
