@@ -9,7 +9,7 @@ from losses import *
 
 
 # parameters and names
-nAug = 1
+nAug = 5
 case = "partLoss"
 trainstep = 1
 # Per Epoch one iteration over the dataset

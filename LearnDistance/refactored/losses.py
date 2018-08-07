@@ -250,10 +250,15 @@ class distance_loss(torch.nn.Module):
         distLossNeigh = 0.0
         for i in range(self.nAug):
             input1augm = augment_batch(input1)
-            input1augmfeats = featsModel.forward(input1augm)
             input2augm = augment_batch(input2)
-            input2augmfeats = featsModel.forward(input2augm)
             input3augm = augment_batch(input3)
+            if torch.cuda.is_available():
+                input1augm = input1augm.cuda()
+                input2augm = input2augm.cuda()
+                input3augm = input3augm.cuda()
+
+            input1augmfeats = featsModel.forward(input1augm)
+            input2augmfeats = featsModel.forward(input2augm)
             input3augmfeats = featsModel.forward(input3augm)
             # terms that enforce clustering
             featsLossClust += mseLoss(input1feats, input1augmfeats)

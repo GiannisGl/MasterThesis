@@ -9,7 +9,7 @@ from helperFunctions import *
 trainstep = 24
 delta = 50
 lamda = 1
-Nsamples = 2000
+Nsamples = 1000
 nAug = 10
 
 modelname = "featsModelLearnDistanceDistLeNetNoNormpartFixFeatsDelta5Lamda1distFix"
@@ -42,9 +42,8 @@ testloader = torch.utils.data.DataLoader(test_subset, batch_size=Nsamples, shuff
 
 
 # Train Visualization
-global_step = 3
 print('visualizing..')
-writerEmb = SummaryWriter(comment='%s_Iter%i_mnist_embedding_train' % (modelname, trainstep))
+writerEmb = SummaryWriter(comment='%s_Iter%i_embedding' % (modelname, trainstep))
 
 iterTrainLoader = iter(trainloader)
 input, label = next(iterTrainLoader)
@@ -54,13 +53,10 @@ print(output.size())
 #output = torch.cat((output.item(), torch.ones(len(output), 1)), 1)
 # input = input.to(torch.device("cpu"))
 # save embedding
-writerEmb.add_embedding(output, label_img=input, global_step=2*global_step)
-writerEmb.close()
-
+writerEmb.add_embedding(output, label_img=input, tag="train")
 
 # Test Visualization
 print('visualizing..')
-writerEmb = SummaryWriter(comment='%s_Iter%i_mnist_embedding_test' % (modelname, trainstep))
 
 iterTestLoader = iter(testloader)
 input, label = next(iterTestLoader)
@@ -70,5 +66,5 @@ print(output.size())
 #output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
 # input = input.to(torch.device("cpu"))
 # save embedding
-writerEmb.add_embedding(output, label_img=input, global_step=2*global_step+1)
+writerEmb.add_embedding(output, label_img=input, tag="test")
 writerEmb.close()
