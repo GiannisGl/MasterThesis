@@ -2,24 +2,25 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 from tensorboardX import SummaryWriter
-from featuresModel import featsLenetFix, featsLenetFull, featsAE
+from featuresModel import featsLenetOrig, featsLenet
 from helperFunctions import *
 
 
-trainstep = 24
+trainstep = 3
+outDim = 3
 delta = 50
 lamda = 1
-Nsamples = 1000
+Nsamples = 2000
 nAug = 10
 
-modelname = "featsModelLearnDistanceDistLeNetNoNormpartFixFeatsDelta5Lamda1distFix"
+modelname = "featsModelDistLeNetNoNormpartLossOut3Delta5Lamda1"
 # modelname = "featsModelLearnDistanceDistLeNetNoNormAugmentation%iDelta%iLamda%i" % (nAug, delta, lamda)
 modelfolder = "trainedModels"
 # modelfilename = '%s/featsModel%s' % (modelfolder, name)
 # modelfile = torch.load(modelfilename+".state")
 # featsModel = featsLenetFull()
 # featsModel.load_state_dict(modelfile)
-featsModel = load_model(featsLenetFull, modelfolder, modelname, trainstep, pretrained=False)
+featsModel = load_model(featsLenet, modelfolder, modelname, trainstep, pretrained=False, outDim=outDim)
 featsModel.cpu()
 
 
@@ -50,10 +51,9 @@ input, label = next(iterTrainLoader)
 output = featsModel.forward(input)
 output = torch.squeeze(output)
 print(output.size())
-#output = torch.cat((output.item(), torch.ones(len(output), 1)), 1)
 # input = input.to(torch.device("cpu"))
 # save embedding
-writerEmb.add_embedding(output, label_img=input, tag="train")
+writerEmb.add_embedding(output, label_img=input, metadata=label, tag="1.train")
 
 # Test Visualization
 print('visualizing..')
@@ -63,8 +63,7 @@ input, label = next(iterTestLoader)
 output = featsModel.forward(input)
 output = torch.squeeze(output)
 print(output.size())
-#output = torch.cat((output.data, torch.ones(len(output), 1)), 1)
 # input = input.to(torch.device("cpu"))
 # save embedding
-writerEmb.add_embedding(output, label_img=input, tag="test")
+writerEmb.add_embedding(output, label_img=input, metadata=label, tag="2.test")
 writerEmb.close()

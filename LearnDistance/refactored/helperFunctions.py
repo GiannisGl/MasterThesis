@@ -67,7 +67,7 @@ def load_mnist(data_folder, batch_size, train=True, download=False):
 
 def augment_batch(batch):
     transformAug = transforms.Compose(
-        [transforms.ToPILImage(), transforms.RandomAffine(scale=[0.8, 1.1], degrees=5, translate=[0.2, 0.2], shear=5),
+        [transforms.ToPILImage(), transforms.RandomAffine(scale=[0.8, 1.1], degrees=10, translate=[0.2, 0.2], shear=10),
          transforms.ToTensor()])
     batchSize = batch.shape[0]
     batchAug = torch.Tensor(batch.shape)
