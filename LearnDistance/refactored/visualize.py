@@ -6,7 +6,7 @@ from featuresModel import featsLenetOrig, featsLenet
 from helperFunctions import *
 
 
-trainstep = 3
+trainstep = 4
 outDim = 3
 delta = 50
 lamda = 1
@@ -44,25 +44,24 @@ testloader = torch.utils.data.DataLoader(test_subset, batch_size=Nsamples, shuff
 
 # Train Visualization
 print('visualizing..')
+print('%s_Iter%i' %(modelname, trainstep))
 writerEmb = SummaryWriter(comment='%s_Iter%i_embedding' % (modelname, trainstep))
 
 iterTrainLoader = iter(trainloader)
 input, label = next(iterTrainLoader)
 output = featsModel.forward(input)
 output = torch.squeeze(output)
-print(output.size())
+print('train: %s' % list(output.size()))
 # input = input.to(torch.device("cpu"))
 # save embedding
 writerEmb.add_embedding(output, label_img=input, metadata=label, tag="1.train")
 
 # Test Visualization
-print('visualizing..')
-
 iterTestLoader = iter(testloader)
 input, label = next(iterTestLoader)
 output = featsModel.forward(input)
 output = torch.squeeze(output)
-print(output.size())
+print('test: %s' % list(output.size()))
 # input = input.to(torch.device("cpu"))
 # save embedding
 writerEmb.add_embedding(output, label_img=input, metadata=label, tag="2.test")

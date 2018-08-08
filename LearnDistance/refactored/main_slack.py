@@ -8,7 +8,7 @@ from losses import *
 
 
 # parameters and names
-case = "Augmentation"
+case = "Slack"
 outDim = 10
 nAug = 10
 delta = 5
