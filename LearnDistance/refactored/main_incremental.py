@@ -1,7 +1,6 @@
 import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
-from augmentation import *
 from featuresModel import featsLenet
 from distanceModel import distanceModel
 from helperFunctions import *
@@ -12,6 +11,7 @@ from losses import *
 case = "partLoss"
 outDim = 3
 nAug = 10
+delta = 5
 trainstep = 1
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -25,7 +25,6 @@ else:
     log_iter = 10
     Nepochs = 1
 learningRate = 1e-3
-delta = 500
 lamda = 1
 featsPretrained = False
 distPretrained = False
