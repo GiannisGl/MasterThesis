@@ -6,14 +6,14 @@ from featuresModel import featsLenetOrig, featsLenet
 from helperFunctions import *
 
 
-trainstep = 4
+trainstep = 1
 outDim = 3
 delta = 50
 lamda = 1
 Nsamples = 2000
 nAug = 10
 
-modelname = "featsModelDistLeNetNoNormpartLossOut3Delta5Lamda1"
+modelname = "featsModelDistLeNetNoNormSlackOut3Delta5Lamda1"
 # modelname = "featsModelLearnDistanceDistLeNetNoNormAugmentation%iDelta%iLamda%i" % (nAug, delta, lamda)
 modelfolder = "trainedModels"
 # modelfilename = '%s/featsModel%s' % (modelfolder, name)
@@ -34,11 +34,11 @@ else:
 
 transform = transforms.Compose([transforms.ToTensor()])
 train_dataset = torchvision.datasets.MNIST(root=datafolder, train=True, download=False, transform=transform)
-train_subset = torch.utils.data.dataset.Subset(train_dataset, range(Nsamples, 2*Nsamples))
+train_subset = torch.utils.data.dataset.Subset(train_dataset, range(Nsamples))
 trainloader = torch.utils.data.DataLoader(train_subset, batch_size=Nsamples, shuffle=False, num_workers=0)
 
 test_dataset = torchvision.datasets.MNIST(root=datafolder, train=False, download=False, transform=transform)
-test_subset = torch.utils.data.dataset.Subset(test_dataset, range(Nsamples, 2*Nsamples))
+test_subset = torch.utils.data.dataset.Subset(test_dataset, range(Nsamples))
 testloader = torch.utils.data.DataLoader(test_subset, batch_size=Nsamples, shuffle=False, num_workers=0)
 
 
