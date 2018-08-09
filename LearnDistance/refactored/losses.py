@@ -294,7 +294,7 @@ class distance_loss(torch.nn.Module):
         loss = featsLoss+self.lamda*distLoss
         self.writer.add_scalar(tag='loss', scalar_value=loss, global_step=self.step)
 
-        if self.writer_img is not None & self.step % self.log_iter == 1:
+        if (self.writer_img is not None) and (self.step % self.log_iter == 1):
             self.writer_img.add_image(tag='input11', img_tensor=input1[1])
             self.writer_img.add_image(tag='input11augm', img_tensor=input1augm[1])
             self.writer_img.add_image(tag='input12', img_tensor=input1[2])
@@ -452,7 +452,7 @@ class distance_loss_slack(torch.nn.Module):
         loss = featsLoss + self.lamda * distLoss
         self.writer.add_scalar(tag='loss', scalar_value=loss, global_step=self.step)
 
-        if self.writer_img is not None & self.step % self.log_iter == 1:
+        if (self.writer_img is not None) and (self.step % self.log_iter == 1):
             self.writer_img.add_image(tag='input11', img_tensor=input1[1])
             self.writer_img.add_image(tag='input11augm', img_tensor=input1augm[1])
             self.writer_img.add_image(tag='input12', img_tensor=input1[2])
