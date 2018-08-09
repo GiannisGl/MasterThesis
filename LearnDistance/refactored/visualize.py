@@ -7,14 +7,14 @@ from helperFunctions import *
 
 
 trainstep = 1
+case = "Slack"
 outDim = 3
-delta = 50
+delta = 10
 lamda = 1
 Nsamples = 2000
-nAug = 10
 
-modelname = "featsModelDistLeNetNoNormSlackOut3Delta5Lamda1"
-# modelname = "featsModelLearnDistanceDistLeNetNoNormAugmentation%iDelta%iLamda%i" % (nAug, delta, lamda)
+# modelname = "featsModelDistLeNetNoNormSlackOut3Delta10Lamda1"
+modelname = "featsModelDistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 modelfolder = "trainedModels"
 # modelfilename = '%s/featsModel%s' % (modelfolder, name)
 # modelfile = torch.load(modelfilename+".state")
