@@ -7,9 +7,9 @@ from helperFunctions import *
 
 
 trainstep = 1
-case = "Slack"
+case = "Augmentation"
 outDim = 3
-delta = 10
+delta = 5
 lamda = 1
 Nsamples = 2000
 

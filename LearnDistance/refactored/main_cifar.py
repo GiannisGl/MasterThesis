@@ -1,36 +1,34 @@
-import datetime
 import torch
 import torch.optim as optim
-import torchvision
-import torchvision.transforms as transforms
-from augmentation import *
-from featuresModel import featsAE
-from distanceModel import distanceModel
+from tensorboardX import SummaryWriter
+from inceptionModel import featsInception, distInception
 from helperFunctions import *
 from losses import *
-from tensorboardX import SummaryWriter
 
 
 # parameters and names
-case = "Autoencoder"
+case = "Cifar"
+outDim = 3
+nAug = 10
+delta = 5
 trainstep = 1
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
     train_batch_size = 1000
+    Nsamples = int(60000 / (3*train_batch_size))
+    log_iter = int(Nsamples/2)
     Nepochs = 50
 else:
     train_batch_size = 10
+    Nsamples = int(6000 / (3*train_batch_size))
+    log_iter = 10
     Nepochs = 1
-Nsamples = int(60000 / (3*train_batch_size))
-learningRate = 1e-2
-delta = 500
+learningRate = 1e-3
 lamda = 1
-log_iter = int(Nsamples/2)
 featsPretrained = False
 distPretrained = False
-curDatetime = datetime.datetime.now().isoformat();
-modelname = "LearnDistanceNoPretrainDistAlexNet%sDelta%iLamda%i" % (case, delta, lamda)
-log_name = "%s%sBatch%iLR%f_Iter%i" % (curDatetime, modelname, train_batch_size, learningRate, trainstep)
+modelname = "DistInceptionNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+log_name = "%sAug%iBatch%iLR%f_Iter%i" % (modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 # dataset loading
@@ -38,21 +36,21 @@ if torch.cuda.is_available():
     data_folder = "/var/tmp/ioannis/data"
 else:
     data_folder = "../../data"
-train_loader = load_mnist(data_folder, train_batch_size, train=True, download=False)
+train_loader = load_cifar(data_folder, train_batch_size, train=True, download=False)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsAE, model_folder, featsModelname, trainstep-1, featsPretrained)
+featsModel = load_model(featsInception, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
 distModelname = "distModel%s" % modelname
-distModel = load_model(distanceModel, model_folder, distModelname, trainstep-1, distPretrained)
+distModel = load_model(distInception, model_folder, distModelname, trainstep-1, distPretrained)
 
 # optimizers
-featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate, weight_decay=0.00001)
-distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate, weight_decay=0.00001)
+featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate)
+distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate)
 
-# writer and criterion
+# writers and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
-criterion = distance_AE_loss(writer, delta, lamda)
+criterion = distance_loss(writer, log_iter, delta, lamda, nAug)
 
 # Training
 print('Start Training')
@@ -87,14 +85,16 @@ for epoch in range(Nepochs):
         # print statistics
         running_loss += loss.item()
         if i % log_iter == log_iter-1:
+            # print images to tensorboard
             print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0
 
 print('Finished Training')
-
+print(log_name)
 
 writer.close()
+writer_img.close()
 
 # save weights
 save_model_weights(featsModel, model_folder, featsModelname, trainstep)

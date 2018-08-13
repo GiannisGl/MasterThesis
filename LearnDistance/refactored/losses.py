@@ -442,7 +442,7 @@ class distance_loss_slack(torch.nn.Module):
             distLossNeigh += mseLoss(learnedDist2aug2)
             distLossNeigh += mseLoss(learnedDist3aug3)
 
-        self.writer.add_scalar(tag='featsClustring', scalar_value=featsLossClust, global_step=self.step)
+        self.writer.add_scalar(tag='featsClustering', scalar_value=featsLossClust, global_step=self.step)
         featsLoss += featsLossClust
         self.writer.add_scalar(tag='distNeighbourhood', scalar_value=distLossNeigh, global_step=self.step)
         distLoss += distLossNeigh

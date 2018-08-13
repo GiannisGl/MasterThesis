@@ -42,7 +42,7 @@ def load_model(modelFunction, model_folder, modelname, trainstep, pretrained=Fal
     if outDim is None:
         model = modelFunction(pretrained)
     else:
-        model = modelFunction(outDim, pretrained)
+        model = modelFunction(outDim=outDim, pretrained=pretrained)
     if trainstep>=1:
         modelfilename = '%s/%s_Iter%i.state' % (model_folder, modelname, trainstep)
         load_model_weights(model,modelfilename)
@@ -61,6 +61,14 @@ def load_mnist(data_folder, batch_size, train=True, download=False):
     # don't normalize
     transform = transforms.Compose([transforms.ToTensor()])
     dataset = torchvision.datasets.MNIST(root=data_folder, train=train, download=download, transform=transform)
+    loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=0)
+    return loader
+
+
+def load_cifar(data_folder, batch_size, train=True, download=False):
+    # don't normalize
+    transform = transforms.Compose([transforms.CenterCrop(28) ,transforms.ToTensor()])
+    dataset = torchvision.datasets.CIFAR10(root=data_folder, train=train, download=download, transform=transform)
     loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=0)
     return loader
 

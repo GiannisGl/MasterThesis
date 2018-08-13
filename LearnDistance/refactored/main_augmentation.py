@@ -51,8 +51,7 @@ distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate)
 
 # writers and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
-writer_img = SummaryWriter(comment='%s_images' % (log_name))
-criterion = distance_loss(writer, writer_img, log_iter, delta, lamda, nAug)
+criterion = distance_loss(writer, log_iter, delta, lamda, nAug)
 
 # Training
 print('Start Training')
@@ -96,7 +95,6 @@ print('Finished Training')
 print(log_name)
 
 writer.close()
-writer_img.close()
 
 # save weights
 save_model_weights(featsModel, model_folder, featsModelname, trainstep)
