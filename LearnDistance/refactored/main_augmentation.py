@@ -13,18 +13,22 @@ outDim = 10
 nAug = 10
 delta = 5
 trainstep = 1
+learningRate = 1e-3
+dataset = 'mnist'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
     train_batch_size = 1000
     Nsamples = int(60000 / (3*train_batch_size))
     log_iter = int(Nsamples/2)
     Nepochs = 50
+    datafolder = "/var/tmp/ioannis/data"
 else:
     train_batch_size = 10
-    Nsamples = int(6000 / (3*train_batch_size))
+    Nsamples = int(600 / (3*train_batch_size))
     log_iter = 10
     Nepochs = 1
-learningRate = 1e-3
+    datafolder = "../../data"
+
 lamda = 1
 featsPretrained = False
 distPretrained = False
@@ -32,12 +36,7 @@ modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda
 log_name = "%sAug%iBatch%iLR%f_Iter%i" % (modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
-# dataset loading
-if torch.cuda.is_available():
-    data_folder = "/var/tmp/ioannis/data"
-else:
-    data_folder = "../../data"
-train_loader = load_mnist(data_folder, train_batch_size, train=True, download=False)
+train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
@@ -94,11 +93,17 @@ for epoch in range(Nepochs):
 print('Finished Training')
 print(log_name)
 
-writer.close()
-
 # save weights
 save_model_weights(featsModel, model_folder, featsModelname, trainstep)
 save_model_weights(distModel, model_folder, distModelname, trainstep)
 print('saved models')
 
+writer.close()
 
+# Visualization
+print('visualizing..')
+print(log_name)
+writerEmb = SummaryWriter(comment='%s_embedding' % (log_name))
+visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=Nsamples, train=True)
+visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=Nsamples, train=False)
+writerEmb.close()

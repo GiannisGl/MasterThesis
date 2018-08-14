@@ -2,6 +2,7 @@ import torch
 import torch.nn.init as init
 import torchvision
 import torchvision.transforms as transforms
+from tensorboardX import SummaryWriter
 
 
 def freeze_first_conv_layers(model):
@@ -67,7 +68,7 @@ def load_mnist(data_folder, batch_size, train=True, download=False):
 
 def load_cifar(data_folder, batch_size, train=True, download=False):
     # don't normalize
-    transform = transforms.Compose([transforms.CenterCrop(28) ,transforms.ToTensor()])
+    transform = transforms.Compose([transforms.CenterCrop(28), transforms.ToTensor()])
     dataset = torchvision.datasets.CIFAR10(root=data_folder, train=train, download=download, transform=transform)
     loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=0)
     return loader
@@ -95,3 +96,27 @@ def initialize_pretrained_model(model, pretrained_filename):
     model_dict.update(pretrained_dict)
     model.load_state_dict(model_dict)
     return model
+
+
+def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, train=True):
+    if dataset=='mnist':
+        transform = transforms.Compose([transforms.ToTensor()])
+        dataset = torchvision.datasets.MNIST(root=datafolder, train=train, download=False, transform=transform)
+    elif dataset=='cifar':
+        transform = transforms.Compose([transforms.CenterCrop(28), transforms.ToTensor()])
+        dataset = torchvision.datasets.CIFAR10(root=datafolder, train=train, download=False, transform=transform)
+    subset = torch.utils.data.dataset.Subset(dataset, range(Nsamples))
+    loader = torch.utils.data.DataLoader(subset, batch_size=Nsamples, shuffle=False, num_workers=0)
+
+    iterLoader = iter(loader)
+    input, label = next(iterLoader)
+    output = model.forward(input)
+    output = torch.squeeze(output)
+    if train:
+        print('train: %s' % list(output.size()))
+        writerEmb.add_embedding(output, label_img= input, metadata=label.numpy(), tag="1.train")
+    else:
+        print('test: %s' % list(output.size()))
+        writerEmb.add_embedding(output, label_img= input, metadata=label.numpy(), tag="2.test")
+
+
