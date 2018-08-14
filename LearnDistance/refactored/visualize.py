@@ -1,28 +1,28 @@
 import torch
-import torchvision
-import torchvision.transforms as transforms
 from tensorboardX import SummaryWriter
+from inceptionModel import featsInception
 from featuresModel import featsLenetOrig, featsLenet
 from helperFunctions import *
 
 
-trainstep = 3
-case = "Augmentation"
-outDim = 2
+trainstep = 1
+case = "Cifar"
+outDim = 3
 delta = 5
 lamda = 1
-Nsamples = 2000
-dataset = 'mnist'
-# dataset = 'cifar'
+Nsamples = 10
+# dataset = 'mnist'
+dataset = 'cifar'
 
-# modelname = "featsModelDistLeNetNoNormSlackOut3Delta10Lamda1"
-modelname = "featsModelDistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 modelfolder = "trainedModels"
-# modelfilename = '%s/featsModel%s' % (modelfolder, name)
-# modelfile = torch.load(modelfilename+".state")
-# featsModel = featsLenetFull()
-# featsModel.load_state_dict(modelfile)
-featsModel = load_model(featsLenet, modelfolder, modelname, trainstep, pretrained=False, outDim=outDim)
+# modelname = "featsModelDistLeNetNoNormSlackOut3Delta10Lamda1"
+if dataset=='mnist':
+    modelname = "featsModelDistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+    featsModel = load_model(featsLenet, modelfolder, modelname, trainstep, pretrained=False, outDim=outDim)
+elif dataset=='cifar':
+    modelname = "featsModelDistInceptionNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+    featsModel = load_model(featsInception, modelfolder, modelname, trainstep, pretrained=False, outDim=outDim)
+
 featsModel.cpu()
 
 if torch.cuda.is_available():
