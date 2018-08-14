@@ -23,11 +23,12 @@ elif dataset=='cifar':
     modelname = "featsModelDistInceptionNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
     featsModel = load_model(featsInception, modelfolder, modelname, trainstep, pretrained=False, outDim=outDim)
 
-featsModel.cpu()
 
 if torch.cuda.is_available():
+    featsModel.cuda()
     datafolder = "/var/tmp/ioannis/data"
 else:
+    featsModel.cpu()
     datafolder = "../../data"
 
 # Train Visualization
