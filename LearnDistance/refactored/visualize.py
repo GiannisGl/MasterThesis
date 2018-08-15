@@ -5,14 +5,14 @@ from featuresModel import featsLenetOrig, featsLenet
 from helperFunctions import *
 
 
-trainstep = 1
-case = "Cifar"
-outDim = 3
-delta = 5
+trainstep = 3
+case = "Augmentation"
+outDim = 2
+delta = 50
 lamda = 1
-Nsamples = 10
-# dataset = 'mnist'
-dataset = 'cifar'
+Nsamples = 2000
+dataset = 'mnist'
+# dataset = 'cifar'
 
 modelfolder = "trainedModels"
 # modelname = "featsModelDistLeNetNoNormSlackOut3Delta10Lamda1"
@@ -25,10 +25,10 @@ elif dataset=='cifar':
 
 
 if torch.cuda.is_available():
-    featsModel.cuda()
+    featsModel = featsModel.cuda()
     datafolder = "/var/tmp/ioannis/data"
 else:
-    featsModel.cpu()
+    featsModel = featsModel.cpu()
     datafolder = "../../data"
 
 # Train Visualization

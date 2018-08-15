@@ -84,6 +84,8 @@ def augment_batch(batch):
         batchAug[i] = transformAug(batch[i].cpu())
     return batchAug
 
+# xflip, color jittering,
+
 
 def initialize_pretrained_model(model, pretrained_filename):
     if torch.cuda.is_available():
@@ -111,8 +113,9 @@ def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, trai
     iterLoader = iter(loader)
     input, label = next(iterLoader)
     if torch.cuda.is_available():
-        input.cuda()
-    output = model.forward(input)
+        output = model.forward(input.cuda())
+    else:
+        output = model.forward(input)
     output = torch.squeeze(output)
     if train:
         print('train: %s' % list(output.size()))
