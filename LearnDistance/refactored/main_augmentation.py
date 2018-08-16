@@ -8,9 +8,9 @@ from losses import *
 
 
 # parameters and names
-case = "Augmentation"
-outDim = 10
-nAug = 10
+case = "NoAug"
+outDim = 3
+nAug = 0
 delta = 5
 trainstep = 1
 learningRate = 1e-3

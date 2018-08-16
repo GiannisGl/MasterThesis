@@ -74,10 +74,18 @@ def load_cifar(data_folder, batch_size, train=True, download=False):
     return loader
 
 
-def augment_batch(batch):
-    transformAug = transforms.Compose(
-        [transforms.ToPILImage(), transforms.RandomAffine(scale=[0.8, 1.1], degrees=10, translate=[0.2, 0.2], shear=10),
-         transforms.ToTensor()])
+def augment_batch(batch, dataset='mnist'):
+    if dataset=='mnist':
+        transformAug = transforms.Compose([transforms.ToPILImage(),
+                                           transforms.RandomAffine(scale=[0.8, 1.1], degrees=10, translate=[0.2, 0.2], shear=10),
+                                           transforms.ToTensor()])
+    elif dataset=='cifar':
+        transformAug = transforms.Compose([transforms.ToPILImage(),
+                                           transforms.RandomCrop(28),
+                                           transforms.RandomRotation(20),
+                                           transforms.RandomHorizontalFlip(0.5),
+                                           transforms.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1, hue=0.1),
+                                           transforms.RandomGrayscale(0.1)])
     batchSize = batch.shape[0]
     batchAug = torch.Tensor(batch.shape)
     for i in range(batchSize):
@@ -110,18 +118,21 @@ def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, trai
     subset = torch.utils.data.dataset.Subset(dataset, range(Nsamples))
     loader = torch.utils.data.DataLoader(subset, batch_size=Nsamples, shuffle=False, num_workers=0)
 
+    model = model.eval()
     iterLoader = iter(loader)
     input, label = next(iterLoader)
     if torch.cuda.is_available():
+        model = model.cuda()
         output = model.forward(input.cuda())
     else:
+        model = model.cpu()
         output = model.forward(input)
     output = torch.squeeze(output)
     if train:
         print('train: %s' % list(output.size()))
-        writerEmb.add_embedding(output, label_img= input, metadata=label.numpy(), tag="1.train")
+        writerEmb.add_embedding(output, label_img=input, metadata=label.numpy(), tag="1.train")
     else:
         print('test: %s' % list(output.size()))
-        writerEmb.add_embedding(output, label_img= input, metadata=label.numpy(), tag="2.test")
+        writerEmb.add_embedding(output, label_img=input, metadata=label.numpy(), tag="2.test")
 
 

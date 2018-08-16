@@ -5,10 +5,10 @@ from featuresModel import featsLenetOrig, featsLenet
 from helperFunctions import *
 
 
-trainstep = 3
-case = "Augmentation"
-outDim = 2
-delta = 50
+trainstep = 2
+case = "AugmentationNew"
+outDim = 3
+delta = 5
 lamda = 1
 Nsamples = 2000
 dataset = 'mnist'
