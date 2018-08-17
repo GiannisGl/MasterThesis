@@ -1,6 +1,68 @@
 import torch
 from helperFunctions import augment_batch
 
+
+class distance_loss_feats(torch.nn.Module):
+    def __init__(self, writer, log_iter, delta, nAug=3, Aug=True):
+        super(distance_loss_feats, self).__init__()
+        self.writer = writer
+        self.log_iter = log_iter
+        self.step = 0
+        self.delta = delta
+        self.nAug = nAug
+        self.Aug = Aug
+
+    def forward(self, input1, input2, input3, featsModel):
+        self.step += 1
+        delta = torch.ones(input1.size()[0]) * self.delta
+        if torch.cuda.is_available():
+            torch.set_default_tensor_type('torch.cuda.FloatTensor')
+
+        # get features of inputs
+        ## copy inputs
+        input1feats = featsModel.forward(input1)
+        input2feats = featsModel.forward(input2)
+        input3feats = featsModel.forward(input3)
+
+        # get L2 distance of the 3 pairs of features
+        dist12 = mse_batch_loss(input1feats, input2feats)
+        dist13 = mse_batch_loss(input1feats, input3feats)
+        dist23 = mse_batch_loss(input2feats, input3feats)
+
+        # Features model terms
+        featsLoss = 0
+
+        # terms that enforce distance greater than delta
+        distLossDelta = mseLoss(relu(delta - dist12))
+        distLossDelta += mseLoss(relu(delta - dist13))
+        distLossDelta += mseLoss(relu(delta - dist23))
+        self.writer.add_scalar(tag='distLossDelta', scalar_value=distLossDelta, global_step=self.step)
+        featsLoss += distLossDelta
+
+        if self.Aug==True:
+            # Augmentation terms
+            featsLossClust = 0.0
+            for i in range(self.nAug):
+                input1augm = augment_batch(input1)
+                input1augmfeats = featsModel.forward(input1augm)
+                input2augm = augment_batch(input2)
+                input2augmfeats = featsModel.forward(input2augm)
+                input3augm = augment_batch(input3)
+                input3augmfeats = featsModel.forward(input3augm)
+                # terms that enforce clustering
+                featsLossClust += mseLoss(input1feats, input1augmfeats)
+                featsLossClust += mseLoss(input2feats, input2augmfeats)
+                featsLossClust += mseLoss(input3feats, input3augmfeats)
+
+            self.writer.add_scalar(tag='featsLossClust', scalar_value=featsLossClust, global_step=self.step)
+            featsLoss += featsLossClust
+
+        self.writer.add_scalar(tag='loss', scalar_value=featsLoss, global_step=self.step)
+
+        return featsLoss
+
+
+
 class distance_loss_part(torch.nn.Module):
     def __init__(self, writer, log_iter, delta, lamda, nAug=3, Aug=True):
         super(distance_loss_part, self).__init__()

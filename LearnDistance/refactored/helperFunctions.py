@@ -16,11 +16,14 @@ def freeze_first_conv_layers(model):
 
 def weights_init(module):
     classname = module.__class__.__name__
-    if classname.find('Conv') != -1:
+    if isinstance(module, torch.nn.Conv2d):
         init.xavier_normal_(module.weight)
-    elif classname.find('Linear') != -1:
+    elif isinstance(module, torch.nn.Linear):
         init.xavier_normal_(module.weight)
         init.constant_(module.bias, 0.1)
+    elif isinstance(module, torch.nn.BatchNorm2d):
+        init.constant_(module.weight, 1)
+        init.constant_(module.bias, 0)
 
 # torch.nn.init.xavier.normal
 
@@ -68,7 +71,7 @@ def load_mnist(data_folder, batch_size, train=True, download=False):
 
 def load_cifar(data_folder, batch_size, train=True, download=False):
     # don't normalize
-    transform = transforms.Compose([transforms.CenterCrop(28), transforms.ToTensor()])
+    transform = transforms.Compose([transforms.ToTensor()])
     dataset = torchvision.datasets.CIFAR10(root=data_folder, train=train, download=download, transform=transform)
     loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=0)
     return loader
@@ -118,14 +121,14 @@ def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, trai
     subset = torch.utils.data.dataset.Subset(dataset, range(Nsamples))
     loader = torch.utils.data.DataLoader(subset, batch_size=Nsamples, shuffle=False, num_workers=0)
 
-    model = model.eval()
+    # model = model.eval()
     iterLoader = iter(loader)
     input, label = next(iterLoader)
     if torch.cuda.is_available():
         model = model.cuda()
         output = model.forward(input.cuda())
     else:
-        model = model.cpu()
+        # model = model.cpu()
         output = model.forward(input)
     output = torch.squeeze(output)
     if train:

@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch import cat
 import torch.utils.model_zoo as model_zoo
-
+from helperFunctions import model_weights_random_xavier
 
 __all__ = ['Inception3', 'inception_v3']
 
@@ -16,42 +16,27 @@ model_urls = {
 
 
 def featsInception(outDim=3, pretrained=False, **kwargs):
-    r"""Inception v3 model architecture from
-    `"Rethinking the Inception Architecture for Computer Vision" <http://arxiv.org/abs/1512.00567>`_.
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
-    """
+    model = featsInceptionCifar10(outDim=outDim)
+    model_weights_random_xavier(model)
     if pretrained:
-        if 'transform_input' not in kwargs:
-            kwargs['transform_input'] = True
-        model = featsInceptionCifar10(outDim=outDim, **kwargs)
         model.load_state_dict(model_zoo.load_url(model_urls['inception_v3_google']))
-        return model
+    return model
 
-    return featsInceptionCifar10(outDim=outDim,**kwargs)
-
-def distInception(pretrained=False, **kwargs):
-    r"""Inception v3 model architecture from
-    `"Rethinking the Inception Architecture for Computer Vision" <http://arxiv.org/abs/1512.00567>`_.
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
-    """
+def distInception(pretrained=False):
+    model = distInceptionCifar10()
+    model_weights_random_xavier(model)
     if pretrained:
-        if 'transform_input' not in kwargs:
-            kwargs['transform_input'] = True
-        model = distInceptionCifar10(**kwargs)
         model.load_state_dict(model_zoo.load_url(model_urls['inception_v3_google']))
-        return model
-
-    return distInceptionCifar10(**kwargs)
+    return model
 
 
 class featsInceptionCifar10(nn.Module):
 
     def __init__(self, outDim=3):
         super(featsInceptionCifar10, self).__init__()
+
         self.net = nn.Sequential(OrderedDict([
-            ('c1', BasicConv2d(3, 96, kernel_size=3)),
+            ('c1', BasicConv2d(3, 96, kernel_size=3, stride=1)),
             ('i1a', InceptionModule(96, 32, 32)),
             ('i1b', InceptionModule(64, 32, 48)),
             ('d1', DownsampleModule(80, 80)),
@@ -66,19 +51,6 @@ class featsInceptionCifar10(nn.Module):
         ]))
 
         self.fc = nn.Linear(336, outDim)
-
-
-        # for m in self.modules():
-        #     if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
-        #         import scipy.stats as stats
-        #         stddev = m.stddev if hasattr(m, 'stddev') else 0.1
-        #         X = stats.truncnorm(-2, 2, scale=stddev)
-        #         values = torch.Tensor(X.rvs(m.weight.numel()))
-        #         values = values.view(m.weight.size())
-        #         m.weight.data.copy_(values)
-        #     elif isinstance(m, nn.BatchNorm2d):
-        #         nn.init.constant_(m.weight, 1)
-        #         nn.init.constant_(m.bias, 0)
 
     def forward(self, input):
         output = self.net(input)
@@ -107,19 +79,6 @@ class distInceptionCifar10(nn.Module):
         ]))
 
         self.fc = nn.Linear(336, 1)
-
-
-        # for m in self.modules():
-        #     if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
-        #         import scipy.stats as stats
-        #         stddev = m.stddev if hasattr(m, 'stddev') else 0.1
-        #         X = stats.truncnorm(-2, 2, scale=stddev)
-        #         values = torch.Tensor(X.rvs(m.weight.numel()))
-        #         values = values.view(m.weight.size())
-        #         m.weight.data.copy_(values)
-        #     elif isinstance(m, nn.BatchNorm2d):
-        #         nn.init.constant_(m.weight, 1)
-        #         nn.init.constant_(m.bias, 0)
 
     def forward(self, input1, input2):
         input = cat((input1,input2),1)
@@ -168,4 +127,4 @@ class BasicConv2d(nn.Module):
     def forward(self, x):
         x = self.conv(x)
         x = self.bn(x)
-        return F.elu(x)
+        return F.relu(x)

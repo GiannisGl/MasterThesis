@@ -5,14 +5,15 @@ from featuresModel import featsLenetOrig, featsLenet
 from helperFunctions import *
 
 
-trainstep = 2
-case = "AugmentationNew"
+trainstep = 1
+# case = "AugmentationNew"
+case = "Cifar"
 outDim = 3
 delta = 5
 lamda = 1
 Nsamples = 2000
-dataset = 'mnist'
-# dataset = 'cifar'
+# dataset = 'mnist'
+dataset = 'cifar'
 
 modelfolder = "trainedModels"
 # modelname = "featsModelDistLeNetNoNormSlackOut3Delta10Lamda1"

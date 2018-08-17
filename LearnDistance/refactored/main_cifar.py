@@ -97,12 +97,12 @@ save_model_weights(distModel, model_folder, distModelname, trainstep)
 print('saved models')
 writer.close()
 
-# Visualization
-print('visualizing..')
-print(log_name)
-writerEmb = SummaryWriter(comment='%s_embedding' % (log_name))
-visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=2000, train=True)
-visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=2000, train=False)
-writerEmb.close()
+# # Visualization
+# print('visualizing..')
+# print(log_name)
+# writerEmb = SummaryWriter(comment='%s_embedding' % (log_name))
+# visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=2000, train=True)
+# visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=2000, train=False)
+# writerEmb.close()
 
 
