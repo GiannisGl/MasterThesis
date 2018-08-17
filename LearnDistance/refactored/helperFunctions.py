@@ -121,14 +121,14 @@ def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, trai
     subset = torch.utils.data.dataset.Subset(dataset, range(Nsamples))
     loader = torch.utils.data.DataLoader(subset, batch_size=Nsamples, shuffle=False, num_workers=0)
 
-    # model = model.eval()
+    model = model.eval()
     iterLoader = iter(loader)
     input, label = next(iterLoader)
     if torch.cuda.is_available():
         model = model.cuda()
         output = model.forward(input.cuda())
     else:
-        # model = model.cpu()
+        model = model.cpu()
         output = model.forward(input)
     output = torch.squeeze(output)
     if train:
