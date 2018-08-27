@@ -7,7 +7,7 @@ from losses import *
 
 
 # parameters and names
-case = "MnistTransfer"
+case = "Transfer"
 outDim = 3
 nAug = 0
 delta = 5
@@ -17,14 +17,14 @@ dataset = 'mnist'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
     train_batch_size = 1000
-    Nsamples = 60000
+    Nsamples = int(60000 / train_batch_size)
     log_iter = int(Nsamples/2)
     Nepochs = 50
     datafolder = "/var/tmp/ioannis/data"
 else:
     train_batch_size = 100
-    Nsamples = 60000
-    log_iter = 100
+    Nsamples = int(600 / train_batch_size)
+    log_iter = 1
     Nepochs = 1
     datafolder = "../../data"
 
@@ -32,7 +32,7 @@ lamda = 1
 featsPretrained = False
 distPretrained = False
 modelname = "DistLeNet%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
-log_name = "%sAug%iBatch%iLR%f_Iter%i" % (modelname, nAug, train_batch_size, learningRate, trainstep)
+log_name = "%s%sAug%iBatch%iLR%f_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False)
@@ -91,7 +91,9 @@ print('Finished Training')
 print(log_name)
 
 # save weights
-save_model_weights(featsModel, model_folder, featsModelname, trainstep)
+transferModelname = "%sTransfer%s" % (dataset, modelname)
+print(transferModelname)
+save_model_weights(featsModel, model_folder, transferModelname, trainstep)
 print('saved models')
 
 writer.close()
