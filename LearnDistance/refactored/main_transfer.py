@@ -11,7 +11,8 @@ case = "AugmentationNew"
 outDim = 3
 nAug = 0
 delta = 5
-trainstep = 1
+trainstep = 2
+transferTrainstep = 1
 learningRate = 1e-3
 dataset = 'mnist'
 # Per Epoch one iteration over the dataset
@@ -38,15 +39,15 @@ train_loader = load_mnist(datafolder, train_batch_size, train=True, download=Fal
 
 # model loading
 featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsLenet, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
+featsModel = load_model(featsLenet, model_folder, featsModelname, trainstep, featsPretrained, outDim)
 freeze_layers(featsModel)
 # remove last layer
 nFeats = featsModel.fc[-1].in_features
 nClasses = 10
 featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
-if trainstep>=1:
+if transferTrainstep>=1:
     modelfilename = '%s/%sTransfer%s_Iter%i.state' % (model_folder, dataset, modelname, trainstep)
-    featsModel = load_model_weights(model, modelfilename)
+    featsModel = load_model_weights(featsModel, modelfilename)
 
 if torch.cuda.is_available():
     featsModel.cuda()
