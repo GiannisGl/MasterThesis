@@ -38,13 +38,15 @@ train_loader = load_mnist(datafolder, train_batch_size, train=True, download=Fal
 
 # model loading
 featsModelname = "featsModel%s" % modelname
-if trainstep == 1:
-    featsModel = load_model(featsLenet, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
-    freeze_layers(featsModel)
-    # remove last layer
-    nFeats = featsModel.fc[-1].in_features
-    nClasses = 10
-    featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
+featsModel = load_model(featsLenet, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
+freeze_layers(featsModel)
+# remove last layer
+nFeats = featsModel.fc[-1].in_features
+nClasses = 10
+featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
+if trainstep>=1:
+    modelfilename = '%s/%sTransfer%s_Iter%i.state' % (model_folder, dataset, modelname, trainstep)
+    featsModel = load_model_weights(model, modelfilename)
 
 if torch.cuda.is_available():
     featsModel.cuda()
