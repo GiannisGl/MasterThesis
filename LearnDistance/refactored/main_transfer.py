@@ -7,7 +7,7 @@ from losses import *
 
 
 # parameters and names
-case = "Transfer"
+case = "AugmentationNew"
 outDim = 3
 nAug = 0
 delta = 5
@@ -30,7 +30,6 @@ else:
 
 lamda = 1
 featsPretrained = False
-distPretrained = False
 modelname = "DistLeNet%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 log_name = "%s%sAug%iBatch%iLR%f_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
@@ -39,13 +38,14 @@ train_loader = load_mnist(datafolder, train_batch_size, train=True, download=Fal
 
 # model loading
 featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsLenet, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
+if trainstep == 1:
+    featsModel = load_model(featsLenet, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
+    freeze_layers(featsModel)
+    # remove last layer
+    nFeats = featsModel.fc[-1].in_features
+    nClasses = 10
+    featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
 
-freeze_layers(featsModel)
-# remove last layer
-nFeats = featsModel.fc[-1].in_features
-nClasses = 10
-featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
 
 # optimizers
 featsOptimizer = optim.Adam(featsModel.fc[-1].parameters(), lr=learningRate)
@@ -97,3 +97,6 @@ save_model_weights(featsModel, model_folder, transferModelname, trainstep)
 print('saved models')
 
 writer.close()
+
+test_loader = load_mnist(datafolder, train_batch_size, train=False, download=False)
+test_accuracy(featsModel, test_loader)
