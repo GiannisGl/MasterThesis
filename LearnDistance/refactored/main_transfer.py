@@ -46,6 +46,8 @@ if trainstep == 1:
     nClasses = 10
     featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
 
+if torch.cuda.is_available():
+    featsModel.cuda()
 
 # optimizers
 featsOptimizer = optim.Adam(featsModel.fc[-1].parameters(), lr=learningRate)
@@ -67,7 +69,8 @@ for epoch in range(Nepochs):
         # transfer to cuda if available
         if torch.cuda.is_available():
             torch.set_default_tensor_type('torch.cuda.FloatTensor')
-            input = input.cuda()
+            input.cuda()
+            label.cuda()
             criterion.cuda()
 
         # zero the parameter gradients
