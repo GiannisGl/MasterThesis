@@ -5,8 +5,8 @@ from featuresModel import featsLenetOrig, featsLenet
 from helperFunctions import *
 
 
-trainstep = 1
-case = "AugmentationNew"
+trainstep = 2
+case = "AugmentationNewSmall"
 # case = "Cifar"
 outDim = 3
 delta = 5
@@ -16,12 +16,13 @@ dataset = 'mnist'
 # dataset = 'cifar'
 
 modelfolder = "trainedModels"
-# modelname = "featsModelDistLeNetNoNormSlackOut3Delta10Lamda1"
 if dataset=='mnist':
     modelname = "featsModelDistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+    # modelname = "featsModelDistLeNet%sOut%iDelta%i" % (case, outDim, delta)
     featsModel = load_model(featsLenet, modelfolder, modelname, trainstep, pretrained=False, outDim=outDim)
 elif dataset=='cifar':
     modelname = "featsModelDistInceptionNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+    #modelname = "featsModelDistInception%sOut%iDelta%i" % (case, outDim, delta)
     featsModel = load_model(featsInception, modelfolder, modelname, trainstep, pretrained=False, outDim=outDim)
 
 

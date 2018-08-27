@@ -74,7 +74,7 @@ for epoch in range(Nepochs):
         distOptimizer.zero_grad()
 
         # optimize
-        loss = criterion(input1, input2, featsModel, distModel)
+        loss = criterion(input1, input2, featsModel)
         loss.backward()
         distOptimizer.step()
         featsOptimizer.step()

@@ -9,14 +9,14 @@ from losses import *
 # parameters and names
 case = "Cifar"
 outDim = 3
-nAug = 5
+nAug = 3
 delta = 5
 trainstep = 1
 learningRate = 1e-3
 dataset = 'cifar'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
-    train_batch_size = 40
+    train_batch_size = 50
     Nsamples = int(50000 / (3*train_batch_size))
     log_iter = int(Nsamples/2)
     Nepochs = 50
@@ -30,7 +30,7 @@ else:
 lamda = 1
 featsPretrained = False
 distPretrained = False
-modelname = "DistInceptionNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 log_name = "%sAug%iBatch%iLR%f_Iter%i" % (modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 

@@ -8,7 +8,7 @@ from losses import *
 
 
 # parameters and names
-case = "Slack"
+case = "SlackNew"
 outDim = 10
 nAug = 10
 delta = 5
@@ -98,11 +98,3 @@ save_model_weights(distModel, model_folder, distModelname, trainstep)
 print('saved models')
 
 writer.close()
-
-# Visualization
-print('visualizing..')
-print(log_name)
-writerEmb = SummaryWriter(comment='%s_embedding' % (log_name))
-visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=Nsamples, train=True)
-visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=Nsamples, train=False)
-writerEmb.close()
