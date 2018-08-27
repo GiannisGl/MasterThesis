@@ -69,8 +69,8 @@ for epoch in range(Nepochs):
         # transfer to cuda if available
         if torch.cuda.is_available():
             torch.set_default_tensor_type('torch.cuda.FloatTensor')
-            input.cuda()
-            label.cuda()
+            input = input.cuda()
+            label = label.cuda()
             criterion.cuda()
 
         # zero the parameter gradients

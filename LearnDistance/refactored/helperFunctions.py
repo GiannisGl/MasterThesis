@@ -142,6 +142,9 @@ def test_accuracy(model, testloader):
     with torch.no_grad():
         for data in testloader:
             images, labels = data
+            if torch.cuda.is_available():
+                images = images.cuda()
+                labels = labels.cuda()
             outputs = model(images)
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
