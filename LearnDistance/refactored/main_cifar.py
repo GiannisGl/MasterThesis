@@ -30,8 +30,8 @@ else:
 lamda = 1
 featsPretrained = False
 distPretrained = False
-modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
-log_name = "%sAug%iBatch%iLR%f_Iter%i" % (modelname, nAug, train_batch_size, learningRate, trainstep)
+modelname = "DistInception%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
+log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 train_loader = load_cifar(datafolder, train_batch_size, train=True, download=False)

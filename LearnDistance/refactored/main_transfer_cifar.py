@@ -11,14 +11,14 @@ case = "AugmentationNew"
 outDim = 3
 nAug = 0
 delta = 5
-trainstep = 2
+trainstep = 1
 transferTrainstep = 1
 learningRate = 1e-3
-dataset = 'mnist'
+dataset = 'cifar'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
     train_batch_size = 1000
-    Nsamples = int(60000 / train_batch_size)
+    Nsamples = int(50000 / train_batch_size)
     log_iter = int(Nsamples/2)
     Nepochs = 50
     datafolder = "/var/tmp/ioannis/data"
@@ -31,7 +31,7 @@ else:
 
 lamda = 1
 featsPretrained = False
-modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 log_name = "%s%sAug%iBatch%iLR%f_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 

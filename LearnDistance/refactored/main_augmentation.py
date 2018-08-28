@@ -8,7 +8,7 @@ from losses import *
 
 
 # parameters and names
-case = "NoAug"
+case = "AugmentationNew"
 outDim = 3
 nAug = 0
 delta = 5
@@ -32,8 +32,8 @@ else:
 lamda = 1
 featsPretrained = False
 distPretrained = False
-modelname = "DistLeNet%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
-log_name = "%sAug%iBatch%iLR%f_Iter%i" % (modelname, nAug, train_batch_size, learningRate, trainstep)
+modelname = "DistLeNet%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
+log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False)

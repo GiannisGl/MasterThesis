@@ -31,8 +31,8 @@ else:
 
 featsPretrained = False
 distPretrained = False
-modelname = "DistLeNet%sOut%iDelta%i" % (case, outDim, delta)
-log_name = "%sAug%iBatch%iLR%f_Iter%i" % (modelname, nAug, train_batch_size, learningRate, trainstep)
+modelname = "DistLeNet%sAug%iOut%iDelta%i" % (case, nAug, outDim, delta)
+log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False)
