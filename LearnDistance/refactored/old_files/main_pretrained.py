@@ -1,15 +1,15 @@
-import torch
+import datetime
+
 import torch.optim as optim
-from augmentation import *
-from featuresModel import featsLenet, featsLenetFull
-from distanceModel import distanceModel
-from helperFunctions import *
-from losses import *
 from tensorboardX import SummaryWriter
 
+from distanceModel import distanceModel
+from featuresModel import featsLenetFull
+from helperFunctions import *
+from losses import *
 
 # parameters and names
-case = "convlayersfixed"
+case = "FeatsPretrained"
 trainstep = 1
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -20,14 +20,14 @@ else:
     Nepochs = 1
 Nsamples = int(60000 / (3*train_batch_size))
 learningRate = 1e-3
-delta = 5
+delta = 50
 lamda = 1
 log_iter = int(Nsamples/2)
 featsPretrained = True
 distPretrained = False
-nAug = 10
-modelname = "LearnDistanceDistLeNetNoNorm%sDelta%iLamda%i" % (case, delta, lamda)
-log_name = "%snAug%iBatch%iLR%f_Iter%i" % (modelname, nAug, train_batch_size, learningRate, trainstep)
+curDatetime = datetime.datetime.now().isoformat();
+modelname = "LearnDistanceDistAlexNet%sDelta%iLamda%i" % (case, delta, lamda)
+log_name = "%s%sBatch%iLR%f_Iter%i" % (curDatetime, modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 # dataset loading
@@ -35,23 +35,21 @@ if torch.cuda.is_available():
     data_folder = "/var/tmp/ioannis/data"
 else:
     data_folder = "../../data"
-train_loader = load_mnist(data_folder, train_batch_size, train=True, download=True)
+train_loader = load_mnist(data_folder, train_batch_size, train=True, download=False)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
 featsModel = load_model(featsLenetFull, model_folder, featsModelname, trainstep-1, featsPretrained)
-freeze_first_conv_layers(featsModel)
-
 distModelname = "distModel%s" % modelname
 distModel = load_model(distanceModel, model_folder, distModelname, trainstep-1, distPretrained)
 
 # optimizers
-featsOptimizer = optim.Adam(featsModel.fc.parameters(), lr=learningRate)
-distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate,)
+featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate, weight_decay=0.00001)
+distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate, weight_decay=0.00001)
 
-# writers and criterion
+# writer and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
-criterion = distance_loss(writer, log_iter, delta, lamda, nAug)
+criterion = distance_loss(writer, delta, lamda)
 
 # Training
 print('Start Training')
@@ -91,6 +89,7 @@ for epoch in range(Nepochs):
             running_loss = 0.0
 
 print('Finished Training')
+
 
 writer.close()
 

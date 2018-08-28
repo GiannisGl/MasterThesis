@@ -1,12 +1,10 @@
-import torch
 import torch.optim as optim
-from augmentation import *
-from featuresModel import featsLenet, featsLenetFull, featsLenetFix
-from distanceModel import distanceModel
-from helperFunctions import *
-from losses import *
 from tensorboardX import SummaryWriter
 
+from distanceModel import distanceModel
+from featuresModel import featsLenetFix
+from helperFunctions import *
+from losses import *
 
 # parameters and names
 case = "fixFeats"

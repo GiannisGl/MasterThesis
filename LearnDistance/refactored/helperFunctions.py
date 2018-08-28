@@ -84,8 +84,8 @@ def augment_batch(batch, dataset='mnist'):
                                            transforms.RandomCrop(28),
                                            transforms.RandomRotation(20),
                                            transforms.RandomHorizontalFlip(0.5),
-                                           transforms.ColorJitter(brightness=0.5, contrast=0.5, saturation=0.1, hue=0.1),
-                                           transforms.RandomGrayscale(0.1)])
+                                           transforms.ColorJitter(brightness=0.5, contrast=0.5, saturation=0.5, hue=0.5),
+                                           transforms.RandomGrayscale(0.5)])
     batchSize = batch.shape[0]
     batchAug = torch.Tensor(batch.shape)
     for i in range(batchSize):

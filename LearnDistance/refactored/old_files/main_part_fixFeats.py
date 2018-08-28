@@ -1,15 +1,11 @@
-import torch
-import torchvision
-import torchvision.transforms as transforms
 from torch.utils.data.sampler import SubsetRandomSampler
 import torch.optim as optim
-from augmentation import *
-from featuresModel import featsLenet, featsLenetFull, featsLenetFix
+from torch.utils.data.sampler import SubsetRandomSampler
+
 from distanceModel import distanceModel
+from featuresModel import featsLenetFix
 from helperFunctions import *
 from losses import *
-from tensorboardX import SummaryWriter
-
 
 # parameters and names
 case = "partFixFeats"

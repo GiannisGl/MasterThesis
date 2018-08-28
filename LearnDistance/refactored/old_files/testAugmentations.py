@@ -1,8 +1,8 @@
-import torch
+import matplotlib.pyplot as plt
 import torchvision
 import torchvision.transforms as transforms
-from augmentation import *
-import matplotlib.pyplot as plt
+
+from old_files.augmentation import *
 
 data_folder = "../data"
 

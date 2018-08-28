@@ -6,7 +6,7 @@ from helperFunctions import *
 
 
 trainstep = 2
-case = "AugmentationNewSmall"
+case = "AugmentationNew"
 # case = "Cifar"
 outDim = 3
 delta = 5
