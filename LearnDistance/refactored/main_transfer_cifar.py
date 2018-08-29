@@ -1,7 +1,7 @@
 import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
-from featuresModel import featsLenet
+from inceptionModel import featsInception
 from helperFunctions import *
 from losses import *
 
@@ -32,7 +32,7 @@ else:
 lamda = 1
 featsPretrained = False
 modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
-# modelname = "DistLeNet%sAugOut%iDelta%i" % (case, nAug, outDim, delta)
+# modelname = "DistInception%sAug%iOut%iDelta%i" % (case, nAug, outDim, delta)
 log_name = "%s%sAug%iBatch%iLR%f_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
@@ -40,14 +40,14 @@ train_loader = load_mnist(datafolder, train_batch_size, train=True, download=Fal
 
 # model loading
 featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsLenet, model_folder, featsModelname, 0, featsPretrained, outDim)
+featsModel = load_model(featsInception, model_folder, featsModelname, 0, featsPretrained, outDim)
 if transferTrainstep<1:
-    featsModel = load_model(featsLenet, model_folder, featsModelname, trainstep, featsPretrained, outDim)
+    featsModel = load_model(featsInception, model_folder, featsModelname, trainstep, featsPretrained, outDim)
 freeze_layers(featsModel)
 # remove last layer
 nFeats = featsModel.fc[-1].in_features
 nClasses = 10
-featsModel.fc = torch.nn.Sequential(featsModel.fc[0], torch.nn.Linear(nFeats, nClasses))
+featsModel.fc = torch.nn.Linear(nFeats, nClasses)
 if transferTrainstep>=1:
     modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, modelname, trainstep, transferTrainstep)
     featsModel = load_model_weights(featsModel, modelfilename)
