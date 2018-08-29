@@ -7,9 +7,9 @@ from losses import *
 
 
 # parameters and names
-case = "CifarStrongerAugNew"
+case = "CifarClusteringNew"
 outDim = 10
-nAug = 3
+nAug = 5
 delta = 5
 trainstep = 2
 transferTrainstep = 0
@@ -31,12 +31,12 @@ else:
 
 lamda = 1
 featsPretrained = False
-modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
-# modelname = "DistInception%sAug%iOut%iDelta%i" % (case, nAug, outDim, delta)
-log_name = "%s%sAug%iBatch%iLR%f_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep)
+#modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+modelname = "DistInception%sAug%iOut%iDelta%i" % (case, nAug, outDim, delta)
+log_name = "%s%sAug%iBatch%iLR%f_Iter%i_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep, transferTrainstep)
 model_folder = "trainedModels"
 
-train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False)
+train_loader = load_cifar(datafolder, train_batch_size, train=True, download=False)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
@@ -45,7 +45,7 @@ if transferTrainstep<1:
     featsModel = load_model(featsInception, model_folder, featsModelname, trainstep, featsPretrained, outDim)
 freeze_layers(featsModel)
 # remove last layer
-nFeats = featsModel.fc[-1].in_features
+nFeats = featsModel.fc.in_features
 nClasses = 10
 featsModel.fc = torch.nn.Linear(nFeats, nClasses)
 if transferTrainstep>=1:
@@ -55,7 +55,7 @@ if torch.cuda.is_available():
     featsModel.cuda()
 
 # optimizers
-featsOptimizer = optim.Adam(featsModel.fc[-1].parameters(), lr=learningRate)
+featsOptimizer = optim.Adam(featsModel.fc.parameters(), lr=learningRate)
 criterion = torch.nn.CrossEntropyLoss()
 
 # writers and criterion
@@ -106,5 +106,5 @@ print('saved models')
 
 writer.close()
 
-test_loader = load_mnist(datafolder, train_batch_size, train=False, download=False)
+test_loader = load_cifar(datafolder, train_batch_size, train=False, download=False)
 test_accuracy(featsModel, test_loader)

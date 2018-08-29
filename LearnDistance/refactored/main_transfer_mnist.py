@@ -7,13 +7,13 @@ from losses import *
 
 
 # parameters and names
-case = "NoAug"
+case = "AugmentationNew"
 outDim = 3
 nAug = 5
 delta = 5
-trainstep = 3
-transferTrainstep = 1
-learningRate = 1e-3
+trainstep = 2
+transferTrainstep = 3
+learningRate = 1e-5
 dataset = 'mnist'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -33,7 +33,7 @@ lamda = 1
 featsPretrained = False
 modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 # modelname = "DistLeNet%sOut%iDelta%i" % (case, outDim, delta)
-log_name = "%s%sAug%iBatch%iLR%f_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep)
+log_name = "%s%sAug%iBatch%iLR%f_Iter%i_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep, transferTrainstep)
 model_folder = "trainedModels"
 
 train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False)
@@ -47,7 +47,7 @@ freeze_layers(featsModel)
 # remove last layer
 nFeats = featsModel.fc[-1].in_features
 nClasses = 10
-featsModel.fc = torch.nn.Sequential(featsModel.fc[0], torch.nn.Linear(nFeats, nClasses))
+featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
 print(featsModel)
 if transferTrainstep>=1:
     modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, modelname, trainstep, transferTrainstep)
