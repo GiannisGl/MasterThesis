@@ -47,8 +47,8 @@ freeze_layers(featsModel)
 # remove last layer
 nFeats = featsModel.fc[-1].in_features
 nClasses = 10
-featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
-if transferTrainstep>=1
+featsModel.fc = torch.nn.Sequential(featsModel.fc[0], torch.nn.Linear(nFeats, nClasses))
+if transferTrainstep>=1:
     modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, modelname, trainstep, transferTrainstep)
     featsModel = load_model_weights(featsModel, modelfilename)
 if torch.cuda.is_available():
