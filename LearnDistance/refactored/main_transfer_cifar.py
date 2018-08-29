@@ -32,6 +32,7 @@ else:
 lamda = 1
 featsPretrained = False
 modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+# modelname = "DistLeNet%sAugOut%iDelta%i" % (case, nAug, outDim, delta)
 log_name = "%s%sAug%iBatch%iLR%f_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
