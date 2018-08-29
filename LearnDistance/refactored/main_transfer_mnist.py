@@ -7,12 +7,12 @@ from losses import *
 
 
 # parameters and names
-case = "MnistClustering"
+case = "NoAug"
 outDim = 3
 nAug = 5
 delta = 5
-trainstep = 2
-transferTrainstep = 0
+trainstep = 3
+transferTrainstep = 1
 learningRate = 1e-3
 dataset = 'mnist'
 # Per Epoch one iteration over the dataset
@@ -31,8 +31,8 @@ else:
 
 lamda = 1
 featsPretrained = False
-# modelname = "DistLeNet%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
-modelname = "DistLeNet%sOut%iDelta%i" % (case, outDim, delta)
+modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+# modelname = "DistLeNet%sOut%iDelta%i" % (case, outDim, delta)
 log_name = "%s%sAug%iBatch%iLR%f_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
@@ -47,7 +47,7 @@ freeze_layers(featsModel)
 # remove last layer
 nFeats = featsModel.fc[-1].in_features
 nClasses = 10
-featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
+featsModel.fc = torch.nn.Sequential(featsModel.fc[0], torch.nn.Linear(nFeats, nClasses))
 print(featsModel)
 if transferTrainstep>=1:
     modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, modelname, trainstep, transferTrainstep)

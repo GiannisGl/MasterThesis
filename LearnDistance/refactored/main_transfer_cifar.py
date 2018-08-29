@@ -47,8 +47,8 @@ freeze_layers(featsModel)
 nFeats = featsModel.fc[-1].in_features
 nClasses = 10
 featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
-if transferTrainstep>=1:
-    modelfilename = '%s/%sTransfer%s_Iter%i.state' % (model_folder, dataset, modelname, transferTrainstep)
+if transferTrainstep>=1
+    modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, modelname, trainstep, transferTrainstep)
     featsModel = load_model_weights(featsModel, modelfilename)
 if torch.cuda.is_available():
     featsModel.cuda()
@@ -98,9 +98,9 @@ print('Finished Training')
 print(log_name)
 
 # save weights
-transferModelname = "%sTransfer%s" % (dataset, modelname)
+transferModelname = "%sTransfer%s_Iter%i" % (dataset, modelname, trainstep)
 print(transferModelname)
-save_model_weights(featsModel, model_folder, transferModelname, trainstep)
+save_model_weights(featsModel, model_folder, transferModelname, transferTrainstep+1)
 print('saved models')
 
 writer.close()
