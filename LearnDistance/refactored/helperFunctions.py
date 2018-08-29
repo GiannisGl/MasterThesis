@@ -75,19 +75,22 @@ def load_cifar(data_folder, batch_size, train=True, download=False):
 
 
 def augment_batch(batch, dataset='mnist'):
+    batchSize = batch.shape[0]
     if dataset=='mnist':
+        outShape = batch.shape
         transformAug = transforms.Compose([transforms.ToPILImage(),
                                            transforms.RandomAffine(scale=[0.8, 1.1], degrees=10, translate=[0.2, 0.2], shear=10),
                                            transforms.ToTensor()])
     elif dataset=='cifar':
+        outShape = [batchSize, 3, 28, 28]
         transformAug = transforms.Compose([transforms.ToPILImage(),
+                                           transforms.RandomAffine(degrees=20, shear=10),
                                            transforms.RandomCrop(28),
-                                           # transforms.RandomRotation(20),
                                            transforms.RandomHorizontalFlip(0.5),
-                                           transforms.ColorJitter(brightness=0.5, contrast=0.5, saturation=0.5, hue=0.5),
-                                           transforms.RandomGrayscale(0.5)])
-    batchSize = batch.shape[0]
-    batchAug = torch.Tensor(batch.shape)
+                                           transforms.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.3),
+                                           transforms.RandomGrayscale(0.3),
+                                           transforms.ToTensor()])
+    batchAug = torch.zeros(outShape)
     for i in range(batchSize):
         batchAug[i] = transformAug(batch[i].cpu())
     return batchAug
