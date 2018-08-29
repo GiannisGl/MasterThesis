@@ -56,7 +56,7 @@ if torch.cuda.is_available():
     featsModel.cuda()
 
 # optimizers
-featsOptimizer = optim.Adam(featsModel.fc[-2].parameters(), lr=learningRate)
+featsOptimizer = optim.Adam(featsModel.fc[-1].parameters(), lr=learningRate)
 criterion = torch.nn.CrossEntropyLoss()
 
 # writers and criterion
