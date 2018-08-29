@@ -47,7 +47,6 @@ freeze_layers(featsModel)
 nFeats = featsModel.fc[-1].in_features
 nClasses = 10
 featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
-featsModel.fc.add_module("f7soft", torch.nn.Softmax(0))
 if transferTrainstep>=1:
     modelfilename = '%s/%sTransfer%s_Iter%i.state' % (model_folder, dataset, modelname, transferTrainstep)
     featsModel = load_model_weights(featsModel, modelfilename)
