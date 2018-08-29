@@ -7,9 +7,9 @@ from losses import *
 
 
 # parameters and names
-case = "AugmentationNew"
+case = "CifarStrongerAug"
 outDim = 3
-nAug = 0
+nAug = 5
 delta = 5
 trainstep = 2
 transferTrainstep = 1
@@ -23,9 +23,9 @@ else:
 
 lamda = 1
 featsPretrained = False
-modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
-# modelname = "DistLeNet%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
-# modelname = "DistLeNetNoNorm%sOut%iDelta%i" % (case, outDim, delta)
+modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+# modelname = "DistInception%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
+# modelname = "DistInception%sOut%iDelta%i" % (case, outDim, delta)
 model_folder = "trainedModels"
 
 # model loading
@@ -40,11 +40,11 @@ if transferTrainstep<1:
     modelfilename = '%s/%s_Iter%i.state' % (model_folder, featsModelname, trainstep)
     load_model_weights(featsModel, modelfilename)
 else:
-    modelfilename = '%s/%sTransferMnist_Iter%i.state' % (model_folder, modelname, transferTrainstep)
+    modelfilename = '%s/%sTransferCifar_Iter%i.state' % (model_folder, modelname, transferTrainstep)
     featsModel = load_model_weights(featsModel, modelfilename)
 
 if torch.cuda.is_available():
     featsModel.cuda()
 
-test_loader = load_mnist(datafolder, batch_size, train=False, download=False)
+test_loader = load_cifar(datafolder, batch_size, train=False, download=False)
 test_accuracy(featsModel, test_loader)

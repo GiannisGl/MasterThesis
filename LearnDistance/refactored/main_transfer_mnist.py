@@ -7,12 +7,12 @@ from losses import *
 
 
 # parameters and names
-case = "AugmentationNew"
+case = "MnistClustering"
 outDim = 3
-nAug = 0
+nAug = 5
 delta = 5
 trainstep = 2
-transferTrainstep = 1
+transferTrainstep = 0
 learningRate = 1e-3
 dataset = 'mnist'
 # Per Epoch one iteration over the dataset
@@ -24,14 +24,15 @@ if torch.cuda.is_available():
     datafolder = "/var/tmp/ioannis/data"
 else:
     train_batch_size = 100
-    Nsamples = int(600 / train_batch_size)
-    log_iter = 1
-    Nepochs = 1
+    Nsamples = int(60000 / train_batch_size)
+    log_iter = 100
+    Nepochs = 50
     datafolder = "../../data"
 
 lamda = 1
 featsPretrained = False
-modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+# modelname = "DistLeNet%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+modelname = "DistLeNet%sOut%iDelta%i" % (case, outDim, delta)
 log_name = "%s%sAug%iBatch%iLR%f_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
@@ -47,14 +48,16 @@ freeze_layers(featsModel)
 nFeats = featsModel.fc[-1].in_features
 nClasses = 10
 featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
+featsModel.fc.add_module("f7soft", torch.nn.Softmax(0))
+print(featsModel)
 if transferTrainstep>=1:
-    modelfilename = '%s/%sTransfer%s_Iter%i.state' % (model_folder, dataset, modelname, transferTrainstep)
+    modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, modelname, trainstep, transferTrainstep)
     featsModel = load_model_weights(featsModel, modelfilename)
 if torch.cuda.is_available():
     featsModel.cuda()
 
 # optimizers
-featsOptimizer = optim.Adam(featsModel.fc[-1].parameters(), lr=learningRate)
+featsOptimizer = optim.Adam(featsModel.fc[-2].parameters(), lr=learningRate)
 criterion = torch.nn.CrossEntropyLoss()
 
 # writers and criterion
@@ -85,6 +88,8 @@ for epoch in range(Nepochs):
         loss = criterion(output, label)
         loss.backward()
         featsOptimizer.step()
+        global_step = epoch*Nsamples+i
+        writer.add_scalar(tag='transfer_mnist', scalar_value=loss, global_step=global_step)
 
         # print statistics
         running_loss += loss.item()
@@ -98,9 +103,9 @@ print('Finished Training')
 print(log_name)
 
 # save weights
-transferModelname = "%sTransfer%s" % (dataset, modelname)
+transferModelname = "%sTransfer%s_Iter%i" % (dataset, modelname, trainstep)
 print(transferModelname)
-save_model_weights(featsModel, model_folder, transferModelname, trainstep)
+save_model_weights(featsModel, model_folder, transferModelname, transferTrainstep+1)
 print('saved models')
 
 writer.close()

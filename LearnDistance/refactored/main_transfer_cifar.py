@@ -7,12 +7,12 @@ from losses import *
 
 
 # parameters and names
-case = "AugmentationNew"
-outDim = 3
-nAug = 0
+case = "CifarStrongerAugNew"
+outDim = 10
+nAug = 3
 delta = 5
-trainstep = 1
-transferTrainstep = 1
+trainstep = 2
+transferTrainstep = 0
 learningRate = 1e-3
 dataset = 'cifar'
 # Per Epoch one iteration over the dataset
@@ -47,6 +47,7 @@ freeze_layers(featsModel)
 nFeats = featsModel.fc[-1].in_features
 nClasses = 10
 featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
+featsModel.fc.add_module("f7soft", torch.nn.Softmax(0))
 if transferTrainstep>=1:
     modelfilename = '%s/%sTransfer%s_Iter%i.state' % (model_folder, dataset, modelname, transferTrainstep)
     featsModel = load_model_weights(featsModel, modelfilename)
