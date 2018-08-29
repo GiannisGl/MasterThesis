@@ -68,7 +68,8 @@ def load_mnist(data_folder, batch_size, train=True, download=False):
 
 def load_cifar(data_folder, batch_size, train=True, download=False):
     # don't normalize
-    transform = transforms.Compose([transforms.ToTensor()])
+    transform = transforms.Compose([transforms.RandomCrop(28),
+                                    transforms.ToTensor()])
     dataset = torchvision.datasets.CIFAR10(root=data_folder, train=train, download=download, transform=transform)
     loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=0)
     return loader
@@ -84,7 +85,7 @@ def augment_batch(batch, dataset='mnist'):
     elif dataset=='cifar':
         outShape = [batchSize, 3, 28, 28]
         transformAug = transforms.Compose([transforms.ToPILImage(),
-                                           transforms.RandomAffine(degrees=20, shear=10),
+                                           transforms.RandomAffine(scale=[0.8, 1.1], degrees=20, shear=10),
                                            transforms.RandomCrop(28),
                                            transforms.RandomHorizontalFlip(0.5),
                                            transforms.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.3),
