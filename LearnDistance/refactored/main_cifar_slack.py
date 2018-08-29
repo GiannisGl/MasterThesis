@@ -16,7 +16,7 @@ learningRate = 1e-3
 dataset='cifar'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
-    train_batch_size = 1000
+    train_batch_size = 50
     Nsamples = int(50000 / (3*train_batch_size))
     log_iter = int(Nsamples/2)
     Nepochs = 50
@@ -48,7 +48,7 @@ distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate)
 
 # writers and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
-criterion = distance_loss_slack(writer, log_iter, delta, lamda, nAug)
+criterion = distance_loss_slack(writer, log_iter, delta, lamda, nAug, dataset)
 
 # Training
 print('Start Training')

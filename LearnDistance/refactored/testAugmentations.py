@@ -14,18 +14,22 @@ transform = transforms.Compose(
 train_set = torchvision.datasets.CIFAR10(root=data_folder, train=True,
                                        download=False, transform=transform)
 
-train_loader = torch.utils.data.DataLoader(train_set, batch_size=1,
+train_loader = torch.utils.data.DataLoader(train_set, batch_size=3,
                                            shuffle=True, num_workers=0)
 
 iterTrainLoader = iter(train_loader)
 input, label = next(iterTrainLoader)
 batchSize = input.shape[0]
-inputAug = augment_batch(input)
+inputAug = augment_batch(input, dataset='cifar')
 print(batchSize)
 print(inputAug.shape)
+print(input[0].shape)
+input = input.permute([0,2,3,1])
+print(input.shape)
+inputAug = inputAug.permute([0,2,3,1])
 
 f, imgplot = plt.subplots(3,2)
-imgplot[0,0].imshow(torch.squeeze(input[0]))
+imgplot[0,0].imshow(input[0])
 imgplot[0,1].imshow(torch.squeeze(inputAug[0]))
 imgplot[1,0].imshow(torch.squeeze(input[1]))
 imgplot[1,1].imshow(torch.squeeze(inputAug[1]))
