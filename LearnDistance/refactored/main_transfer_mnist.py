@@ -7,13 +7,13 @@ from losses import *
 
 
 # parameters and names
-case = "AugmentationNew"
+case = "SlackNew"
 outDim = 3
 nAug = 5
 delta = 5
-trainstep = 2
-transferTrainstep = 3
-learningRate = 1e-5
+trainstep = 3
+transferTrainstep = 1
+learningRate = 1e-6
 dataset = 'mnist'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -45,18 +45,21 @@ if transferTrainstep<1:
     featsModel = load_model(featsLenet, model_folder, featsModelname, trainstep, featsPretrained, outDim)
 freeze_layers(featsModel)
 # remove last layer
-nFeats = featsModel.fc[-1].in_features
+# nFeats = featsModel.fc[-1].in_features
+nFeats = featsModel.fc[0].in_features
 nClasses = 10
-featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
+# featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
+featsModel.fc = torch.nn.Linear(nFeats, nClasses)
 print(featsModel)
 if transferTrainstep>=1:
-    modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, modelname, trainstep, transferTrainstep)
+    modelfilename = '%s/%sTransferConv%s_Iter%i_Iter%i.state' % (model_folder, dataset, modelname, trainstep, transferTrainstep)
     featsModel = load_model_weights(featsModel, modelfilename)
 if torch.cuda.is_available():
     featsModel.cuda()
 
 # optimizers
-featsOptimizer = optim.Adam(featsModel.fc[-1].parameters(), lr=learningRate)
+# featsOptimizer = optim.Adam(featsModel.fc[-1].parameters(), lr=learningRate)
+featsOptimizer = optim.Adam(featsModel.fc.parameters(), lr=learningRate)
 criterion = torch.nn.CrossEntropyLoss()
 
 # writers and criterion
@@ -102,7 +105,7 @@ print('Finished Training')
 print(log_name)
 
 # save weights
-transferModelname = "%sTransfer%s_Iter%i" % (dataset, modelname, trainstep)
+transferModelname = "%sTransferConv%s_Iter%i" % (dataset, modelname, trainstep)
 print(transferModelname)
 save_model_weights(featsModel, model_folder, transferModelname, transferTrainstep+1)
 print('saved models')

@@ -302,7 +302,7 @@ class distance_loss_slack(torch.nn.Module):
         distLossDelta += mseLoss(relu(delta - learnedDist21))
         distLossDelta += mseLoss(relu(delta - learnedDist32))
         distLossDelta += mseLoss(relu(delta - learnedDist31))
-        self.writer.add_scalar(tag='distDeltaSlack', scalar_value=distLossDelta, global_step=self.step)
+        self.writer.add_scalar(tag='distDelta', scalar_value=distLossDelta, global_step=self.step)
         distLoss += distLossDelta
 
         # terms that enforce triangular inequality

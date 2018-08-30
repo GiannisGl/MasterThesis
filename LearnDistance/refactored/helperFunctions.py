@@ -85,11 +85,13 @@ def augment_batch(batch, dataset='mnist'):
     elif dataset=='cifar':
         outShape = [batchSize, 3, 28, 28]
         transformAug = transforms.Compose([transforms.ToPILImage(),
-                                           transforms.RandomAffine(scale=[0.8, 1.1], degrees=20, shear=10),
+                                           transforms.Pad(6, padding_mode='edge'),
+                                           transforms.RandomAffine(scale=[0.8, 0.8], degrees=10, shear=10),
+                                           transforms.CenterCrop(32),
                                            transforms.RandomCrop(28),
                                            transforms.RandomHorizontalFlip(0.5),
-                                           transforms.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.3),
-                                           transforms.RandomGrayscale(0.3),
+                                           transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2),
+                                           transforms.RandomGrayscale(0.35),
                                            transforms.ToTensor()])
     batchAug = torch.zeros(outShape)
     for i in range(batchSize):
