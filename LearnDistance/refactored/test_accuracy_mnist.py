@@ -2,17 +2,20 @@ import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
 from featuresModel import featsLenet
+from distanceModel import distanceModel
 from helperFunctions import *
 from losses import *
 
 
 # parameters and names
-case = "AugmentationNew"
+case = "SlackNew"
 outDim = 3
 nAug = 0
 delta = 5
-trainstep = 2
+trainstep = 3
 transferTrainstep = 1
+dist = True
+dataset = "mnist"
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
     batch_size = 1000
@@ -22,29 +25,37 @@ else:
     datafolder = "../../data"
 
 lamda = 1
-featsPretrained = False
+pretrained = False
 modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 # modelname = "DistLeNet%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
 # modelname = "DistLeNetNoNorm%sOut%iDelta%i" % (case, outDim, delta)
 model_folder = "trainedModels"
 
 # model loading
-featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsLenet, model_folder, featsModelname, 0, featsPretrained, outDim)
-freeze_layers(featsModel)
-# remove last layer
-nFeats = featsModel.fc[-1].in_features
-nClasses = 10
-featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
-if transferTrainstep<1:
-    modelfilename = '%s/%s_Iter%i.state' % (model_folder, featsModelname, trainstep)
-    load_model_weights(featsModel, modelfilename)
+if dist:
+    fullModelname = "distModel%s" % modelname
+    model = load_model(distanceModel, model_folder, fullModelname, 0, pretrained)
 else:
-    modelfilename = '%s/%sTransferMnist_Iter%i.state' % (model_folder, modelname, transferTrainstep)
-    featsModel = load_model_weights(featsModel, modelfilename)
+    fullModelname = "featsModel%s" % modelname
+    model = load_model(featsLenet, model_folder, fullModelname, 0, pretrained, outDim)
+freeze_layers(model)
+# remove last layer
+nClasses = 10
+if dist:
+    nFeats = model.classifier[-1].in_features
+    model.classifier[-1] = torch.nn.Linear(nFeats, nClasses)
+else:
+    nFeats = model.fc[-1].in_features
+    model.fc[-1] = torch.nn.Linear(nFeats, nClasses)
+if transferTrainstep<1:
+    modelfilename = '%s/%s_Iter%i.state' % (model_folder, fullModelname, trainstep)
+    load_model_weights(model, modelfilename)
+else:
+    modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, fullModelname, trainstep, transferTrainstep)
+    model = load_model_weights(model, modelfilename)
 
 if torch.cuda.is_available():
-    featsModel.cuda()
+    model.cuda()
 
 test_loader = load_mnist(datafolder, batch_size, train=False, download=False)
-test_accuracy(featsModel, test_loader)
+test_accuracy(model, test_loader, dist=dist)

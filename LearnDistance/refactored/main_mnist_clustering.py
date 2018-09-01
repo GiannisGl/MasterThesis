@@ -2,7 +2,6 @@ import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
 from featuresModel import featsLenet
-from distanceModel import distanceModel
 from helperFunctions import *
 from losses import *
 
@@ -30,7 +29,6 @@ else:
     datafolder = "../../data"
 
 featsPretrained = False
-distPretrained = False
 modelname = "DistLeNet%sAug%iOut%iDelta%i" % (case, nAug, outDim, delta)
 log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
@@ -40,12 +38,9 @@ train_loader = load_mnist(datafolder, train_batch_size, train=True, download=Fal
 # model loading
 featsModelname = "featsModel%s" % modelname
 featsModel = load_model(featsLenet, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
-distModelname = "distModel%s" % modelname
-distModel = load_model(distanceModel, model_folder, distModelname, trainstep-1, distPretrained)
 
 # optimizers
 featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate)
-distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate)
 
 # writers and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
@@ -71,12 +66,10 @@ for epoch in range(Nepochs):
 
         # zero the parameter gradients
         featsOptimizer.zero_grad()
-        distOptimizer.zero_grad()
 
         # optimize
         loss = criterion(input1, input2, featsModel)
         loss.backward()
-        distOptimizer.step()
         featsOptimizer.step()
 
         # print statistics
@@ -92,7 +85,6 @@ print(log_name)
 
 # save weights
 save_model_weights(featsModel, model_folder, featsModelname, trainstep)
-save_model_weights(distModel, model_folder, distModelname, trainstep)
 print('saved models')
 
 writer.close()

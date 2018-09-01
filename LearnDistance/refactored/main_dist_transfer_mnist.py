@@ -1,19 +1,20 @@
 import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
-from featuresModel import featsLenet
+from distanceModel import distanceModel
 from helperFunctions import *
 from losses import *
 
 
 # parameters and names
-case = "SlackNew"
+# case = "SlackNew"
+case = "MnistClustering"
 outDim = 3
-nAug = 5
+nAug = 3
 delta = 5
-trainstep = 3
+trainstep = 2
 transferTrainstep = 1
-learningRate = 1e-2
+learningRate = 1e-3
 dataset = 'mnist'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -23,43 +24,43 @@ if torch.cuda.is_available():
     Nepochs = 50
     datafolder = "/var/tmp/ioannis/data"
 else:
-    train_batch_size = 100
+    train_batch_size = 50
     Nsamples = int(60000 / train_batch_size)
-    log_iter = 100
+    log_iter = int(Nsamples/2)
     Nepochs = 50
     datafolder = "../../data"
 
 lamda = 1
-featsPretrained = False
-modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
-# modelname = "DistLeNet%sOut%iDelta%i" % (case, outDim, delta)
-log_name = "featsTransfer%s%sAug%iBatch%iLR%f_Iter%i_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep, transferTrainstep)
+distPretrained = False
+# modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+modelname = "DistLeNet%sAug%iOut%iDelta%i" % (case, nAug, outDim, delta)
+log_name = "distTransfer%s%sAug%iBatch%iLR%f_Iter%i_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep, transferTrainstep)
 model_folder = "trainedModels"
 
 train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False)
 
 # model loading
-featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsLenet, model_folder, featsModelname, 0, featsPretrained, outDim)
+distModelname = "distModel%s" % modelname
+distModel = load_model(distanceModel, model_folder, distModelname, 0, distPretrained)
 if transferTrainstep<1:
-    featsModel = load_model(featsLenet, model_folder, featsModelname, trainstep, featsPretrained, outDim)
-freeze_layers(featsModel)
+    distModel = load_model(distanceModel, model_folder, distModelname, trainstep, distPretrained)
+freeze_layers(distModel)
 # remove last layer
-# nFeats = featsModel.fc[-1].in_features
-nFeats = featsModel.fc[0].in_features
 nClasses = 10
-# featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
-featsModel.fc = torch.nn.Linear(nFeats, nClasses)
-print(featsModel)
+nFeats = distModel.classifier[-1].in_features
+# nFeats = distModel.classifier[0].in_features
+distModel.classifier[-1] = torch.nn.Linear(nFeats, nClasses)
+# distModel.classifier = torch.nn.Linear(nFeats, nClasses)
+print(distModel)
 if transferTrainstep>=1:
-    modelfilename = '%s/%sTransferConv%s_Iter%i_Iter%i.state' % (model_folder, dataset, modelname, trainstep, transferTrainstep)
-    featsModel = load_model_weights(featsModel, modelfilename)
+    modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, distModelname, trainstep, transferTrainstep)
+    distModel = load_model_weights(distModel, modelfilename)
 if torch.cuda.is_available():
-    featsModel.cuda()
+    distModel.cuda()
 
 # optimizers
-# featsOptimizer = optim.Adam(featsModel.fc[-1].parameters(), lr=learningRate)
-featsOptimizer = optim.Adam(featsModel.fc.parameters(), lr=learningRate)
+distOptimizer = optim.Adam(distModel.classifier[-1].parameters(), lr=learningRate)
+# distOptimizer = optim.Adam(distModel.classifier.parameters(), lr=learningRate)
 criterion = torch.nn.CrossEntropyLoss()
 
 # writers and criterion
@@ -83,15 +84,15 @@ for epoch in range(Nepochs):
             criterion.cuda()
 
         # zero the parameter gradients
-        featsOptimizer.zero_grad()
+        distOptimizer.zero_grad()
 
         # optimize
-        output = featsModel.forward(input)
+        output = distModel.forward(input, input)
         loss = criterion(output, label)
         loss.backward()
-        featsOptimizer.step()
+        distOptimizer.step()
         global_step = epoch*Nsamples+i
-        writer.add_scalar(tag='transfer_mnist', scalar_value=loss, global_step=global_step)
+        writer.add_scalar(tag='transfer_dist_mnist', scalar_value=loss, global_step=global_step)
 
         # print statistics
         running_loss += loss.item()
@@ -105,12 +106,12 @@ print('Finished Training')
 print(log_name)
 
 # save weights
-transferModelname = "%sTransferConv%s_Iter%i" % (dataset, modelname, trainstep)
+transferModelname = "%sTransfer%s_Iter%i" % (dataset, distModelname, trainstep)
 print(transferModelname)
-save_model_weights(featsModel, model_folder, transferModelname, transferTrainstep+1)
+save_model_weights(distModel, model_folder, transferModelname, transferTrainstep + 1)
 print('saved models')
 
 writer.close()
 
 test_loader = load_mnist(datafolder, train_batch_size, train=False, download=False)
-test_accuracy(featsModel, test_loader)
+test_accuracy(distModel, test_loader, dist=True)

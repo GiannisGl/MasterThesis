@@ -142,7 +142,7 @@ def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, trai
         writerEmb.add_embedding(output, label_img=input, metadata=label.numpy(), tag="2.test")
 
 
-def test_accuracy(model, testloader):
+def test_accuracy(model, testloader, dist=False):
     model.eval()
     correct = 0
     total = 0
@@ -152,10 +152,13 @@ def test_accuracy(model, testloader):
             if torch.cuda.is_available():
                 images = images.cuda()
                 labels = labels.cuda()
-            outputs = model(images)
+            if dist:
+                outputs = model(images, images)
+            else:
+                outputs = model(images)
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
-    print('Accuracy of the network on the 10000 test images: %d %%' % (
+    print('Accuracy of the network on the 10000 test images: %f %%' % (
         100 * correct / total))
