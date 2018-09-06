@@ -43,7 +43,7 @@ if torch.cuda.is_available():
 
 
 # writers and criterion
-writer = SummaryWriter(comment='%s_kNeighbours' % (log_name))
+# writer = SummaryWriter(comment='%s_kNeighbours' % (log_name))
 
 # Training
 print('Start Full Search')
@@ -52,16 +52,17 @@ print(log_name)
 total = 0
 correct = 0
 iterInputTestLoader = iter(input_test_loader)
+top10NNs = torch.zeros(N_test_samples, 10)
 for i in range(N_test_samples):
     input_test, label_test = next(iterInputTestLoader)
     input_test_batch = input_test.expand(train_batch_size, -1, -1, -1)
-    distances = torch.ones(0)
-    print(input_test_batch.size())
+    distances = torch.zeros(0)
     iterSearchTrainLoader = iter(search_train_loader)
     if torch.cuda.is_available():
         torch.set_default_tensor_type('torch.cuda.FloatTensor')
         input_test_batch = input_test_batch.cuda()
         label_test = label_test.cuda()
+        top10NNs = top10NNs.cuda()
         distances = distances.cuda()
     for j in range(N_train_batches):
         input_train_search, label_train_search = next(iterSearchTrainLoader)
@@ -76,16 +77,21 @@ for i in range(N_test_samples):
     nnLabel = label_train_search[sortedIndices[0]]
     total += 1
     correct += (nnLabel == label_test[0]).sum()
+    top10NNs[i,-1] = sortedIndices[0:9]
+    if i%100==0:
     # print("True Label: %i,  nnLabel: %i" % (label_test[0], nnLabel))
-    # print("Total: %i,   correct: %i" % (total, correct))
+        print("Total: %i,   correct: %i" % (total, correct))
 
 
 print('Accuracy of the network on the 10000 test images: %f %%' % (
     100 * correct / total))
 
 
+
 print('Finished Full Search')
 print(log_name)
 
 # save distances?
-writer.close()
+# writer.close()
+
+torch.save(top10NNs, "distances/%stop10NNs"%log_name)
