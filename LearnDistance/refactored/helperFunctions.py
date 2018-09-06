@@ -86,12 +86,12 @@ def augment_batch(batch, dataset='mnist'):
         outShape = [batchSize, 3, 28, 28]
         transformAug = transforms.Compose([transforms.ToPILImage(),
                                            transforms.Pad(6, padding_mode='edge'),
-                                           transforms.RandomAffine(scale=[0.8, 0.8], degrees=10, shear=10),
+                                           transforms.RandomAffine(scale=[0.9, 1.2], degrees=10),
                                            transforms.CenterCrop(32),
                                            transforms.RandomCrop(28),
                                            transforms.RandomHorizontalFlip(0.5),
-                                           transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2),
-                                           transforms.RandomGrayscale(0.35),
+                                           # transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.5, hue=0.5),
+                                           transforms.RandomGrayscale(0.5),
                                            transforms.ToTensor()])
     batchAug = torch.zeros(outShape)
     for i in range(batchSize):
@@ -114,7 +114,7 @@ def initialize_pretrained_model(model, pretrained_filename):
     return model
 
 
-def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, train=True):
+def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, train=True, raw=False):
     if dataset=='mnist':
         transform = transforms.Compose([transforms.ToTensor()])
         dataset = torchvision.datasets.MNIST(root=datafolder, train=train, download=False, transform=transform)
@@ -124,22 +124,30 @@ def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, trai
     subset = torch.utils.data.dataset.Subset(dataset, range(Nsamples))
     loader = torch.utils.data.DataLoader(subset, batch_size=Nsamples, shuffle=False, num_workers=0)
 
-    model = model.eval()
-    iterLoader = iter(loader)
-    input, label = next(iterLoader)
-    if torch.cuda.is_available():
-        model = model.cuda()
-        output = model.forward(input.cuda())
+    if raw:
+        iterLoader = iter(loader)
+        input, label = next(iterLoader)
+        if train:
+            writerEmb.add_embedding(input.view(2000, -1), label_img=input, metadata=label.numpy(), tag="1.train")
+        else:
+            writerEmb.add_embedding(input.view(2000, -1), label_img=input, metadata=label.numpy(), tag="2.test")
     else:
-        model = model.cpu()
-        output = model.forward(input)
-    output = torch.squeeze(output)
-    if train:
-        print('train: %s' % list(output.size()))
-        writerEmb.add_embedding(output, label_img=input, metadata=label.numpy(), tag="1.train")
-    else:
-        print('test: %s' % list(output.size()))
-        writerEmb.add_embedding(output, label_img=input, metadata=label.numpy(), tag="2.test")
+        model = model.eval()
+        iterLoader = iter(loader)
+        input, label = next(iterLoader)
+        if torch.cuda.is_available():
+            model = model.cuda()
+            output = model.forward(input.cuda())
+        else:
+            model = model.cpu()
+            output = model.forward(input)
+        output = torch.squeeze(output)
+        if train:
+            print('train: %s' % list(output.size()))
+            writerEmb.add_embedding(output, label_img=input, metadata=label.numpy(), tag="1.train")
+        else:
+            print('test: %s' % list(output.size()))
+            writerEmb.add_embedding(output, label_img=input, metadata=label.numpy(), tag="2.test")
 
 
 def test_accuracy(model, testloader, dist=False):
@@ -162,3 +170,4 @@ def test_accuracy(model, testloader, dist=False):
 
     print('Accuracy of the network on the 10000 test images: %f %%' % (
         100 * correct / total))
+

@@ -1,4 +1,5 @@
 import torch
+import torchvision
 from tensorboardX import SummaryWriter
 from inceptionModel import featsInception
 from featuresModel import featsLenetOrig, featsLenet
@@ -25,18 +26,26 @@ elif dataset=='cifar':
     #modelname = "featsModelDistInception%sAug%iOut%iDelta%i" % (case, nAug, outDim, delta)
     featsModel = load_model(featsInception, modelfolder, modelname, trainstep, pretrained=False, outDim=outDim)
 
-
+#
 if torch.cuda.is_available():
-    featsModel = featsModel.cuda()
+    # featsModel = featsModel.cuda()
     datafolder = "/var/tmp/ioannis/data"
 else:
-    featsModel = featsModel.cpu()
+    # featsModel = featsModel.cpu()
     datafolder = "../../data"
 
-# Train Visualization
+#Train Visualization
 print('visualizing..')
 print('%s_Iter%i' %(modelname, trainstep))
 writerEmb = SummaryWriter(comment='%s_Iter%i_embedding' % (modelname, trainstep))
 visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=Nsamples, train=True)
 visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=Nsamples, train=False)
 writerEmb.close()
+
+
+
+
+# writerEmb = SummaryWriter(comment='%sfirst2000subset' % dataset)
+# visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=Nsamples, train=True, raw=True)
+# visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=Nsamples, train=False, raw=True)
+# writerEmb.close()
