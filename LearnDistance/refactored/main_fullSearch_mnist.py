@@ -32,8 +32,8 @@ modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda
 log_name = "fullSearch%s%s_Iter%i" % (dataset, modelname, trainstep)
 model_folder = "trainedModels"
 
-search_train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False)
-input_test_loader = load_mnist(datafolder, 1, train=False, download=False)
+search_train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False, shuffle=False)
+input_test_loader = load_mnist(datafolder, 1, train=False, download=False, shuffle=False)
 
 # model loading
 distModelname = "distModel%s" % modelname
@@ -63,7 +63,6 @@ for i in range(N_test_samples):
         input_test_batch = input_test_batch.cuda()
         label_test = label_test.cuda()
         top10NNs = top10NNs.cuda()
-        distances = distances.cuda()
     for j in range(N_train_batches):
         input_train_search, label_train_search = next(iterSearchTrainLoader)
         if torch.cuda.is_available():
@@ -73,11 +72,11 @@ for i in range(N_test_samples):
         distancesTmp = distModel.forward(input_test_batch, input_train_search)
         distances = torch.cat((distances,distancesTmp),0)
 
-    sortedDistances, sortedIndices = distances.sort()
+    _, sortedIndices = distances.sort()
     nnLabel = label_train_search[sortedIndices[0]]
     total += 1
     correct += (nnLabel == label_test[0]).sum()
-    top10NNs[i,-1] = sortedIndices[0:9]
+    top10NNs[i] = sortedIndices[:10]
     if i%100==0:
     # print("True Label: %i,  nnLabel: %i" % (label_test[0], nnLabel))
         print("Total: %i,   correct: %i" % (total, correct))

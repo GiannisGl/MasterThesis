@@ -58,20 +58,20 @@ def save_model_weights(model, model_folder, modelname, trainstep):
     torch.save(model.state_dict(), modelfile)
 
 
-def load_mnist(data_folder, batch_size, train=True, download=False):
+def load_mnist(data_folder, batch_size, train=True, download=False, shuffle=True):
     # don't normalize
     transform = transforms.Compose([transforms.ToTensor()])
     dataset = torchvision.datasets.MNIST(root=data_folder, train=train, download=download, transform=transform)
-    loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=0)
+    loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=0)
     return loader
 
 
-def load_cifar(data_folder, batch_size, train=True, download=False):
+def load_cifar(data_folder, batch_size, train=True, download=False, shuffle=True):
     # don't normalize
     transform = transforms.Compose([transforms.RandomCrop(28),
                                     transforms.ToTensor()])
     dataset = torchvision.datasets.CIFAR10(root=data_folder, train=train, download=download, transform=transform)
-    loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=0)
+    loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=0)
     return loader
 
 
