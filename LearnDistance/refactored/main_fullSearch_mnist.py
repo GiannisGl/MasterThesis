@@ -61,13 +61,10 @@ for i in range(N_test_samples):
     if torch.cuda.is_available():
         torch.set_default_tensor_type('torch.cuda.FloatTensor')
         input_test_batch = input_test_batch.cuda()
-        label_test = label_test.cuda()
-        top10NNs = top10NNs.cuda()
     for j in range(N_train_batches):
         input_train_search, label_train_search = next(iterSearchTrainLoader)
         if torch.cuda.is_available():
             input_train_search = input_train_search.cuda()
-            label_train_search = label_train_search.cuda()
 
         distancesTmp = distModel.forward(input_test_batch, input_train_search)
         distances = torch.cat((distances,distancesTmp),0)
