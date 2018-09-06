@@ -18,7 +18,7 @@ dataset = 'mnist'
 
 modelfolder = "trainedModels"
 if dataset=='mnist':
-    modelname = "featsModelDistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+    modelname = "featsModelDistLeNetNoNorm%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
     # modelname = "featsModelDistLeNet%sAug%iOut%iDelta%i" % (case, nAug, outDim, delta)
     featsModel = load_model(featsLenet, modelfolder, modelname, trainstep, pretrained=False, outDim=outDim)
 elif dataset=='cifar':

@@ -20,7 +20,7 @@ if torch.cuda.is_available():
     train_batch_size = 1000
     Nsamples = int(60000 / (3*train_batch_size))
     log_iter = int(Nsamples/2)
-    Nepochs = 50
+    Nepochs = 20
     datafolder = "/var/tmp/ioannis/data"
 else:
     train_batch_size = 10
@@ -32,8 +32,8 @@ else:
 lamda = 1
 featsPretrained = False
 distPretrained = False
-modelname = "DistLeNet%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
-# modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+modelname = "DistLeNet%sNoNormAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
+# modelname = "DistLeNet%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 

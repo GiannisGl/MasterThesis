@@ -19,7 +19,7 @@ if torch.cuda.is_available():
     train_batch_size = 50
     Nsamples = int(50000 / (3*train_batch_size))
     log_iter = int(Nsamples/2)
-    Nepochs = 50
+    Nepochs = 20
     datafolder = "/var/tmp/ioannis/data"
 else:
     train_batch_size = 1
