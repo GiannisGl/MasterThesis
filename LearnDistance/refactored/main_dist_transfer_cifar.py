@@ -1,7 +1,7 @@
 import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
-from inceptionModel import featsInception
+from inceptionModel import distInception
 from helperFunctions import *
 from losses import *
 
@@ -30,18 +30,18 @@ else:
     datafolder = "../../data"
 
 lamda = 1
-featsPretrained = False
+distPretrained = False
 modelname = "DistInception%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
-log_name = "featsTransfer%s%sAug%iBatch%iLR%f_Iter%i_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep, transferTrainstep)
+log_name = "distTransfer%s%sAug%iBatch%iLR%f_Iter%i_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep, transferTrainstep)
 model_folder = "trainedModels"
 
 train_loader = load_cifar(datafolder, train_batch_size, train=True, download=False)
 
 # model loading
 distModelname = "distModel%s" % modelname
-distModel = load_model(featsInception, model_folder, distModelname, 0, featsPretrained, outDim)
+distModel = load_model(distInception, model_folder, distModelname, 0, distPretrained)
 if transferTrainstep<1:
-    distModel = load_model(featsInception, model_folder, distModelname, trainstep, featsPretrained, outDim)
+    distModel = load_model(distInception, model_folder, distModelname, trainstep, distPretrained)
 freeze_layers(distModel)
 # remove last layer
 nFeats = distModel.fc.in_features
@@ -108,4 +108,4 @@ print('saved models')
 writer.close()
 
 test_loader = load_cifar(datafolder, train_batch_size, train=False, download=False)
-test_accuracy(distModel, test_loader)
+test_accuracy(distModel, test_loader, dist=True)
