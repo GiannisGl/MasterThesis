@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="744af0ac-869a-460a-bf81-97755d885eff" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_slack.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_slack.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_slack.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_slack.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_mnist.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_mnist.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_cifar.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_mnist.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_mnist.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -83,14 +78,26 @@
       <file leaf-file-name="main_dist_transfer_mnist.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_mnist.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="26" column="22" lean-forward="true" selection-start-line="26" selection-start-column="22" selection-end-line="26" selection-end-column="22" />
+            <state relative-caret-position="171">
+              <caret line="77" column="32" lean-forward="true" selection-start-line="77" selection-start-column="32" selection-end-line="78" selection-end-column="38" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="visualize.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main_dist_transfer_cifar.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_cifar.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="77" column="38" lean-forward="false" selection-start-line="77" selection-start-column="38" selection-end-line="77" selection-end-column="38" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="visualize.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/visualize.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="396">
@@ -98,18 +105,6 @@
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
                 <marker date="1536249127684" expanded="true" signature="1059:1209" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="testAugmentations.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/testAugmentations.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="33" column="26" lean-forward="false" selection-start-line="33" selection-start-column="26" selection-end-line="33" selection-end-column="26" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -196,7 +191,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/trainModels/AlexNet.py" />
         <option value="$PROJECT_DIR$/LearnDistance/with_augmentation/testAugmentations.py" />
         <option value="$PROJECT_DIR$/LearnDistance/with_augmentation/augmentation.py" />
         <option value="$PROJECT_DIR$/LearnDistance/with_augmentation/losses.py" />
@@ -235,7 +229,6 @@
         <option value="$PROJECT_DIR$/LearnDistance/refactored/distanceModel.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_mnist.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_cifar.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_mnist.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_mnist_clustering.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_clustering.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/filters_visualization.py" />
@@ -247,6 +240,8 @@
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_slack.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_mnist.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_mnist.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_cifar.py" />
       </list>
     </option>
   </component>
@@ -318,19 +313,19 @@
     <option name="myShowDebugConsoleByDefault" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/LearnDistance/refactored/originalDatasetEmbeddings" />
-      <recent name="$PROJECT_DIR$/LearnDistance/refactored" />
-      <recent name="$PROJECT_DIR$/LearnDistance/refactored/old_files" />
-      <recent name="$PROJECT_DIR$/LearnDistance/refactored/embeddings" />
-      <recent name="$PROJECT_DIR$/LearnDistance" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/LearnDistance/refactored" />
       <recent name="$PROJECT_DIR$/LearnDistance" />
       <recent name="$PROJECT_DIR$/LearnDistance/with_augmentation" />
       <recent name="$PROJECT_DIR$/LearnDistance/trainOnlyLastLayerOfFeats" />
       <recent name="$PROJECT_DIR$/LearnDistance/fix_one" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/LearnDistance/refactored/originalDatasetEmbeddings" />
+      <recent name="$PROJECT_DIR$/LearnDistance/refactored" />
+      <recent name="$PROJECT_DIR$/LearnDistance/refactored/old_files" />
+      <recent name="$PROJECT_DIR$/LearnDistance/refactored/embeddings" />
+      <recent name="$PROJECT_DIR$/LearnDistance" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -703,13 +698,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/LearnDistance/with_augmentation/losses.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="77" column="24" lean-forward="false" selection-start-line="77" selection-start-column="24" selection-end-line="77" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/fix_one/losses.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -949,7 +937,7 @@
         <state relative-caret-position="522">
           <caret line="34" column="27" lean-forward="false" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="27" />
           <folding>
-            <element signature="e#0#12#0" expanded="true" />
+            <element signature="e#0#12#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -983,14 +971,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-222">
           <caret line="153" column="50" lean-forward="false" selection-start-line="153" selection-start-column="36" selection-end-line="153" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_mnist.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="26" column="22" lean-forward="true" selection-start-line="26" selection-start-column="22" selection-end-line="26" selection-end-column="22" />
           <folding />
         </state>
       </provider>
@@ -1065,6 +1045,24 @@
           <folding>
             <element signature="e#0#12#0" expanded="true" />
             <marker date="1536249127684" expanded="true" signature="1059:1209" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_mnist.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="77" column="32" lean-forward="true" selection-start-line="77" selection-start-column="32" selection-end-line="78" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_cifar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="77" column="38" lean-forward="false" selection-start-line="77" selection-start-column="38" selection-end-line="77" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>

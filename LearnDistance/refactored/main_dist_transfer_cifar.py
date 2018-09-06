@@ -1,61 +1,60 @@
 import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
-from distanceModel import distanceModel
+from inceptionModel import featsInception
 from helperFunctions import *
 from losses import *
 
 
 # parameters and names
-case = "NoAugNew"
+case = "CifarNewNoAug"
 outDim = 3
-nAug = 3
+nAug = 5
 delta = 5
 trainstep = 2
-transferTrainstep = 1
+transferTrainstep = 0
 learningRate = 1e-3
-dataset = 'mnist'
+dataset = 'cifar'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
     train_batch_size = 1000
-    Nsamples = int(60000 / train_batch_size)
+    Nsamples = int(50000 / train_batch_size)
     log_iter = int(Nsamples/2)
     Nepochs = 50
     datafolder = "/var/tmp/ioannis/data"
 else:
-    train_batch_size = 50
-    Nsamples = int(60000 / train_batch_size)
-    log_iter = int(Nsamples/2)
-    Nepochs = 50
+    train_batch_size = 100
+    Nsamples = int(600 / train_batch_size)
+    log_iter = 1
+    Nepochs = 1
     datafolder = "../../data"
 
 lamda = 1
-distPretrained = False
-modelname = "DistLeNetNoNorm%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
-log_name = "distTransfer%s%sAug%iBatch%iLR%f_Iter%i_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep, transferTrainstep)
+featsPretrained = False
+modelname = "DistInception%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
+log_name = "featsTransfer%s%sAug%iBatch%iLR%f_Iter%i_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep, transferTrainstep)
 model_folder = "trainedModels"
 
-train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False)
+train_loader = load_cifar(datafolder, train_batch_size, train=True, download=False)
 
 # model loading
 distModelname = "distModel%s" % modelname
-distModel = load_model(distanceModel, model_folder, distModelname, 0, distPretrained)
+distModel = load_model(featsInception, model_folder, distModelname, 0, featsPretrained, outDim)
 if transferTrainstep<1:
-    distModel = load_model(distanceModel, model_folder, distModelname, trainstep, distPretrained)
+    distModel = load_model(featsInception, model_folder, distModelname, trainstep, featsPretrained, outDim)
 freeze_layers(distModel)
 # remove last layer
+nFeats = distModel.fc.in_features
 nClasses = 10
-nFeats = distModel.classifier[-1].in_features
-distModel.classifier[-1] = torch.nn.Linear(nFeats, nClasses)
-print(distModel)
+distModel.fc = torch.nn.Linear(nFeats, nClasses)
 if transferTrainstep>=1:
-    modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, distModelname, trainstep, transferTrainstep)
+    modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, modelname, trainstep, transferTrainstep)
     distModel = load_model_weights(distModel, modelfilename)
 if torch.cuda.is_available():
     distModel.cuda()
 
 # optimizers
-distOptimizer = optim.Adam(distModel.classifier[-1].parameters(), lr=learningRate)
+distOptimizer = optim.Adam(distModel.fc.parameters(), lr=learningRate)
 criterion = torch.nn.CrossEntropyLoss()
 
 # writers and criterion
@@ -88,8 +87,6 @@ for epoch in range(Nepochs):
         loss = criterion(output, label)
         loss.backward()
         distOptimizer.step()
-        global_step = epoch*Nsamples+i
-        writer.add_scalar(tag='transfer_dist_mnist', scalar_value=loss, global_step=global_step)
 
         # print statistics
         running_loss += loss.item()
@@ -103,12 +100,12 @@ print('Finished Training')
 print(log_name)
 
 # save weights
-transferModelname = "%sTransfer%s_Iter%i" % (dataset, distModelname, trainstep)
+transferModelname = "%sTransfer%s_Iter%i" % (dataset, modelname, trainstep)
 print(transferModelname)
 save_model_weights(distModel, model_folder, transferModelname, transferTrainstep + 1)
 print('saved models')
 
 writer.close()
 
-test_loader = load_mnist(datafolder, train_batch_size, train=False, download=False)
-test_accuracy(distModel, test_loader, dist=True)
+test_loader = load_cifar(datafolder, train_batch_size, train=False, download=False)
+test_accuracy(distModel, test_loader)
