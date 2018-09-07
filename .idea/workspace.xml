@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="744af0ac-869a-460a-bf81-97755d885eff" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_mnist.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_mnist.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,7 +18,7 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/Master_Thesis_Project$main__3_.coverage" NAME="main (3) Coverage Results" MODIFIED="1525691526595" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TwoChannelsLearnDistance" />
     <SUITE FILE_PATH="coverage/Master_Thesis_Project$main_dist_transfer_mnist.coverage" NAME="main_dist_transfer_mnist Coverage Results" MODIFIED="1535738424039" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
-    <SUITE FILE_PATH="coverage/Master_Thesis_Project$main_fullSearch_mnist.coverage" NAME="main_fullSearch_mnist Coverage Results" MODIFIED="1536259950649" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
+    <SUITE FILE_PATH="coverage/Master_Thesis_Project$main_fullSearch_mnist.coverage" NAME="main_fullSearch_mnist Coverage Results" MODIFIED="1536338389799" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
     <SUITE FILE_PATH="coverage/Master_Thesis_Project$testTensorBoard.coverage" NAME="testTensorBoard Coverage Results" MODIFIED="1533546553614" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
     <SUITE FILE_PATH="coverage/Master_Thesis_Project$visualize.coverage" NAME="visualize Coverage Results" MODIFIED="1536157644506" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
     <SUITE FILE_PATH="coverage/Master_Thesis_Project$main_augmentation.coverage" NAME="main_augmentation Coverage Results" MODIFIED="1534410463114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/LearnDistance/refactored" />
@@ -102,8 +103,8 @@
       <file leaf-file-name="main_fullSearch_mnist.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_mnist.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="738">
-              <caret line="75" column="36" lean-forward="true" selection-start-line="75" selection-start-column="36" selection-end-line="75" selection-end-column="36" />
+            <state relative-caret-position="396">
+              <caret line="90" column="0" lean-forward="true" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -112,8 +113,8 @@
       <file leaf-file-name="helperFunctions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="68" column="80" lean-forward="false" selection-start-line="68" selection-start-column="80" selection-end-line="68" selection-end-column="80" />
+            <state relative-caret-position="135">
+              <caret line="56" column="41" lean-forward="false" selection-start-line="56" selection-start-column="41" selection-end-line="56" selection-end-column="41" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
                 <marker date="1536264932592" expanded="true" signature="1922:4589" ph="..." />
@@ -246,6 +247,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="refactored" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Master Thesis Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="refactored" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="distances" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -617,7 +632,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3343882" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3343882" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44831222" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -994,8 +1009,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="68" column="80" lean-forward="false" selection-start-line="68" selection-start-column="80" selection-end-line="68" selection-end-column="80" />
+        <state relative-caret-position="135">
+          <caret line="56" column="41" lean-forward="false" selection-start-line="56" selection-start-column="41" selection-end-line="56" selection-end-column="41" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
             <marker date="1536264932592" expanded="true" signature="1922:4589" ph="..." />
@@ -1005,8 +1020,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_mnist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="738">
-          <caret line="75" column="36" lean-forward="true" selection-start-line="75" selection-start-column="36" selection-end-line="75" selection-end-column="36" />
+        <state relative-caret-position="396">
+          <caret line="90" column="0" lean-forward="true" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
           <folding />
         </state>
       </provider>
