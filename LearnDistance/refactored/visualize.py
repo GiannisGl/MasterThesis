@@ -7,7 +7,7 @@ from helperFunctions import *
 
 
 trainstep = 2
-case = "AugmentationNew"
+case = "Autoencoder"
 # case = "Cifar"
 outDim = 3
 delta = 5
@@ -15,6 +15,7 @@ lamda = 1
 Nsamples = 2000
 dataset = 'mnist'
 # dataset = 'cifar'
+ae = True
 
 modelfolder = "trainedModels"
 if dataset=='mnist':
@@ -38,8 +39,8 @@ else:
 print('visualizing..')
 print('%s_Iter%i' %(modelname, trainstep))
 writerEmb = SummaryWriter(comment='%s_Iter%i_embedding' % (modelname, trainstep))
-visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=Nsamples, train=True)
-visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=Nsamples, train=False)
+visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=Nsamples, train=True, ae=ae)
+visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=Nsamples, train=False, ae=ae)
 writerEmb.close()
 
 

@@ -60,8 +60,7 @@ def save_model_weights(model, model_folder, modelname, trainstep):
 
 def load_mnist(data_folder, batch_size, train=True, download=False, shuffle=True, transformed=False):
     if transformed:
-        transform = transforms.Compose([transforms.ToPILImage(),
-                                           transforms.RandomAffine(scale=[0.8, 1.1], degrees=10, translate=[0.2, 0.2], shear=10),
+        transform = transforms.Compose([   transforms.RandomAffine(scale=[0.8, 1.1], degrees=10, translate=[0.2, 0.2], shear=10),
                                            transforms.ToTensor()])
     else:
         transform = transforms.Compose([transforms.ToTensor()])
@@ -126,7 +125,7 @@ def initialize_pretrained_model(model, pretrained_filename):
     return model
 
 
-def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, train=True, raw=False):
+def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, train=True, raw=False, ae=False):
     if dataset=='mnist':
         transform = transforms.Compose([transforms.ToTensor()])
         dataset = torchvision.datasets.MNIST(root=datafolder, train=train, download=False, transform=transform)
@@ -149,10 +148,16 @@ def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, trai
         input, label = next(iterLoader)
         if torch.cuda.is_available():
             model = model.cuda()
-            output = model.forward(input.cuda())
+            inputModel = input.cuda()
         else:
             model = model.cpu()
-            output = model.forward(input)
+            inputModel = input
+
+        if ae:
+            output = model.encoder(inputModel)
+        else:
+            output = model.forward(inputModel)
+
         output = torch.squeeze(output)
         if train:
             print('train: %s' % list(output.size()))

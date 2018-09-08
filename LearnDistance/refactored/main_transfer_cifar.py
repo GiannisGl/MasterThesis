@@ -8,7 +8,7 @@ from losses import *
 
 # parameters and names
 case = "CifarClusteringNew"
-outDim = 10
+outDim = 3
 nAug = 5
 delta = 5
 trainstep = 2

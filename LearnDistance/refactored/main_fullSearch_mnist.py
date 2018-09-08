@@ -84,7 +84,7 @@ for i in range(N_test_samples):
     correct += (nnLabel == label_test[0]).sum().item()
     top10NNs[i] = sortedIndices[:10].squeeze()
     if i%100==0:
-        print("Total: %i,   correct: %i" % (total, correct))
+        print("Total: %i,   correct: %i, accuracy: %f %%" % (total, correct, 100 * correct / total))
 
 
 print('Accuracy of the network on the 10000 test images: %f %%' % (
