@@ -34,7 +34,11 @@ modelname = "DistInception%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, del
 log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
-train_loader = load_cifar(datafolder, train_batch_size, train=True, download=False)
+if nAug==0:
+    transform=True
+else:
+    transform=False
+train_loader = load_cifar(datafolder, train_batch_size, train=True, download=False, transformed=transform)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
