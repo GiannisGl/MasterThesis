@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="744af0ac-869a-460a-bf81-97755d885eff" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_slack.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_slack.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_slack.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_slack.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -81,7 +78,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main_cifar_slack.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main_cifar_slack.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_cifar_slack.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="306">
@@ -144,14 +141,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="helperFunctions.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="helperFunctions.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="783">
-              <caret line="110" column="50" lean-forward="false" selection-start-line="110" selection-start-column="50" selection-end-line="110" selection-end-column="50" />
+            <state relative-caret-position="135">
+              <caret line="74" column="40" lean-forward="false" selection-start-line="74" selection-start-column="40" selection-end-line="74" selection-end-column="40" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
-                <marker date="1536404131349" expanded="true" signature="2297:5612" ph="..." />
+                <marker date="1536407354568" expanded="true" signature="2297:5544" ph="..." />
               </folding>
             </state>
           </provider>
@@ -231,13 +228,13 @@
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_mnist.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/losses_old.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/losses.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_mnist_ae.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_slack.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_cifar.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_slack.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" />
       </list>
     </option>
   </component>
@@ -1031,17 +1028,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="783">
-          <caret line="110" column="50" lean-forward="false" selection-start-line="110" selection-start-column="50" selection-end-line="110" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-            <marker date="1536404131349" expanded="true" signature="2297:5612" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_cifar.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
@@ -1071,6 +1057,17 @@
         <state relative-caret-position="306">
           <caret line="40" column="48" lean-forward="false" selection-start-line="40" selection-start-column="48" selection-end-line="40" selection-end-column="48" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="74" column="40" lean-forward="false" selection-start-line="74" selection-start-column="40" selection-end-line="74" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+            <marker date="1536407354568" expanded="true" signature="2297:5544" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -72,8 +72,7 @@ def load_mnist(data_folder, batch_size, train=True, download=False, shuffle=True
 
 def load_cifar(data_folder, batch_size, train=True, download=False, shuffle=True, transformed=False):
     if transformed:
-        transformAug = transforms.Compose([transforms.ToPILImage(),
-                                           transforms.Pad(6, padding_mode='edge'),
+        transform = transforms.Compose([   transforms.Pad(6, padding_mode='edge'),
                                            transforms.RandomAffine(scale=[0.9, 1.2], degrees=10),
                                            transforms.CenterCrop(32),
                                            transforms.RandomCrop(28),
