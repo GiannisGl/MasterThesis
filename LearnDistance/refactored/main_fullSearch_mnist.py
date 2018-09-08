@@ -56,33 +56,29 @@ print(log_name)
 total = 0
 correct = 0
 iterInputTestLoader = iter(input_test_loader)
-top10NNs = torch.zeros(N_test_samples, 10)
 for i in range(N_test_samples):
     input_test, label_test = next(iterInputTestLoader)
     input_test_batch = input_test.expand(train_batch_size, -1, -1, -1)
-    distances = torch.zeros(0)
-    labels_train_all = torch.zeros(0).long()
+    bestDistance = torch.ones(1)*1e+5
+    nnLabel = torch.zeros(0).long()
     iterSearchTrainLoader = iter(search_train_loader)
     if torch.cuda.is_available():
         input_test_batch = input_test_batch.cuda()
-        distances = distances.cuda()
-        labels_train_all = labels_train_all.cuda()
     for j in range(N_train_batches):
         input_train_search, label_train_search = next(iterSearchTrainLoader)
         if torch.cuda.is_available():
             input_train_search = input_train_search.cuda()
 
         distancesTmp = distModel.forward(input_test_batch, input_train_search)
-        distances = torch.cat((distances, distancesTmp),0)
-        labels_train_all = torch.cat((labels_train_all, label_train_search),0)
+        bestDistanceTmp, bestIndex = distancesTmp.sort(0)
+        if bestDistanceTmp<bestDistance:
+            bestDistance = bestDistanceTmp
+            nnLabel = label_train_search[bestIndex]
 
-    sortedDistances, sortedIndices = distances.sort(0)
-    nnLabel = labels_train_all[sortedIndices[0]]
     total += 1
     correct += (nnLabel == label_test[0]).sum().item()
-    top10NNs[i] = sortedIndices[:10].squeeze()
     if i%100==0:
-        print("Total: %i,   correct: %i" % (total, correct))
+        print("Total: %i,   correct: %i, accuracy: %f %%" % (total, correct, 100 * correct / total))
 
 
 print('Accuracy of the network on the 10000 test images: %f %%' % (

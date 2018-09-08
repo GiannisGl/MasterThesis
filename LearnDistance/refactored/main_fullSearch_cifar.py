@@ -56,17 +56,15 @@ iterInputTestLoader = iter(input_test_loader)
 for i in range(N_test_samples):
     input_test, label_test = next(iterInputTestLoader)
     input_test_batch = input_test.expand(train_batch_size, -1, -1, -1)
-    bestDistance = torch.zeros(0)
+    bestDistance = torch.ones(1)*1e+5
     nnLabel = torch.zeros(0).long()
     iterSearchTrainLoader = iter(search_train_loader)
     if torch.cuda.is_available():
         input_test_batch = input_test_batch.cuda()
-        label_test = label_test.cuda()
     for j in range(N_train_batches):
         input_train_search, label_train_search = next(iterSearchTrainLoader)
         if torch.cuda.is_available():
             input_train_search = input_train_search.cuda()
-            label_train_search = label_train_search.cuda()
 
         distancesTmp = distModel.forward(input_test_batch, input_train_search)
         bestDistanceTmp, bestIndex = distancesTmp.sort(0)
