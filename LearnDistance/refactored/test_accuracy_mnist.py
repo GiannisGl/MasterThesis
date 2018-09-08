@@ -36,7 +36,7 @@ if dist:
     fullModelname = "distModel%s" % modelname
     model = load_model(distanceModel, model_folder, fullModelname, 0, pretrained)
 else:
-    fullModelname = "featsModel%s" % modelname
+    fullModelname = modelname
     model = load_model(featsLenet, model_folder, fullModelname, 0, pretrained, outDim)
 freeze_layers(model)
 # remove last layer

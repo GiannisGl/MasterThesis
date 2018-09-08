@@ -8,14 +8,14 @@ from helperFunctions import *
 
 trainstep = 2
 case = "NoAug"
-# case = "Cifar"
+#case = "Cifar"
 outDim = 3
 nAug = 0
 delta = 5
 lamda = 1
 Nsamples = 2000
 dataset = 'mnist'
-# dataset = 'cifar'
+#dataset = 'cifar'
 ae = False
 
 modelfolder = "trainedModels"

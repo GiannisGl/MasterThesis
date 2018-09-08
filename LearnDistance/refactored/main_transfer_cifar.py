@@ -8,7 +8,7 @@ from losses import *
 
 # parameters and names
 case = "CifarClusteringNew"
-outDim = 3
+outDim = 10
 nAug = 5
 delta = 5
 trainstep = 2
@@ -106,5 +106,5 @@ print('saved models')
 
 writer.close()
 
-test_loader = load_cifar(datafolder, train_batch_size, train=False, download=False, shuffle=False)
+test_loader = load_cifar(datafolder, train_batch_size, train=False, download=False)
 test_accuracy(featsModel, test_loader)

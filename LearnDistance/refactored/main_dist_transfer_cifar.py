@@ -48,7 +48,7 @@ nFeats = distModel.fc.in_features
 nClasses = 10
 distModel.fc = torch.nn.Linear(nFeats, nClasses)
 if transferTrainstep>=1:
-    modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, modelname, trainstep, transferTrainstep)
+    modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, distModelname, trainstep, transferTrainstep)
     distModel = load_model_weights(distModel, modelfilename)
 if torch.cuda.is_available():
     distModel.cuda()

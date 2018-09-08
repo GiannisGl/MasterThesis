@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="744af0ac-869a-460a-bf81-97755d885eff" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_cifar.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_mnist.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_mnist.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_cifar.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_cifar.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_cifar.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_cifar.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_cifar.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_cifar.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_mnist.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_mnist.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -68,38 +70,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main_mnist_ae.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_mnist_ae.py">
+      <file leaf-file-name="main_dist_transfer_cifar.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_cifar.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-261">
-              <caret line="36" column="0" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main_transfer_ae_mnist.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_transfer_ae_mnist.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="28" column="15" lean-forward="false" selection-start-line="28" selection-start-column="15" selection-end-line="28" selection-end-column="15" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main_fullSearch_mnist.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_mnist.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="45" column="0" lean-forward="true" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="34">
+              <caret line="50" column="97" lean-forward="false" selection-start-line="50" selection-start-column="97" selection-end-line="50" selection-end-column="97" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -107,8 +83,8 @@
       <file leaf-file-name="helperFunctions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2205">
-              <caret line="182" column="47" lean-forward="false" selection-start-line="182" selection-start-column="47" selection-end-line="182" selection-end-column="47" />
+            <state relative-caret-position="322">
+              <caret line="154" column="0" lean-forward="true" selection-start-line="154" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -116,24 +92,46 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="visualize.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/visualize.py">
+      <file leaf-file-name="main_transfer_cifar.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_transfer_cifar.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+            <state relative-caret-position="394">
+              <caret line="36" column="30" lean-forward="true" selection-start-line="36" selection-start-column="30" selection-end-line="36" selection-end-column="30" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_accuracy_mnist.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_mnist.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="439">
+              <caret line="54" column="52" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="54" selection-end-column="52" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main_fullSearch_cifar.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_cifar.py">
+      <file leaf-file-name="test_accuracy_cifar.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_cifar.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="628">
-              <caret line="86" column="0" lean-forward="true" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
+            <state relative-caret-position="358">
+              <caret line="49" column="52" lean-forward="false" selection-start-line="49" selection-start-column="52" selection-end-line="49" selection-end-column="52" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="inceptionModel.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/inceptionModel.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="72">
+              <caret line="24" column="36" lean-forward="true" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -194,15 +192,12 @@
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_fixFeats.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/inceptionModel.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_transfer.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_cifar.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/distanceModel.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_mnist.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_mnist_clustering.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_clustering.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/filters_visualization.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/testAugmentations.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_mnist.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_cifar.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/losses_old.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/losses.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_slack.py" />
@@ -212,13 +207,16 @@
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_mnist_ae.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_ae.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_cifar.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_mnist.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_ae_mnist.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_cifar.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_mnist.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_mnist.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_cifar.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_cifar.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_cifar.py" />
       </list>
     </option>
   </component>
@@ -689,13 +687,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/LearnDistance/with_augmentation/testAugmentations.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="21" column="33" lean-forward="false" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/with_augmentation/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -832,38 +823,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_cifar.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="25" column="46" lean-forward="false" selection-start-line="25" selection-start-column="46" selection-end-line="25" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/old_files/test_dataset.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="486">
           <caret line="30" column="22" lean-forward="true" selection-start-line="30" selection-start-column="22" selection-end-line="30" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/distModelTest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="25" column="12" lean-forward="false" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/distanceModel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1">
-          <caret line="78" column="23" lean-forward="false" selection-start-line="78" selection-start-column="13" selection-end-line="78" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_mnist.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="32" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -930,14 +893,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_cifar.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1890">
-          <caret line="110" column="47" lean-forward="false" selection-start-line="110" selection-start-column="47" selection-end-line="110" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_cifar_slack.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
@@ -962,39 +917,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_mnist_ae.py">
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_cifar.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-261">
-          <caret line="36" column="0" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+        <state relative-caret-position="414">
+          <caret line="40" column="106" lean-forward="false" selection-start-line="40" selection-start-column="106" selection-end-line="40" selection-end-column="106" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="126" column="93" lean-forward="false" selection-start-line="126" selection-start-column="93" selection-end-line="126" selection-end-column="93" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_cifar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="628">
+          <caret line="86" column="0" lean-forward="false" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_transfer_cifar.py">
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/visualize.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="108" column="97" lean-forward="false" selection-start-line="108" selection-start-column="97" selection-end-line="108" selection-end-column="97" />
+        <state relative-caret-position="90">
+          <caret line="10" column="1" lean-forward="false" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_transfer_mnist.py">
+    <entry file="file://$USER_HOME$/anaconda3/envs/thesis/lib/python3.6/site-packages/tensorboardX/writer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="112" column="97" lean-forward="false" selection-start-line="112" selection-start-column="97" selection-end-line="112" selection-end-column="97" />
+        <state relative-caret-position="470">
+          <caret line="234" column="6" lean-forward="false" selection-start-line="234" selection-start-column="6" selection-end-line="234" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_mnist.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="45" column="0" lean-forward="false" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
           <folding>
-            <element signature="e#0#12#0" expanded="false" />
+            <element signature="e#0#12#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_cifar.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="40" column="106" lean-forward="false" selection-start-line="40" selection-start-column="106" selection-end-line="40" selection-end-column="106" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1008,54 +979,88 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/featuresModel.py">
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_mnist_ae.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="126" column="93" lean-forward="false" selection-start-line="126" selection-start-column="93" selection-end-line="126" selection-end-column="93" />
+        <state relative-caret-position="-261">
+          <caret line="36" column="0" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_cifar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="50" column="97" lean-forward="false" selection-start-line="50" selection-start-column="97" selection-end-line="50" selection-end-column="97" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/inceptionModel.py">
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_transfer_mnist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="736">
-          <caret line="117" column="0" lean-forward="false" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/visualize.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        <state relative-caret-position="1710">
+          <caret line="112" column="97" lean-forward="false" selection-start-line="112" selection-start-column="97" selection-end-line="112" selection-end-column="97" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2205">
-          <caret line="182" column="47" lean-forward="false" selection-start-line="182" selection-start-column="47" selection-end-line="182" selection-end-column="47" />
+        <state relative-caret-position="322">
+          <caret line="154" column="0" lean-forward="true" selection-start-line="154" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_mnist.py">
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/distModelTest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="45" column="0" lean-forward="true" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+        <state relative-caret-position="360">
+          <caret line="25" column="12" lean-forward="false" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/distanceModel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="78" column="23" lean-forward="false" selection-start-line="78" selection-start-column="13" selection-end-line="78" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/inceptionModel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="24" column="36" lean-forward="true" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_transfer_cifar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="394">
+          <caret line="36" column="30" lean-forward="true" selection-start-line="36" selection-start-column="30" selection-end-line="36" selection-end-column="30" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_cifar.py">
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_mnist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="628">
-          <caret line="86" column="0" lean-forward="true" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
+        <state relative-caret-position="439">
+          <caret line="54" column="52" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="54" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_cifar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="49" column="52" lean-forward="false" selection-start-line="49" selection-start-column="52" selection-end-line="49" selection-end-column="52" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>

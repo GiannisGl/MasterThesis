@@ -168,7 +168,7 @@ def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, trai
 
 
 def test_accuracy(model, testloader, dist=False, ae=False):
-    model.eval()
+    model = model.eval()
     correct = 0
     total = 0
     with torch.no_grad():

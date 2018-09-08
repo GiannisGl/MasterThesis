@@ -1,7 +1,7 @@
 import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
-from featuresModel import featsLenet
+from inceptionModel import featsInception, distInception
 from helperFunctions import *
 from losses import *
 
@@ -13,6 +13,8 @@ nAug = 5
 delta = 5
 trainstep = 2
 transferTrainstep = 1
+dist = False
+dataset = "cifar"
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
     batch_size = 1000
@@ -29,22 +31,26 @@ modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 model_folder = "trainedModels"
 
 # model loading
-featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsLenet, model_folder, featsModelname, 0, featsPretrained, outDim)
-freeze_layers(featsModel)
-# remove last layer
-nFeats = featsModel.fc[-1].in_features
-nClasses = 10
-featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
-if transferTrainstep<1:
-    modelfilename = '%s/%s_Iter%i.state' % (model_folder, featsModelname, trainstep)
-    load_model_weights(featsModel, modelfilename)
+if dist:
+    fullModelname = "distModel%s" % modelname
+    model = load_model(distInception, model_folder, fullModelname, 0, pretrained)
 else:
-    modelfilename = '%s/%sTransferCifar_Iter%i.state' % (model_folder, modelname, transferTrainstep)
-    featsModel = load_model_weights(featsModel, modelfilename)
+    fullModelname = modelname
+    model = load_model(featsInception, model_folder, fullModelname, 0, pretrained, outDim)
+freeze_layers(model)
+# remove last layer
+nClasses = 10
+nFeats = model.classifier.in_features
+model.classifier = torch.nn.Linear(nFeats, nClasses)
+if transferTrainstep<1:
+    modelfilename = '%s/%s_Iter%i.state' % (model_folder, fullModelname, trainstep)
+    load_model_weights(model, modelfilename)
+else:
+    modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, fullModelname, trainstep, transferTrainstep)
+    model = load_model_weights(model, modelfilename)
 
 if torch.cuda.is_available():
     featsModel.cuda()
 
-test_loader = load_cifar(datafolder, batch_size, train=False, download=False)
+test_loader = load_cifar(datafolder, batch_size, train=False, download=False, shuffle=False)
 test_accuracy(featsModel, test_loader)
