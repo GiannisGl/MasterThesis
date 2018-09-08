@@ -9,7 +9,7 @@ from losses import *
 # parameters and names
 case = "SlackNew"
 outDim = 3
-nAug = 5
+nAug = 3
 delta = 5
 trainstep = 3
 transferTrainstep = 1

@@ -1,87 +1,83 @@
 import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
-from inceptionModel import featsInception, distInception
+from featuresModel import featsLenetAE
 from helperFunctions import *
 from losses import *
 
 
 # parameters and names
-case = "CifarSlack"
+case = "Autoencoder"
 outDim = 3
-nAug = 5
 delta = 5
-trainstep = 4
+trainstep = 1
 learningRate = 1e-3
-dataset='cifar'
+dataset = 'mnist'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
-    train_batch_size = 50
-    Nsamples = int(50000 / (3*train_batch_size))
+    torch.set_default_tensor_type('torch.cuda.FloatTensor')
+    train_batch_size = 1000
+    Nsamples = int(60000 / train_batch_size)
     log_iter = int(Nsamples/2)
     Nepochs = 20
     datafolder = "/var/tmp/ioannis/data"
 else:
-    train_batch_size = 1
-    Nsamples = int(600 / (3*train_batch_size))
+    train_batch_size = 10
+    Nsamples = int(60 / train_batch_size)
     log_iter = 10
     Nepochs = 1
     datafolder = "../../data"
+
 lamda = 1
 featsPretrained = False
 distPretrained = False
-modelname = "DistInception%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
+modelname = "DistLeNet%sNoNormOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
-train_loader = load_cifar(datafolder, train_batch_size, train=True, download=False)
+train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsInception, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
-distModelname = "distModel%s" % modelname
-distModel = load_model(distInception, model_folder, distModelname, trainstep-1, distPretrained)
+featsModel = load_model(featsLenetAE, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
 
 # optimizers
 featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate)
-distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate)
 
 # writers and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
-criterion = distance_loss_slack(writer, log_iter, delta, lamda, nAug, dataset)
+criterion = torch.nn.MSELoss()
 
 # Training
 print('Start Training')
 print(log_name)
+global_step=0
 for epoch in range(Nepochs):
-
+    global_step += 1
     running_loss = 0.0
     iterTrainLoader = iter(train_loader)
     for i in range(Nsamples):
-        input1, _ = next(iterTrainLoader)
-        input2, _ = next(iterTrainLoader)
-        input3, _ = next(iterTrainLoader)
+        input, _ = next(iterTrainLoader)
+        inputAug = augment_batch(input)
 
         # transfer to cuda if available
         if torch.cuda.is_available():
-            torch.set_default_tensor_type('torch.cuda.FloatTensor')
-            input1 = input1.cuda()
-            input2 = input2.cuda()
-            input3 = input3.cuda()
+            input = input.cuda()
+            inputAug = inputAug.cuda()
             criterion.cuda()
-
+        # print(inputAug)
         # zero the parameter gradients
         featsOptimizer.zero_grad()
-        distOptimizer.zero_grad()
 
         # optimize
-        loss = criterion(input1, input2, input3, featsModel, distModel)
+        output = featsModel.forward(inputAug)
+        loss = criterion(output, input)
         loss.backward()
-        distOptimizer.step()
         featsOptimizer.step()
 
         # print statistics
         running_loss += loss.item()
+        writer.add_scalar(tag='MSELoss', scalar_value=loss.item(), global_step=global_step)
         if i % log_iter == log_iter-1:
             # print images to tensorboard
             print('[%d, %5d] loss: %f' %
@@ -93,7 +89,6 @@ print(log_name)
 
 # save weights
 save_model_weights(featsModel, model_folder, featsModelname, trainstep)
-save_model_weights(distModel, model_folder, distModelname, trainstep)
 print('saved models')
 
 writer.close()

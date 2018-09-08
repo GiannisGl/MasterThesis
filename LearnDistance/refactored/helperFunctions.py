@@ -58,18 +58,31 @@ def save_model_weights(model, model_folder, modelname, trainstep):
     torch.save(model.state_dict(), modelfile)
 
 
-def load_mnist(data_folder, batch_size, train=True, download=False, shuffle=True):
-    # don't normalize
-    transform = transforms.Compose([transforms.ToTensor()])
+def load_mnist(data_folder, batch_size, train=True, download=False, shuffle=True, transformed=False):
+    if transformed:
+        transform = transforms.Compose([transforms.ToPILImage(),
+                                           transforms.RandomAffine(scale=[0.8, 1.1], degrees=10, translate=[0.2, 0.2], shear=10),
+                                           transforms.ToTensor()])
+    else:
+        transform = transforms.Compose([transforms.ToTensor()])
     dataset = torchvision.datasets.MNIST(root=data_folder, train=train, download=download, transform=transform)
     loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=0)
     return loader
 
 
-def load_cifar(data_folder, batch_size, train=True, download=False, shuffle=True):
-    # don't normalize
-    transform = transforms.Compose([transforms.RandomCrop(28),
-                                    transforms.ToTensor()])
+def load_cifar(data_folder, batch_size, train=True, download=False, shuffle=True, transformed=False):
+    if transformed:
+        transformAug = transforms.Compose([transforms.ToPILImage(),
+                                           transforms.Pad(6, padding_mode='edge'),
+                                           transforms.RandomAffine(scale=[0.9, 1.2], degrees=10),
+                                           transforms.CenterCrop(32),
+                                           transforms.RandomCrop(28),
+                                           transforms.RandomHorizontalFlip(0.5),
+                                           transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2),
+                                           transforms.RandomGrayscale(0.5),
+                                           transforms.ToTensor()])
+    else:
+        transform = transforms.Compose([transforms.RandomCrop(28), transforms.ToTensor()])
     dataset = torchvision.datasets.CIFAR10(root=data_folder, train=train, download=download, transform=transform)
     loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=0)
     return loader

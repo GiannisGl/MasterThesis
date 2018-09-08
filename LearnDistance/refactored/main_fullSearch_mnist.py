@@ -21,8 +21,8 @@ if torch.cuda.is_available():
     N_train_batches = int(dataset_size/train_batch_size)
     datafolder = "/var/tmp/ioannis/data"
 else:
-    train_batch_size = 10
-    N_train_batches = 2
+    train_batch_size = 100
+    N_train_batches = 20
     N_test_samples = 1
     datafolder = "../../data"
 
@@ -67,10 +67,12 @@ for i in range(N_test_samples):
         input_test_batch = input_test_batch.cuda()
         distances = distances.cuda()
         labels_train_all = labels_train_all.cuda()
+        label_test = label_test.cuda()
     for j in range(N_train_batches):
         input_train_search, label_train_search = next(iterSearchTrainLoader)
         if torch.cuda.is_available():
             input_train_search = input_train_search.cuda()
+            label_train_search = label_train_search.cuda()
 
         distancesTmp = distModel.forward(input_test_batch, input_train_search)
         distances = torch.cat((distances, distancesTmp),0)
