@@ -1,4 +1,6 @@
 import torch
+import torch.optim as optim
+from tensorboardX import SummaryWriter
 from distanceModel import distanceModel
 from helperFunctions import *
 from losses import *
@@ -37,13 +39,15 @@ input_test_loader = load_mnist(datafolder, 1, train=False, download=False, shuff
 # model loading
 distModelname = "distModel%s" % modelname
 distModel = load_model(distanceModel, model_folder, distModelname, trainstep, distPretrained)
-distModel = distModel.eval()
 if torch.cuda.is_available():
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
     distModel.cuda()
 else:
     torch.set_default_tensor_type('torch.FloatTensor')
 
+
+# writers and criterion
+# writer = SummaryWriter(comment='%s_kNeighbours' % (log_name))
 
 # Training
 print('Start Full Search')
@@ -52,31 +56,33 @@ print(log_name)
 total = 0
 correct = 0
 iterInputTestLoader = iter(input_test_loader)
+top10NNs = torch.zeros(N_test_samples, 10)
 for i in range(N_test_samples):
     input_test, label_test = next(iterInputTestLoader)
     input_test_batch = input_test.expand(train_batch_size, -1, -1, -1)
-    bestDistance = torch.zeros(0)
-    nnLabel = torch.zeros(0).long()
+    distances = torch.zeros(0)
+    labels_train_all = torch.zeros(0).long()
     iterSearchTrainLoader = iter(search_train_loader)
     if torch.cuda.is_available():
         input_test_batch = input_test_batch.cuda()
-        label_test = label_test.cuda()
+        distances = distances.cuda()
+        labels_train_all = labels_train_all.cuda()
     for j in range(N_train_batches):
         input_train_search, label_train_search = next(iterSearchTrainLoader)
         if torch.cuda.is_available():
             input_train_search = input_train_search.cuda()
-            label_train_search = label_train_search.cuda()
 
         distancesTmp = distModel.forward(input_test_batch, input_train_search)
-        bestDistanceTmp, bestIndex = distancesTmp.sort(0)
-        if bestDistanceTmp<bestDistance:
-            bestDistance = bestDistanceTmp
-            nnLabel = label_train_search[bestIndex]
+        distances = torch.cat((distances, distancesTmp),0)
+        labels_train_all = torch.cat((labels_train_all, label_train_search),0)
 
+    sortedDistances, sortedIndices = distances.sort(0)
+    nnLabel = labels_train_all[sortedIndices[0]]
     total += 1
     correct += (nnLabel == label_test[0]).sum().item()
-    if i%10==0:
-        print("Total: %i,   correct: %i, accuracy: %f %%" % (total, correct, 100 * correct / total))
+    top10NNs[i] = sortedIndices[:10].squeeze()
+    if i%100==0:
+        print("Total: %i,   correct: %i" % (total, correct))
 
 
 print('Accuracy of the network on the 10000 test images: %f %%' % (
@@ -85,3 +91,9 @@ print('Accuracy of the network on the 10000 test images: %f %%' % (
 
 print('Finished Full Search')
 print(log_name)
+
+# save distances?
+# writer.close()
+
+distancesFilename = "distances/%stop10NNs"%log_name
+torch.save(top10NNs, distancesFilename)
