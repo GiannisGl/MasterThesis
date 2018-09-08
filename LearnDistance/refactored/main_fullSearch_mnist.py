@@ -70,10 +70,11 @@ for i in range(N_test_samples):
             input_train_search = input_train_search.cuda()
 
         distancesTmp = distModel.forward(input_test_batch, input_train_search)
-        bestDistanceTmp, bestIndex = distancesTmp.sort(0)
+        sortedDistances, sortedIndices = distancesTmp.sort(0)
+        bestDistanceTmp = sortedDistances[0]
         if bestDistanceTmp<bestDistance:
             bestDistance = bestDistanceTmp
-            nnLabel = label_train_search[bestIndex]
+            nnLabel = label_train_search[sortedIndices[0]]
 
     total += 1
     correct += (nnLabel == label_test[0]).sum().item()
