@@ -26,8 +26,9 @@ else:
 
 lamda = 1
 distPretrained = False
-#modelname = "DistLeNetNoNorm%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
-modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+#modelname = "DistInception%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
+modelname = "DistInception%sAug%iOut%iDelta%i" % (case, nAug, outDim, delta)
+modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 log_name = "fullSearch%s%s_Iter%i" % (dataset, modelname, trainstep)
 model_folder = "trainedModels"
 
@@ -37,6 +38,7 @@ input_test_loader = load_cifar(datafolder, 1, train=False, download=False, shuff
 # model loading
 distModelname = "distModel%s" % modelname
 distModel = load_model(distInception, model_folder, distModelname, trainstep, distPretrained)
+distModel = distModel.eval()
 if torch.cuda.is_available():
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
     distModel.cuda()

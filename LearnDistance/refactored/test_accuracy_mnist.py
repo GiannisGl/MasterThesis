@@ -58,4 +58,5 @@ if torch.cuda.is_available():
     model.cuda()
 
 test_loader = load_mnist(datafolder, batch_size, train=False, download=False)
+print(modelfilename)
 test_accuracy(model, test_loader, dist=dist)

@@ -24,9 +24,10 @@ else:
     datafolder = "../../data"
 
 lamda = 1
-featsPretrained = False
-modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+pretrained = False
 # modelname = "DistInception%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
+modelname = "DistInception%sAug%iOut%iDelta%i" % (case, nAug, outDim, delta)
+#modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 # modelname = "DistInception%sOut%iDelta%i" % (case, outDim, delta)
 model_folder = "trainedModels"
 
@@ -40,8 +41,8 @@ else:
 freeze_layers(model)
 # remove last layer
 nClasses = 10
-nFeats = model.classifier.in_features
-model.classifier = torch.nn.Linear(nFeats, nClasses)
+nFeats = model.fc.in_features
+model.fc = torch.nn.Linear(nFeats, nClasses)
 if transferTrainstep<1:
     modelfilename = '%s/%s_Iter%i.state' % (model_folder, fullModelname, trainstep)
     load_model_weights(model, modelfilename)
@@ -50,7 +51,8 @@ else:
     model = load_model_weights(model, modelfilename)
 
 if torch.cuda.is_available():
-    featsModel.cuda()
+    model.cuda()
 
 test_loader = load_cifar(datafolder, batch_size, train=False, download=False, shuffle=False)
-test_accuracy(featsModel, test_loader)
+print(modelfilename)
+test_accuracy(model, test_loader)
