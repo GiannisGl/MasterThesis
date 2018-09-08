@@ -1,5 +1,5 @@
 import torch
-from distanceModel import distanceModel
+from inceptionModel import distInception
 from helperFunctions import *
 from losses import *
 
@@ -7,15 +7,15 @@ from losses import *
 # parameters and names
 case = "NoAug"
 outDim = 3
-nAug = 3
+nAug = 0
 delta = 5
 trainstep = 4
-dataset = 'mnist'
+dataset = 'cifar'
 # Per Epoch one iteration over the dataset
 N_test_samples = 10000
 dataset_size = 60000
 if torch.cuda.is_available():
-    train_batch_size = 60000
+    train_batch_size = 20000
     N_train_batches = int(dataset_size/train_batch_size)
     datafolder = "/var/tmp/ioannis/data"
 else:
@@ -31,12 +31,12 @@ modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda
 log_name = "fullSearch%s%s_Iter%i" % (dataset, modelname, trainstep)
 model_folder = "trainedModels"
 
-search_train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False, shuffle=False)
-input_test_loader = load_mnist(datafolder, 1, train=False, download=False, shuffle=False)
+search_train_loader = load_cifar(datafolder, train_batch_size, train=True, download=False, shuffle=False)
+input_test_loader = load_cifar(datafolder, 1, train=False, download=False, shuffle=False)
 
 # model loading
 distModelname = "distModel%s" % modelname
-distModel = load_model(distanceModel, model_folder, distModelname, trainstep, distPretrained)
+distModel = load_model(distInception, model_folder, distModelname, trainstep, distPretrained)
 if torch.cuda.is_available():
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
     distModel.cuda()

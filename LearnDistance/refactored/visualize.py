@@ -7,15 +7,16 @@ from helperFunctions import *
 
 
 trainstep = 2
-case = "Autoencoder"
+case = "NoAug"
 # case = "Cifar"
 outDim = 3
+nAug = 0
 delta = 5
 lamda = 1
 Nsamples = 2000
 dataset = 'mnist'
 # dataset = 'cifar'
-ae = True
+ae = False
 
 modelfolder = "trainedModels"
 if dataset=='mnist':
