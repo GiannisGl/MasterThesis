@@ -122,9 +122,9 @@ class FeatsLeNet5AE(nn.Module):
         self.decoderConv = nn.Sequential(OrderedDict([
             ('c5rev', nn.ConvTranspose2d(120, 16, kernel_size=(4, 4))),
             ('relu5rev', nn.ELU()),
-            ('c3rev', nn.ConvTranspose2d(16, 6, kernel_size=(5, 5), stride=2)),
+            ('c3rev', nn.ConvTranspose2d(16, 6, kernel_size=(5, 5), stride=2, output_padding=1)),
             ('relu3rev', nn.ELU()),
-            ('c1rev', nn.ConvTranspose2d(6, 1, kernel_size=(5, 5), stride=2)),
+            ('c1rev', nn.ConvTranspose2d(6, 1, kernel_size=(5, 5), stride=2, output_padding=1)),
             ('relu1rev', nn.ELU()),
         ]))
 
