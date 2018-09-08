@@ -26,7 +26,7 @@ else:
     train_batch_size = 100
     Nsamples = int(60000 / train_batch_size)
     log_iter = 100
-    Nepochs = 50
+    Nepochs = 10
     datafolder = "../../data"
 
 lamda = 1
@@ -108,5 +108,5 @@ print('saved models')
 
 writer.close()
 
-test_loader = load_mnist(datafolder, train_batch_size, train=False, download=False)
-test_accuracy(featsModel, test_loader)
+test_loader = load_mnist(datafolder, train_batch_size, train=False, download=False, shuffle=False)
+test_accuracy(featsModel, test_loader, ae=True)

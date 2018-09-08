@@ -110,5 +110,5 @@ print('saved models')
 
 writer.close()
 
-test_loader = load_mnist(datafolder, train_batch_size, train=False, download=False)
+test_loader = load_mnist(datafolder, train_batch_size, train=False, download=False, shuffle=False)
 test_accuracy(featsModel, test_loader)
