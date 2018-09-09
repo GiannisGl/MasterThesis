@@ -1,7 +1,7 @@
 import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
-from featuresModel import featsLenetAE
+from inceptionModel import featsInceptionAE
 from helperFunctions import *
 from losses import *
 
@@ -39,7 +39,7 @@ train_loader = load_cifar(datafolder, train_batch_size, train=True, download=Fal
 
 # model loading
 featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsLenetAE, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
+featsModel = load_model(featsInceptionAE, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
 
 # optimizers
 featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate)

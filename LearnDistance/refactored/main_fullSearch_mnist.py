@@ -1,5 +1,4 @@
 import torch
-import torch.optim as optim
 from tensorboardX import SummaryWriter
 from distanceModel import distanceModel
 from featuresModel import featsLenet, featsLenetAE

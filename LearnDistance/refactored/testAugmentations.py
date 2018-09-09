@@ -9,7 +9,7 @@ data_folder = "../data"
 
 # dataset = 'mnist'
 dataset = 'cifar'
-batchSize = 4
+batchSize = 5
 
 transform = transforms.Compose(
     [transforms.ToTensor()])
@@ -19,7 +19,7 @@ if dataset=='mnist':
     train_set = torchvision.datasets.MNIST(root=data_folder, train=True, download=True, transform=transform)
 elif dataset == 'cifar':
     cmap = None
-    train_set = torchvision.datasets.CIFAR10(root=data_folder, train=True, download=False, transform=transform)
+    train_set = torchvision.datasets.CIFAR10(root=data_folder, train=False, download=False, transform=transform)
 
 train_loader = torch.utils.data.DataLoader(train_set, batch_size=batchSize,
                                            shuffle=True, num_workers=0)
@@ -31,7 +31,10 @@ input = input.permute([0,2,3,1])
 print(input.shape)
 inputAug = inputAug.permute([0,2,3,1])
 f, imgplot = plt.subplots(batchSize,2)
+plt.axis("off")
 for i in range(batchSize):
     imgplot[i,0].imshow(torch.squeeze(input[i]), cmap=cmap)
+    imgplot[i,0].axis('off')
     imgplot[i,1].imshow(torch.squeeze(inputAug[i]), cmap=cmap)
+    imgplot[i,1].axis('off')
 plt.show()
