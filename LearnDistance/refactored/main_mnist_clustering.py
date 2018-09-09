@@ -9,10 +9,10 @@ from losses import *
 # parameters and names
 case = "MnistClustering"
 outDim = 3
-nAug = 0
+nAug = 3
 delta = 5
-trainstep = 1
-learningRate = 1e-3
+trainstep = 4
+learningRate = 1e-4
 dataset = 'mnist'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():

@@ -53,7 +53,6 @@ class distance_loss_feats(torch.nn.Module):
 
         return featsLoss
 
-
 class distance_loss(torch.nn.Module):
 
     def __init__(self, writer, log_iter, delta, lamda, nAug=3, dataset='mnist', writer_img=None):

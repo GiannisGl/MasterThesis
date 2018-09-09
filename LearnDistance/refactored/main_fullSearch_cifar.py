@@ -57,7 +57,6 @@ for i in range(N_test_samples):
     input_test, label_test = next(iterInputTestLoader)
     input_test_batch = input_test.expand(train_batch_size, -1, -1, -1)
     bestDistance = torch.ones(1)*1e+5
-    nnLabel = torch.zeros(0).long()
     iterSearchTrainLoader = iter(search_train_loader)
     if torch.cuda.is_available():
         input_test_batch = input_test_batch.cuda()

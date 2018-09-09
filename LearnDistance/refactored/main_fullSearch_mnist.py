@@ -2,12 +2,13 @@ import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
 from distanceModel import distanceModel
+from featuresModel import featsLenet, featsLenetAE
 from helperFunctions import *
 from losses import *
 
 
 # parameters and names
-case = "NoAug"
+case = "Autoencoder"
 outDim = 3
 nAug = 3
 delta = 5
@@ -16,6 +17,8 @@ dataset = 'mnist'
 # Per Epoch one iteration over the dataset
 N_test_samples = 10000
 dataset_size = 60000
+dist = False
+ae = True
 if torch.cuda.is_available():
     train_batch_size = 60000
     N_train_batches = int(dataset_size/train_batch_size)
@@ -23,11 +26,11 @@ if torch.cuda.is_available():
 else:
     train_batch_size = 100
     N_train_batches = 20
-    N_test_samples = 1
+    N_test_samples = 5
     datafolder = "../../data"
 
 lamda = 1
-distPretrained = False
+pretrained = False
 #modelname = "DistLeNetNoNorm%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
 modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 log_name = "fullSearch%s%s_Iter%i" % (dataset, modelname, trainstep)
@@ -37,11 +40,21 @@ search_train_loader = load_mnist(datafolder, train_batch_size, train=True, downl
 input_test_loader = load_mnist(datafolder, 1, train=False, download=False, shuffle=False)
 
 # model loading
-distModelname = "distModel%s" % modelname
-distModel = load_model(distanceModel, model_folder, distModelname, trainstep, distPretrained)
+if dist:
+    fullmodelname = "distModel%s" % modelname
+else:
+    fullmodelname = "featsModel%s" % modelname
+if dist:
+    model = load_model(distanceModel, model_folder, fullmodelname, trainstep, pretrained)
+else:
+    if ae:
+        model = load_model(featsLenetAE, model_folder, fullmodelname, trainstep, pretrained, outDim=outDim)
+    else:
+        model = load_model(featsLenet, model_folder, fullmodelname, trainstep, pretrained, outDim=outDim)
+
 if torch.cuda.is_available():
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
-    distModel.cuda()
+    model.cuda()
 else:
     torch.set_default_tensor_type('torch.FloatTensor')
 
@@ -60,7 +73,6 @@ for i in range(N_test_samples):
     input_test, label_test = next(iterInputTestLoader)
     input_test_batch = input_test.expand(train_batch_size, -1, -1, -1)
     bestDistance = torch.ones(1)*1e+5
-    nnLabel = torch.zeros(0).long()
     iterSearchTrainLoader = iter(search_train_loader)
     if torch.cuda.is_available():
         input_test_batch = input_test_batch.cuda()
@@ -69,7 +81,17 @@ for i in range(N_test_samples):
         if torch.cuda.is_available():
             input_train_search = input_train_search.cuda()
 
-        distancesTmp = distModel.forward(input_test_batch, input_train_search)
+        if dist:
+            distancesTmp = model.forward(input_test_batch, input_train_search)
+        else:
+            if ae:
+                output_test_batch = model.encoder(input_test_batch)
+                output_train_search = model.encoder(input_train_search)
+            else:
+                output_test_batch = model.forward(input_test_batch)
+                output_train_search = model.forward(input_train_search)
+            distancesTmp = mse_batch(output_train_search-output_test_batch)
+
         sortedDistances, sortedIndices = distancesTmp.sort(0)
         bestDistanceTmp = sortedDistances[0]
         if bestDistanceTmp<bestDistance:
@@ -91,6 +113,3 @@ print(log_name)
 
 # save distances?
 # writer.close()
-
-distancesFilename = "distances/%stop10NNs"%log_name
-torch.save(top10NNs, distancesFilename)
