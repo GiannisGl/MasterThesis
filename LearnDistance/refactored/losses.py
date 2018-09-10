@@ -80,9 +80,9 @@ class distance_loss(torch.nn.Module):
         input3feats = featsModel.forward(input3)
 
         # get L2 distance of the 3 pairs of features
-        dist12 = mse_batch_loss(input1feats, input2feats)
-        dist13 = mse_batch_loss(input1feats, input3feats)
-        dist23 = mse_batch_loss(input2feats, input3feats)
+        dist12 = mse_batch_loss_root(input1feats, input2feats)
+        dist13 = mse_batch_loss_root(input1feats, input3feats)
+        dist23 = mse_batch_loss_root(input2feats, input3feats)
 
         # get learned distance of the 3 pairs both ways
         learnedDist12 = distanceModel(input1, input2)
@@ -380,6 +380,9 @@ def mseLoss(input, target=None):
 
 def mse_batch_loss(input, target):
     return mse_batch(flatten(input) - flatten(target))
+
+def mse_batch_loss_root(input, target):
+    return torch.sqrt(mse_batch_loss(input, target))
 
 def flatten(input):
     return input.view(input.size()[0],-1)

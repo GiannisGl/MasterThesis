@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="744af0ac-869a-460a-bf81-97755d885eff" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/inceptionModel.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/inceptionModel.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_ae.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_ae.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_mnist_ae.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_mnist_ae.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_cifar.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_cifar.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/losses.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/losses.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -82,22 +79,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="losses.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="losses.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/losses.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+            <state relative-caret-position="250">
+              <caret line="84" column="36" lean-forward="false" selection-start-line="84" selection-start-column="36" selection-end-line="84" selection-end-column="36" />
               <folding>
                 <element signature="e#105#2068#0" expanded="false" />
                 <element signature="e#487#2068#0" expanded="false" />
-                <element signature="e#2113#9712#0" expanded="false" />
-                <element signature="e#9763#17567#0" expanded="false" />
+                <element signature="e#9778#17582#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main_mnist_ae.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main_mnist_ae.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_mnist_ae.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="304">
@@ -236,13 +232,13 @@
         <option value="$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_mnist.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_mnist_clustering.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_cifar.py" />
-        <option value="$PROJECT_DIR$/LearnDistance/refactored/losses.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_mnist.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/testAugmentations.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/inceptionModel.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_cifar.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_ae.py" />
         <option value="$PROJECT_DIR$/LearnDistance/refactored/main_mnist_ae.py" />
+        <option value="$PROJECT_DIR$/LearnDistance/refactored/losses.py" />
       </list>
     </option>
   </component>
@@ -997,19 +993,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/losses.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
-          <folding>
-            <element signature="e#105#2068#0" expanded="false" />
-            <element signature="e#487#2068#0" expanded="false" />
-            <element signature="e#2113#9712#0" expanded="false" />
-            <element signature="e#9763#17567#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_mnist.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1097,6 +1080,18 @@
         <state relative-caret-position="304">
           <caret line="76" column="23" lean-forward="false" selection-start-line="76" selection-start-column="23" selection-end-line="76" selection-end-column="23" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/losses.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="84" column="36" lean-forward="false" selection-start-line="84" selection-start-column="36" selection-end-line="84" selection-end-column="36" />
+          <folding>
+            <element signature="e#105#2068#0" expanded="false" />
+            <element signature="e#487#2068#0" expanded="false" />
+            <element signature="e#9778#17582#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
