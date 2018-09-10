@@ -98,7 +98,7 @@ class distInceptionCifar10(nn.Module):
 class featsInceptionCifar10AE(nn.Module):
 
     def __init__(self, outDim=3):
-        super(featsInceptionCifar10, self).__init__()
+        super(featsInceptionCifar10AE, self).__init__()
 
         self.net = nn.Sequential(OrderedDict([
             ('c1', BasicConv2d(3, 96, kernel_size=3, stride=1)),
@@ -120,6 +120,7 @@ class featsInceptionCifar10AE(nn.Module):
         self.decoderFc = nn.Linear(outDim, 336)
 
         self.decoderNet = nn.Sequential(OrderedDict([
+            ('mprev', nn.ConvTranspose2d(7)),
             ('i3brev', InceptionModuleRev(336, 176, 160)),
             ('i3arev', InceptionModuleRev(336, 144, 96)),
             ('d2rev', DownsampleModuleRev(240, 144)),
@@ -129,8 +130,8 @@ class featsInceptionCifar10AE(nn.Module):
             ('i2arev', InceptionModuleRev(160, 80, 80)),
             ('d1rev', DownsampleModuleRev(160, 80)),
             ('i1brev', InceptionModuleRev(80, 32, 48)),
-            ('i2arev', InceptionModuleRev(80, 32, 32)),
-            ('c1rev', BasicConv2dRev(96, 3, kernel_size=3, stride=1)),
+            ('i1arev', InceptionModuleRev(80, 32, 32)),
+            ('c1rev', BasicConv2dRev(64, 3, kernel_size=3, stride=1)),
         ]))
 
     def encoder(self, input):
@@ -141,7 +142,7 @@ class featsInceptionCifar10AE(nn.Module):
 
     def decoder(self, input):
         output = self.decoderFc(input)
-        output = output.view(-1, 336, -1, -1, -1)
+        output = output.view(-1, 336, 1, 1)
         output = self.decoderNet(output)
         return output
 

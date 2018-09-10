@@ -70,8 +70,10 @@ for epoch in range(Nepochs):
         featsOptimizer.zero_grad()
 
         # optimize
-        output = featsModel.forward(inputAug)
-        loss = criterion(output, input)
+        output = featsModel.forward(input)
+        outputAug = featsModel.forward(inputAug)
+        loss = criterion(outputAug, input)
+        loss += criterion(output, input)
         loss.backward()
         featsOptimizer.step()
 
