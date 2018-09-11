@@ -5,17 +5,17 @@ from losses import *
 
 
 # parameters and names
-case = "NoAug"
+case = "CifarNewNoAug"
 outDim = 3
 nAug = 0
 delta = 5
-trainstep = 4
+trainstep = 6
 dataset = 'cifar'
 # Per Epoch one iteration over the dataset
 N_test_samples = 10000
-dataset_size = 60000
+dataset_size = 50000
 if torch.cuda.is_available():
-    train_batch_size = 20000
+    train_batch_size = 800
     N_train_batches = int(dataset_size/train_batch_size)
     datafolder = "/var/tmp/ioannis/data"
 else:

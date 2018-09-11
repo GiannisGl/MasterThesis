@@ -7,8 +7,8 @@ from helperFunctions import augment_batch
 
 data_folder = "../data"
 
-# dataset = 'mnist'
-dataset = 'cifar'
+dataset = 'mnist'
+# dataset = 'cifar'
 batchSize = 5
 
 transform = transforms.Compose(
@@ -16,7 +16,7 @@ transform = transforms.Compose(
 
 if dataset=='mnist':
     cmap = 'gray'
-    train_set = torchvision.datasets.MNIST(root=data_folder, train=True, download=True, transform=transform)
+    train_set = torchvision.datasets.MNIST(root=data_folder, train=False, download=True, transform=transform)
 elif dataset == 'cifar':
     cmap = None
     train_set = torchvision.datasets.CIFAR10(root=data_folder, train=False, download=False, transform=transform)
