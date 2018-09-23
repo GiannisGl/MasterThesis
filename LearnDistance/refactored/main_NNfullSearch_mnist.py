@@ -1,43 +1,48 @@
 import torch
-from inceptionModel import distInception
+from distanceModel import distanceModel
 from helperFunctions import *
 from losses import *
 
+# Nearest Neighbor search for MNIST
 
 # parameters and names
-case = "CifarNewNoAug"
+case = "MnistRelaxedWithClustering"
 outDim = 3
-nAug = 0
+nAug = 3
 delta = 5
-trainstep = 6
-dataset = 'cifar'
+trainstep = 4
+dataset = 'mnist'
 # Per Epoch one iteration over the dataset
 N_test_samples = 10000
-dataset_size = 50000
+dataset_size = 60000
+dist = False
 if torch.cuda.is_available():
-    train_batch_size = 800
+    train_batch_size = 60000
     N_train_batches = int(dataset_size/train_batch_size)
     datafolder = "/var/tmp/ioannis/data"
 else:
     train_batch_size = 100
     N_train_batches = 20
-    N_test_samples = 1
+    N_test_samples = 5
     datafolder = "../../data"
 
 lamda = 1
 distPretrained = False
-modelname = "DistInception%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
-#modelname = "DistInception%sAug%iOut%iDelta%i" % (case, nAug, outDim, delta)
-#modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+if case == "Autoencoder":
+    modelname = "DistLeNet%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+    ae = True
+else:
+    modelname = "DistLeNet%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
+    ae = False
 log_name = "fullSearch%s%s_Iter%i" % (dataset, modelname, trainstep)
 model_folder = "trainedModels"
 
-search_train_loader = load_cifar(datafolder, train_batch_size, train=True, download=False, shuffle=False)
-input_test_loader = load_cifar(datafolder, 1, train=False, download=False, shuffle=False)
+search_train_loader = load_mnist(datafolder, train_batch_size, train=True, download=True, shuffle=False)
+input_test_loader = load_mnist(datafolder, 1, train=False, download=True, shuffle=False)
 
 # model loading
 distModelname = "distModel%s" % modelname
-distModel = load_model(distInception, model_folder, distModelname, trainstep, distPretrained)
+distModel = load_model(distanceModel, model_folder, distModelname, trainstep, distPretrained)
 distModel = distModel.eval()
 if torch.cuda.is_available():
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
@@ -45,8 +50,7 @@ if torch.cuda.is_available():
 else:
     torch.set_default_tensor_type('torch.FloatTensor')
 
-
-# Training
+# Searching
 print('Start Full Search')
 print(log_name)
 

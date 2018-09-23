@@ -2,9 +2,9 @@ import torch
 from helperFunctions import augment_batch
 
 
-class distance_loss_feats(torch.nn.Module):
+class distance_loss_ClusteringOnly(torch.nn.Module):
     def __init__(self, writer, log_iter, delta, nAug=3, dataset='mnist', Aug=True):
-        super(distance_loss_feats, self).__init__()
+        super(distance_loss_ClusteringOnly, self).__init__()
         self.writer = writer
         self.log_iter = log_iter
         self.step = 0
@@ -211,10 +211,10 @@ class distance_loss(torch.nn.Module):
 
         return loss
 
-class distance_loss_slack(torch.nn.Module):
+class distance_loss_relaxed(torch.nn.Module):
 
     def __init__(self, writer, log_iter, delta, lamda, nAug=3, dataset='mnist', writer_img=None):
-        super(distance_loss_slack, self).__init__()
+        super(distance_loss_relaxed, self).__init__()
         self.writer = writer
         self.writer_img = writer_img
         self.log_iter = log_iter

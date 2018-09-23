@@ -12,7 +12,6 @@ def freeze_layers(model):
 
 
 def weights_init(module):
-    classname = module.__class__.__name__
     if isinstance(module, torch.nn.Conv2d):
         init.xavier_normal_(module.weight)
     elif isinstance(module, torch.nn.Linear):
@@ -21,9 +20,6 @@ def weights_init(module):
     elif isinstance(module, torch.nn.BatchNorm2d):
         init.constant_(module.weight, 1)
         init.constant_(module.bias, 0)
-
-# torch.nn.init.xavier.normal
-
 
 def model_weights_random_xavier(model):
     for module in model.modules():
@@ -109,9 +105,6 @@ def augment_batch(batch, dataset='mnist'):
         batchAug[i] = transformAug(batch[i].cpu())
     return batchAug
 
-# xflip, color jittering,
-
-
 def initialize_pretrained_model(model, pretrained_filename):
     if torch.cuda.is_available():
         pretrained = torch.load(pretrained_filename)
@@ -128,10 +121,10 @@ def initialize_pretrained_model(model, pretrained_filename):
 def visualize(writerEmb, model, datafolder, dataset='mnist', Nsamples=2000, train=True, raw=False, ae=False):
     if dataset=='mnist':
         transform = transforms.Compose([transforms.ToTensor()])
-        dataset = torchvision.datasets.MNIST(root=datafolder, train=train, download=False, transform=transform)
+        dataset = torchvision.datasets.MNIST(root=datafolder, train=train, download=True, transform=transform)
     elif dataset=='cifar':
         transform = transforms.Compose([transforms.CenterCrop(28), transforms.ToTensor()])
-        dataset = torchvision.datasets.CIFAR10(root=datafolder, train=train, download=False, transform=transform)
+        dataset = torchvision.datasets.CIFAR10(root=datafolder, train=train, download=True, transform=transform)
     subset = torch.utils.data.dataset.Subset(dataset, range(Nsamples))
     loader = torch.utils.data.DataLoader(subset, batch_size=Nsamples, shuffle=False, num_workers=0)
 

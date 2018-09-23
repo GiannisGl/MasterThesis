@@ -7,13 +7,13 @@ from losses import *
 
 
 # parameters and names
-case = "Autoencoder"
+case = "MnistAutoencoder"
 outDim = 3
 nAug = 0
 delta = 5
 trainstep = 1
 transferTrainstep = 0
-learningRate = 1e-2
+learningRate = 1e-1
 dataset = 'mnist'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -31,11 +31,11 @@ else:
 
 lamda = 1
 featsPretrained = False
-modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+modelname = "DistLeNet%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 log_name = "featsTransfer%s%sAug%iBatch%iLR%f_Iter%i_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep, transferTrainstep)
 model_folder = "trainedModels"
 
-train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False)
+train_loader = load_mnist(datafolder, train_batch_size, train=True, download=True)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
@@ -87,12 +87,11 @@ for epoch in range(Nepochs):
         loss.backward()
         featsOptimizer.step()
         global_step = epoch*Nsamples+i
-        writer.add_scalar(tag='transfer_mnist', scalar_value=loss, global_step=global_step)
+        writer.add_scalar(tag='linearClassifier_mnist_ae', scalar_value=loss, global_step=global_step)
 
         # print statistics
         running_loss += loss.item()
         if i % log_iter == log_iter-1:
-            # print images to tensorboard
             print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0

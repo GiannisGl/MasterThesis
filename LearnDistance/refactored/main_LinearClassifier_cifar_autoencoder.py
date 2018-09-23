@@ -13,7 +13,7 @@ nAug = 0
 delta = 5
 trainstep = 1
 transferTrainstep = 0
-learningRate = 1e-2
+learningRate = 1e-1
 dataset = 'cifar'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -31,11 +31,11 @@ else:
 
 lamda = 1
 featsPretrained = False
-modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 log_name = "featsTransfer%s%sAug%iBatch%iLR%f_Iter%i_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep, transferTrainstep)
 model_folder = "trainedModels"
 
-train_loader = load_cifar(datafolder, train_batch_size, train=True, download=False)
+train_loader = load_cifar(datafolder, train_batch_size, train=True, download=True)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
@@ -44,9 +44,9 @@ if transferTrainstep<1:
     featsModel = load_model(featsInceptionAE, model_folder, featsModelname, trainstep, featsPretrained, outDim)
 freeze_layers(featsModel)
 # remove last layer
-nFeats = featsModel.fc[-1].in_features
+nFeats = featsModel.fc.in_features
 nClasses = 10
-featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
+featsModel.fc = torch.nn.Linear(nFeats, nClasses)
 print(featsModel)
 if transferTrainstep>=1:
     modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, modelname, trainstep, transferTrainstep)
@@ -55,7 +55,7 @@ if torch.cuda.is_available():
     featsModel.cuda()
 
 # optimizers
-featsOptimizer = optim.Adam(featsModel.fc[-1].parameters(), lr=learningRate)
+featsOptimizer = optim.Adam(featsModel.fc.parameters(), lr=learningRate)
 criterion = torch.nn.CrossEntropyLoss()
 
 # writers and criterion
@@ -87,7 +87,7 @@ for epoch in range(Nepochs):
         loss.backward()
         featsOptimizer.step()
         global_step = epoch*Nsamples+i
-        writer.add_scalar(tag='transfer_cifar', scalar_value=loss, global_step=global_step)
+        writer.add_scalar(tag='linearClassifier_cifar_ae', scalar_value=loss, global_step=global_step)
 
         # print statistics
         running_loss += loss.item()

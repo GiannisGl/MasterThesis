@@ -120,7 +120,7 @@ class featsInceptionCifar10AE(nn.Module):
         self.decoderFc = nn.Linear(outDim, 336)
 
         self.decoderNet = nn.Sequential(OrderedDict([
-            ('mprev', nn.ConvTranspose2d(7)),
+            ('mprev', nn.ConvTranspose2d(336, 336, 7)),
             ('i3brev', InceptionModuleRev(336, 176, 160)),
             ('i3arev', InceptionModuleRev(336, 144, 96)),
             ('d2rev', DownsampleModuleRev(240, 144)),
@@ -131,7 +131,7 @@ class featsInceptionCifar10AE(nn.Module):
             ('d1rev', DownsampleModuleRev(160, 80)),
             ('i1brev', InceptionModuleRev(80, 32, 48)),
             ('i1arev', InceptionModuleRev(80, 32, 32)),
-            ('c1rev', BasicConv2dRev(64, 3, kernel_size=3, stride=1)),
+            ('c1rev', BasicConv2dRev(64, 3, kernel_size=4, stride=1)),
         ]))
 
     def encoder(self, input):

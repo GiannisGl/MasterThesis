@@ -1,36 +1,38 @@
 import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
-from inceptionModel import featsInception, distInception
+from featuresModel import featsLenet
+from distanceModel import distanceModel
 from helperFunctions import *
 from losses import *
 
 
 # parameters and names
-case = "CifarSlack"
+case = "MnistExactWithClustering"
 outDim = 3
-nAug = 5
+nAug = 3
 delta = 5
-trainstep = 4
-learningRate = 1e-3
-dataset='cifar'
+trainstep = 1
+learningRate = 1e-2
+dataset = 'mnist'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
-    train_batch_size = 50
-    Nsamples = int(50000 / (3*train_batch_size))
+    train_batch_size = 1000
+    Nsamples = int(60000 / (3*train_batch_size))
     log_iter = int(Nsamples/2)
     Nepochs = 20
     datafolder = "/var/tmp/ioannis/data"
 else:
-    train_batch_size = 1
+    train_batch_size = 10
     Nsamples = int(600 / (3*train_batch_size))
     log_iter = 10
     Nepochs = 1
     datafolder = "../../data"
+
 lamda = 1
 featsPretrained = False
 distPretrained = False
-modelname = "DistInception%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
+modelname = "DistLeNet%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
 log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
@@ -38,13 +40,13 @@ if nAug==0:
     transform=True
 else:
     transform=False
-train_loader = load_cifar(datafolder, train_batch_size, train=True, download=False, transformed=transform)
+train_loader = load_mnist(datafolder, train_batch_size, train=True, download=True, transformed=transform)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsInception, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
+featsModel = load_model(featsLenet, model_folder, featsModelname, trainstep-1, featsPretrained, outDim)
 distModelname = "distModel%s" % modelname
-distModel = load_model(distInception, model_folder, distModelname, trainstep-1, distPretrained)
+distModel = load_model(distanceModel, model_folder, distModelname, trainstep-1, distPretrained)
 
 # optimizers
 featsOptimizer = optim.Adam(featsModel.parameters(), lr=learningRate)
@@ -52,7 +54,7 @@ distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate)
 
 # writers and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
-criterion = distance_loss_slack(writer, log_iter, delta, lamda, nAug, dataset)
+criterion = distance_loss(writer, log_iter, delta, lamda, nAug)
 
 # Training
 print('Start Training')
@@ -87,7 +89,6 @@ for epoch in range(Nepochs):
         # print statistics
         running_loss += loss.item()
         if i % log_iter == log_iter-1:
-            # print images to tensorboard
             print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0

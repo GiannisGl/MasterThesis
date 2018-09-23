@@ -7,16 +7,16 @@ from losses import *
 
 
 # parameters and names
-case = "Cifar"
+case = "CifarExactWithoutClustering"
 outDim = 3
-nAug = 3
+nAug = 5
 delta = 5
 trainstep = 1
-learningRate = 1e-3
+learningRate = 1e-2
 dataset = 'cifar'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
-    train_batch_size = 50
+    train_batch_size = 40
     Nsamples = int(50000 / (3*train_batch_size))
     log_iter = int(Nsamples/2)
     Nepochs = 20
@@ -38,7 +38,7 @@ if nAug==0:
     transform=True
 else:
     transform=False
-train_loader = load_cifar(datafolder, train_batch_size, train=True, download=False, transformed=transform)
+train_loader = load_cifar(datafolder, train_batch_size, train=True, download=True, transformed=transform)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
@@ -87,7 +87,6 @@ for epoch in range(Nepochs):
         # print statistics
         running_loss += loss.item()
         if i % log_iter == log_iter-1:
-            # print images to tensorboard
             print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0
@@ -100,13 +99,5 @@ save_model_weights(featsModel, model_folder, featsModelname, trainstep)
 save_model_weights(distModel, model_folder, distModelname, trainstep)
 print('saved models')
 writer.close()
-
-# # Visualization
-# print('visualizing..')
-# print(log_name)
-# writerEmb = SummaryWriter(comment='%s_embedding' % (log_name))
-# visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=2000, train=True)
-# visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=2000, train=False)
-# writerEmb.close()
 
 

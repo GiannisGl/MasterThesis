@@ -7,13 +7,15 @@ from losses import *
 
 
 # parameters and names
-case = "NoAugNew"
+case = "MnistExactWithClustering"
 outDim = 3
 nAug = 3
 delta = 5
+# trainstep of the trained model
 trainstep = 2
-transferTrainstep = 1
-learningRate = 1e-3
+# trainstep of the linear classifier
+transferTrainstep = 0
+learningRate = 1e-1
 dataset = 'mnist'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -31,11 +33,11 @@ else:
 
 lamda = 1
 distPretrained = False
-modelname = "DistLeNetNoNorm%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
+modelname = "DistLeNet%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
 log_name = "distTransfer%s%sAug%iBatch%iLR%f_Iter%i_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep, transferTrainstep)
 model_folder = "trainedModels"
 
-train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False)
+train_loader = load_mnist(datafolder, train_batch_size, train=True, download=True)
 
 # model loading
 distModelname = "distModel%s" % modelname
@@ -59,7 +61,7 @@ distOptimizer = optim.Adam(distModel.classifier[-1].parameters(), lr=learningRat
 criterion = torch.nn.CrossEntropyLoss()
 
 # writers and criterion
-writer = SummaryWriter(comment='%s_loss_log' % (log_name))
+writer = SummaryWriter(comment='%s_loss_log' % log_name)
 
 # Training
 print('Start Training')
@@ -89,12 +91,11 @@ for epoch in range(Nepochs):
         loss.backward()
         distOptimizer.step()
         global_step = epoch*Nsamples+i
-        writer.add_scalar(tag='transfer_dist_mnist', scalar_value=loss, global_step=global_step)
+        writer.add_scalar(tag='linearClassifier_dist_mnist', scalar_value=loss, global_step=global_step)
 
         # print statistics
         running_loss += loss.item()
         if i % log_iter == log_iter-1:
-            # print images to tensorboard
             print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0

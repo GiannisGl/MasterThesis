@@ -1,65 +1,54 @@
 import torch
-from tensorboardX import SummaryWriter
-from distanceModel import distanceModel
-from featuresModel import featsLenet, featsLenetAE
+from inceptionModel import distInception
 from helperFunctions import *
 from losses import *
 
+# Nearest Neighbor search for CIFAR10
 
 # parameters and names
-case = "Autoencoder"
+case = "CifarRelaxedWithClustering"
 outDim = 3
-nAug = 3
+nAug = 5
 delta = 5
-trainstep = 4
-dataset = 'mnist'
+trainstep = 3
+dataset = 'cifar'
 # Per Epoch one iteration over the dataset
 N_test_samples = 10000
-dataset_size = 60000
-dist = False
-ae = True
+dataset_size = 50000
 if torch.cuda.is_available():
-    train_batch_size = 60000
+    train_batch_size = 800
     N_train_batches = int(dataset_size/train_batch_size)
     datafolder = "/var/tmp/ioannis/data"
 else:
     train_batch_size = 100
     N_train_batches = 20
-    N_test_samples = 5
+    N_test_samples = 1
     datafolder = "../../data"
 
 lamda = 1
-pretrained = False
-#modelname = "DistLeNetNoNorm%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
-modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+distPretrained = False
+if case == "Autoencoder":
+    modelname = "DistInception%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
+    ae = True
+else:
+    modelname = "DistInception%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
+    ae = False
 log_name = "fullSearch%s%s_Iter%i" % (dataset, modelname, trainstep)
 model_folder = "trainedModels"
 
-search_train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False, shuffle=False)
-input_test_loader = load_mnist(datafolder, 1, train=False, download=False, shuffle=False)
+search_train_loader = load_cifar(datafolder, train_batch_size, train=True, download=True, shuffle=False)
+input_test_loader = load_cifar(datafolder, 1, train=False, download=True, shuffle=False)
 
 # model loading
-if dist:
-    fullmodelname = "distModel%s" % modelname
-else:
-    fullmodelname = "featsModel%s" % modelname
-if dist:
-    model = load_model(distanceModel, model_folder, fullmodelname, trainstep, pretrained)
-else:
-    if ae:
-        model = load_model(featsLenetAE, model_folder, fullmodelname, trainstep, pretrained, outDim=outDim)
-    else:
-        model = load_model(featsLenet, model_folder, fullmodelname, trainstep, pretrained, outDim=outDim)
-
+distModelname = "distModel%s" % modelname
+distModel = load_model(distInception, model_folder, distModelname, trainstep, distPretrained)
+distModel = distModel.eval()
 if torch.cuda.is_available():
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
-    model.cuda()
+    distModel.cuda()
 else:
     torch.set_default_tensor_type('torch.FloatTensor')
 
-
-# writers and criterion
-# writer = SummaryWriter(comment='%s_kNeighbours' % (log_name))
 
 # Training
 print('Start Full Search')
@@ -80,17 +69,7 @@ for i in range(N_test_samples):
         if torch.cuda.is_available():
             input_train_search = input_train_search.cuda()
 
-        if dist:
-            distancesTmp = model.forward(input_test_batch, input_train_search)
-        else:
-            if ae:
-                output_test_batch = model.encoder(input_test_batch)
-                output_train_search = model.encoder(input_train_search)
-            else:
-                output_test_batch = model.forward(input_test_batch)
-                output_train_search = model.forward(input_train_search)
-            distancesTmp = mse_batch(output_train_search-output_test_batch)
-
+        distancesTmp = distModel.forward(input_test_batch, input_train_search)
         sortedDistances, sortedIndices = distancesTmp.sort(0)
         bestDistanceTmp = sortedDistances[0]
         if bestDistanceTmp<bestDistance:
@@ -109,6 +88,3 @@ print('Accuracy of the network on the 10000 test images: %f %%' % (
 
 print('Finished Full Search')
 print(log_name)
-
-# save distances?
-# writer.close()

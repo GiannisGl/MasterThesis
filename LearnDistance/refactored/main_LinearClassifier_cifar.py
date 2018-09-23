@@ -1,55 +1,54 @@
 import torch
 import torch.optim as optim
 from tensorboardX import SummaryWriter
-from featuresModel import featsLenet
+from inceptionModel import featsInception
 from helperFunctions import *
 from losses import *
 
 
 # parameters and names
-case = "SlackNew"
+case = "CifarExactWithClustering"
 outDim = 3
-nAug = 3
+nAug = 5
 delta = 5
-trainstep = 3
-transferTrainstep = 1
-learningRate = 1e-2
-dataset = 'mnist'
+# trainstep of the trained model
+trainstep = 2
+# trainstep of the linear classifier
+transferTrainstep = 0
+learningRate = 1e-1
+dataset = 'cifar'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
     train_batch_size = 1000
-    Nsamples = int(60000 / train_batch_size)
+    Nsamples = int(50000 / train_batch_size)
     log_iter = int(Nsamples/2)
     Nepochs = 50
     datafolder = "/var/tmp/ioannis/data"
 else:
     train_batch_size = 100
-    Nsamples = int(60000 / train_batch_size)
-    log_iter = 100
-    Nepochs = 50
+    Nsamples = int(600 / train_batch_size)
+    log_iter = 1
+    Nepochs = 1
     datafolder = "../../data"
 
 lamda = 1
 featsPretrained = False
-modelname = "DistLeNetNoNorm%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
-#modelname = "DistLeNetNoNorm%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
-# modelname = "DistLeNet%sAug%iOut%iDelta%i" % (case, nAug, outDim, delta)
+modelname = "DistInception%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
 log_name = "featsTransfer%s%sAug%iBatch%iLR%f_Iter%i_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep, transferTrainstep)
 model_folder = "trainedModels"
 
-train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False)
+train_loader = load_cifar(datafolder, train_batch_size, train=True, download=True)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
-featsModel = load_model(featsLenet, model_folder, featsModelname, 0, featsPretrained, outDim)
+featsModel = load_model(featsInception, model_folder, featsModelname, 0, featsPretrained, outDim)
 if transferTrainstep<1:
-    featsModel = load_model(featsLenet, model_folder, featsModelname, trainstep, featsPretrained, outDim)
+    featsModel = load_model(featsInception, model_folder, featsModelname, trainstep, featsPretrained, outDim)
 freeze_layers(featsModel)
 # remove last layer
-nFeats = featsModel.fc[-1].in_features
+nFeats = featsModel.fc.in_features
 nClasses = 10
-featsModel.fc[-1] = torch.nn.Linear(nFeats, nClasses)
-print(featsModel)
+featsModel.fc = torch.nn.Linear(nFeats, nClasses)
 if transferTrainstep>=1:
     modelfilename = '%s/%sTransfer%s_Iter%i_Iter%i.state' % (model_folder, dataset, modelname, trainstep, transferTrainstep)
     featsModel = load_model_weights(featsModel, modelfilename)
@@ -57,7 +56,7 @@ if torch.cuda.is_available():
     featsModel.cuda()
 
 # optimizers
-featsOptimizer = optim.Adam(featsModel.fc[-1].parameters(), lr=learningRate)
+featsOptimizer = optim.Adam(featsModel.fc.parameters(), lr=learningRate)
 criterion = torch.nn.CrossEntropyLoss()
 
 # writers and criterion
@@ -89,12 +88,11 @@ for epoch in range(Nepochs):
         loss.backward()
         featsOptimizer.step()
         global_step = epoch*Nsamples+i
-        writer.add_scalar(tag='transfer_mnist', scalar_value=loss, global_step=global_step)
+        writer.add_scalar(tag='linearClassifier_cifar', scalar_value=loss, global_step=global_step)
 
         # print statistics
         running_loss += loss.item()
         if i % log_iter == log_iter-1:
-            # print images to tensorboard
             print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0
@@ -110,5 +108,5 @@ print('saved models')
 
 writer.close()
 
-test_loader = load_mnist(datafolder, train_batch_size, train=False, download=False, shuffle=False)
+test_loader = load_cifar(datafolder, train_batch_size, train=False, download=False)
 test_accuracy(featsModel, test_loader)

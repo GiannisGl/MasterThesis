@@ -19,7 +19,7 @@ if dataset=='mnist':
     train_set = torchvision.datasets.MNIST(root=data_folder, train=False, download=True, transform=transform)
 elif dataset == 'cifar':
     cmap = None
-    train_set = torchvision.datasets.CIFAR10(root=data_folder, train=False, download=False, transform=transform)
+    train_set = torchvision.datasets.CIFAR10(root=data_folder, train=False, download=True, transform=transform)
 
 train_loader = torch.utils.data.DataLoader(train_set, batch_size=batchSize,
                                            shuffle=True, num_workers=0)

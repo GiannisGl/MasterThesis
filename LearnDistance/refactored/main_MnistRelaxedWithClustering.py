@@ -8,13 +8,13 @@ from losses import *
 
 
 # parameters and names
-case = "AugmentationNew"
+case = "MnistRelaxedWithClustering"
 outDim = 3
-nAug = 0
+nAug = 3
 delta = 5
 trainstep = 1
-learningRate = 1e-3
-dataset = 'mnist'
+learningRate = 1e-2
+dataset='mnist'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
     train_batch_size = 1000
@@ -28,20 +28,18 @@ else:
     log_iter = 10
     Nepochs = 1
     datafolder = "../../data"
-
 lamda = 1
 featsPretrained = False
 distPretrained = False
-modelname = "DistLeNetNoNorm%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
-# modelname = "DistLeNet%sOut%iDelta%iLamda%i" % (case, outDim, delta, lamda)
-log_name = "%sBatch%iLR%f_Iter%i" % (modelname, train_batch_size, learningRate, trainstep)
+modelname = "DistLeNet%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, delta, lamda)
+log_name = "%sAug%iBatch%iLR%f_Iter%i" % (modelname, nAug, train_batch_size, learningRate, trainstep)
 model_folder = "trainedModels"
 
 if nAug==0:
     transform=True
 else:
     transform=False
-train_loader = load_mnist(datafolder, train_batch_size, train=True, download=False, transformed=transform)
+train_loader = load_mnist(datafolder, train_batch_size, train=True, download=True, transformed=transform)
 
 # model loading
 featsModelname = "featsModel%s" % modelname
@@ -55,7 +53,7 @@ distOptimizer = optim.Adam(distModel.parameters(), lr=learningRate)
 
 # writers and criterion
 writer = SummaryWriter(comment='%s_loss_log' % (log_name))
-criterion = distance_loss(writer, log_iter, delta, lamda, nAug)
+criterion = distance_loss_relaxed(writer, log_iter, delta, lamda, nAug)
 
 # Training
 print('Start Training')
@@ -90,7 +88,6 @@ for epoch in range(Nepochs):
         # print statistics
         running_loss += loss.item()
         if i % log_iter == log_iter-1:
-            # print images to tensorboard
             print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0
@@ -104,11 +101,3 @@ save_model_weights(distModel, model_folder, distModelname, trainstep)
 print('saved models')
 
 writer.close()
-
-# # Visualization
-# print('visualizing..')
-# print(log_name)
-# writerEmb = SummaryWriter(comment='%s_embedding' % (log_name))
-# visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=2000, train=True)
-# visualize(writerEmb=writerEmb, model=featsModel, datafolder=datafolder, dataset=dataset, Nsamples=2000, train=False)
-# writerEmb.close()

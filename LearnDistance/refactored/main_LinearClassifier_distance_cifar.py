@@ -7,13 +7,15 @@ from losses import *
 
 
 # parameters and names
-case = "CifarNewNoAug"
+case = "CifarExactWithClustering"
 outDim = 3
 nAug = 5
 delta = 5
+# trainstep of the trained model
 trainstep = 2
+# trainstep of the linear classifier
 transferTrainstep = 0
-learningRate = 1e-3
+learningRate = 1e-1
 dataset = 'cifar'
 # Per Epoch one iteration over the dataset
 if torch.cuda.is_available():
@@ -35,7 +37,7 @@ modelname = "DistInception%sAug%iOut%iDelta%iLamda%i" % (case, nAug, outDim, del
 log_name = "distTransfer%s%sAug%iBatch%iLR%f_Iter%i_Iter%i" % (dataset, modelname, nAug, train_batch_size, learningRate, trainstep, transferTrainstep)
 model_folder = "trainedModels"
 
-train_loader = load_cifar(datafolder, train_batch_size, train=True, download=False)
+train_loader = load_cifar(datafolder, train_batch_size, train=True, download=True)
 
 # model loading
 distModelname = "distModel%s" % modelname
@@ -58,7 +60,7 @@ distOptimizer = optim.Adam(distModel.fc.parameters(), lr=learningRate)
 criterion = torch.nn.CrossEntropyLoss()
 
 # writers and criterion
-writer = SummaryWriter(comment='%s_loss_log' % (log_name))
+writer = SummaryWriter(comment='%s_loss_log' % log_name)
 
 # Training
 print('Start Training')
@@ -87,11 +89,12 @@ for epoch in range(Nepochs):
         loss = criterion(output, label)
         loss.backward()
         distOptimizer.step()
+        global_step = epoch*Nsamples+i
+        writer.add_scalar(tag='linearClassifier_dist_cifar', scalar_value=loss, global_step=global_step)
 
         # print statistics
         running_loss += loss.item()
         if i % log_iter == log_iter-1:
-            # print images to tensorboard
             print('[%d, %5d] loss: %f' %
                   (epoch + 1, i, running_loss / log_iter))
             running_loss = 0.0
