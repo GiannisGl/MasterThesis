@@ -1,12 +1,5 @@
 data
 __pycache__
 setup
-**.torchmodel
-**.state
 */models
-*/trainedModels
 **.pyc
-**/runs
-**/runs*
-**/*[Ee]mbeddings*
-LearnDistance/runs_refactored_preBug

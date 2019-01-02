@@ -5,48 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="744af0ac-869a-460a-bf81-97755d885eff" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_CifarExactWithoutClustering.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_CifarRelaxedWithClustering.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_MnistExactWithoutClustering.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_MnistRelaxedWithoutClustering.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LearnDistance/refactored/visualize_mnist.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/distances/fullSearchmnistDistLeNetNoNormNoAugOut3Delta5Lamda1_Iter4top10NNs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test/00000/default/tensors.tsv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test/00001/default/tensors.tsv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test/00002/default/tensors.tsv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test/00003/default/tensors.tsv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test/events.out.tfevents.1533540776.giannis-Lenovo" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test/events.out.tfevents.1533540805.giannis-Lenovo" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test/events.out.tfevents.1533540860.giannis-Lenovo" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test/events.out.tfevents.1533540891.giannis-Lenovo" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test/events.out.tfevents.1533540923.giannis-Lenovo" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test/events.out.tfevents.1533540928.giannis-Lenovo" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test/projector_config.pbtxt" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/distModelTest.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/old_files/distModelTest.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_augmentation.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_MnistExactWithClustering.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_CifarExactWithClustering.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_ae.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_CifarAutoencoder.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_clustering.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_CifarOnlyClustering.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_cifar_slack.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_CifarRelaxedWithoutClustering.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_cifar.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_LinearClassifier_distance_cifar.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_dist_transfer_mnist.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_LinearClassifier_distance_mnist.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_cifar.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_NNfullSearch_cifar.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_fullSearch_mnist.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_NNfullSearch_mnist.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_mnist_ae.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_MnistAutoencoder.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_mnist_clustering.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_MnistOnlyClustering.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_slack.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_MnistRelaxedWithClustering.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_ae_cifar.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_LinearClassifier_cifar_autoencoder.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_ae_mnist.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_LinearClassifier_mnist_autoencoder.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_cifar.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_LinearClassifier_cifar.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/main_transfer_mnist.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/main_LinearClassifier_mnist.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_cifar.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/old_files/test_accuracy_cifar.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/test_accuracy_mnist.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/old_files/test_accuracy_mnist.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LearnDistance/refactored/visualize.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/visualize_cifar.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/helperFunctions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/inceptionModel.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/inceptionModel.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/losses.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/losses.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LearnDistance/refactored/testAugmentations.py" afterPath="$PROJECT_DIR$/LearnDistance/refactored/testAugmentations.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -228,6 +187,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -242,14 +202,13 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/LearnDistance/refactored" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Dropbox/Master Thesis Report/Thesis/Documents/Documents/Source" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
@@ -603,7 +562,7 @@
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28008634" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28008634" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -765,7 +724,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-43">
           <caret line="126" column="93" lean-forward="false" selection-start-line="126" selection-start-column="93" selection-end-line="126" selection-end-column="93" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -773,7 +731,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2286">
           <caret line="133" column="57" lean-forward="false" selection-start-line="133" selection-start-column="57" selection-end-line="133" selection-end-column="57" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -781,7 +738,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
           <caret line="2" column="38" lean-forward="false" selection-start-line="2" selection-start-column="38" selection-end-line="2" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -789,7 +745,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="101">
           <caret line="25" column="12" lean-forward="false" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -797,7 +752,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1350">
           <caret line="78" column="23" lean-forward="false" selection-start-line="78" selection-start-column="13" selection-end-line="78" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -805,7 +759,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="918">
           <caret line="56" column="19" lean-forward="false" selection-start-line="56" selection-start-column="19" selection-end-line="56" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -813,7 +766,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -821,7 +773,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-835">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -829,7 +780,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -837,7 +787,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="468">
           <caret line="37" column="81" lean-forward="false" selection-start-line="37" selection-start-column="81" selection-end-line="37" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -845,7 +794,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
           <caret line="40" column="81" lean-forward="false" selection-start-line="40" selection-start-column="81" selection-end-line="40" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -853,7 +801,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
           <caret line="40" column="81" lean-forward="false" selection-start-line="40" selection-start-column="81" selection-end-line="40" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -861,7 +808,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
           <caret line="40" column="81" lean-forward="false" selection-start-line="40" selection-start-column="81" selection-end-line="40" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -869,7 +815,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
           <caret line="40" column="81" lean-forward="false" selection-start-line="40" selection-start-column="81" selection-end-line="40" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -877,7 +822,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="522">
           <caret line="34" column="81" lean-forward="false" selection-start-line="34" selection-start-column="77" selection-end-line="34" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -885,7 +829,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
           <caret line="39" column="81" lean-forward="false" selection-start-line="39" selection-start-column="81" selection-end-line="39" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -893,7 +836,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="576">
           <caret line="37" column="81" lean-forward="false" selection-start-line="37" selection-start-column="81" selection-end-line="37" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -901,7 +843,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
           <caret line="39" column="81" lean-forward="false" selection-start-line="39" selection-start-column="81" selection-end-line="39" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -909,7 +850,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
           <caret line="39" column="81" lean-forward="false" selection-start-line="39" selection-start-column="81" selection-end-line="39" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -917,7 +857,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
           <caret line="39" column="81" lean-forward="false" selection-start-line="39" selection-start-column="81" selection-end-line="39" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -925,7 +864,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="576">
           <caret line="37" column="81" lean-forward="false" selection-start-line="37" selection-start-column="81" selection-end-line="37" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -933,7 +871,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="576">
           <caret line="37" column="81" lean-forward="false" selection-start-line="37" selection-start-column="81" selection-end-line="37" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -941,7 +878,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="648">
           <caret line="42" column="81" lean-forward="false" selection-start-line="42" selection-start-column="81" selection-end-line="42" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -953,19 +889,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_MnistOnlyClustering.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="35" column="81" lean-forward="false" selection-start-line="35" selection-start-column="81" selection-end-line="35" selection-end-column="81" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_MnistRelaxedWithClustering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
           <caret line="41" column="81" lean-forward="false" selection-start-line="41" selection-start-column="81" selection-end-line="41" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -973,7 +900,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
           <caret line="41" column="81" lean-forward="false" selection-start-line="41" selection-start-column="81" selection-end-line="41" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -981,7 +907,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="648">
           <caret line="39" column="72" lean-forward="false" selection-start-line="39" selection-start-column="72" selection-end-line="39" selection-end-column="72" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -989,7 +914,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="666">
           <caret line="40" column="72" lean-forward="false" selection-start-line="40" selection-start-column="72" selection-end-line="40" selection-end-column="72" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1005,7 +929,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="3" column="59" lean-forward="false" selection-start-line="3" selection-start-column="59" selection-end-line="3" selection-end-column="59" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1014,6 +937,13 @@
         <state relative-caret-position="317">
           <caret line="126" column="92" lean-forward="true" selection-start-line="126" selection-start-column="92" selection-end-line="126" selection-end-column="92" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LearnDistance/refactored/main_MnistOnlyClustering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="35" column="81" lean-forward="false" selection-start-line="35" selection-start-column="81" selection-end-line="35" selection-end-column="81" />
         </state>
       </provider>
     </entry>
